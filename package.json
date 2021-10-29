@@ -1,0 +1,25 @@
+{
+  "name": "anterior-crutiate-legament",
+  "version": "1.0.0",
+  "description": "ACL project",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/advanced-computer-lab/anterior-crutiate-legament.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/advanced-computer-lab/anterior-crutiate-legament/issues"
+  },
+  "homepage": "https://github.com/advanced-computer-lab/anterior-crutiate-legament#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^6.0.12",
+    "morgan": "^1.10.0"
+  }
+}
