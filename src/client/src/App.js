@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import AdminApp from './components/admin/AdminApp.js'
 import AddFlight from './components/admin/AddFlight.js';
-import FlightDetails from './components/admin/FlightDetails.js';
+import EditFlight from './components/admin/EditFlight.js';
 import './App.css';
 
 class App extends React.Component {
@@ -14,7 +14,7 @@ class App extends React.Component {
           {/*<Route exact path='/' component={Home} />*/}
           <Route path='/admin/' component={AdminApp} />
           <Route path='/addFlight' component={AddFlight} />
-          <Route path='/controlFlight' component={FlightDetails} />
+          <Route path='/editFlight' component={EditFlight} />
         </div>
       </Router>
     );

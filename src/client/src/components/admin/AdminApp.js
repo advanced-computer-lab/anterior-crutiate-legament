@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 
 import FlightsTable from './FlightsTable.js';
 import FlightsSearch from './FlightsSearch.js';
+import './Admin.css';
 
 class AdminApp extends React.Component {
     constructor(props) {
@@ -33,7 +34,6 @@ class AdminApp extends React.Component {
             this.setState({
                 flightsDetails: res.data
             });
-            console.log(res);
         })
         .catch(err =>{
             console.log('Error from getting flights details.');

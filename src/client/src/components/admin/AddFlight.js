@@ -17,7 +17,6 @@ class AddFlight extends React.Component {
 
     onSubmit(e) {
         e.preventDefault();
-        let x = new Date();
         const flightData = {
             flight_number: this.state.flight_number,
             from: this.state.from,
