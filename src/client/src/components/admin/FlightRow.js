@@ -22,7 +22,6 @@ class FlightRow extends React.Component {
                 <td><Link to={{
                     pathname: "/editFlight",
                     search: `${this.props.data._id}`,
-                    data: this.props.data
                 }}> Go </Link> </td>
             </tr>
         );
