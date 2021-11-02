@@ -10,7 +10,7 @@ const Flights = require('../models/Flights') ;
 
 adminRouter.route('/adminSearchFlights')
 .get((req,res,next)=>{
-    
+    console.log(req);
     if(req.body.constructor === Object && Object.keys(req.body).length === 0){   
         Flights.find({})
         .then((result)=>{

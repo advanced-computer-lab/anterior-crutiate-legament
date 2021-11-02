@@ -5,7 +5,7 @@ var adminRouter = require('./adminRouter');
 
 
 
-apiRouter.use('/admin',adminRouter);
+apiRouter.use('/adminRouter',adminRouter);
 
 
 

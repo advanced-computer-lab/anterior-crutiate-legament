@@ -2,14 +2,16 @@ const express = require('express') ;
 const mongoose = require('mongoose') ;
 const logger = require('morgan');
 
-const db = 'acl@cluster0.0ipj2.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'; 
+const db = 'mongodb+srv://aclteam4:acl@cluster0.0ipj2.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'; 
 
 var app = express() ;
 const API = require('./routes/api');
+const cors = require('cors');
 
 const url = 'localhost' ;
-const port = 3000 ; 
+const port = 8000; 
 
+app.use(cors({ origin: true, credentials: true }));
 app.use(logger('dev'));
 app.use(express.json());
 
