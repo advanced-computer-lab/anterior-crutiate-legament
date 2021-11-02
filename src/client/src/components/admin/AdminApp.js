@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import FlightsTable from './FlightsTable.js';
 import FlightsSearch from './FlightsSearch.js';
@@ -33,6 +33,7 @@ class AdminApp extends React.Component {
             this.setState({
                 flightsDetails: res.data
             });
+            console.log(res);
         })
         .catch(err =>{
             console.log('Error from getting flights details.');
@@ -46,7 +47,7 @@ class AdminApp extends React.Component {
                 <br />
                 <FlightsSearch displayFlightsFunciton={this.displayFlights}/>
                 <br />
-                <Link to="./addFlight">Add Flight</Link>
+                <Link to="/addFlight">Add Flight</Link>
             </div>
         );
     }

@@ -5,6 +5,7 @@ class AddFlight extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            flight_number: '',
             from: '',
             to: '',
             departure_time: '',
@@ -18,7 +19,7 @@ class AddFlight extends React.Component {
         e.preventDefault();
         let x = new Date();
         const flightData = {
-            flight_number: 100,
+            flight_number: this.state.flight_number,
             from: this.state.from,
             to: this.state.to,
             departure_time: this.state.departure_time,
@@ -31,6 +32,7 @@ class AddFlight extends React.Component {
         .post('http://localhost:8000/api/adminRouter/adminCreateFlight', flightData)
         .then(res => {
             this.setState({
+                flight_number: '',
                 from: '',
                 to: '',
                 departure_time: '',
@@ -52,6 +54,17 @@ class AddFlight extends React.Component {
     render() {
         return (
             <form onSubmit={this.onSubmit}>
+                <div>
+                    <input
+                        type='text'
+                        placeholder='Flight Number'
+                        name='flight_number'
+                        className='form-control'
+                        value={this.state.flight_number}
+                        onChange={this.onChange}
+                    />
+                </div>
+                <br />
                 <div>
                     <input
                         type='text'

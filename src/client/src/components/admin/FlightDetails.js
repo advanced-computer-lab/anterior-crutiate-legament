@@ -6,8 +6,9 @@ class FlightDetails extends React.Component {
     }
     
     render() {
+        console.log(this.props.location.data);
         return (
-            <h1>{JSON.stringify(this.state)}</h1>
+            <h1>Hi</h1>
         );
     }
 }

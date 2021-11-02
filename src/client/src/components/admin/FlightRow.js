@@ -1,7 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
-
-import FlightDetails from './FlightDetails';
+import { Link } from 'react-router-dom';
 
 class FlightRow extends React.Component {
     constructor(props) {
@@ -19,7 +17,10 @@ class FlightRow extends React.Component {
                 <td>{/*this.props.data.capin.Economy*/}</td>
                 <td>{/*this.props.data.capin.Business*/}</td>
                 <td>{/*this.props.data.capin.First*/}</td>
-                <td><Link to={{pathname: "/controlFlight", state: this.props.data }}> Go </Link> </td>
+                <td><Link to={{
+                    pathname: "/controlFlight",
+                    data: this.props.data
+                }}> Go </Link> </td>
             </tr>
         );
     }
