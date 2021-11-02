@@ -10,41 +10,44 @@ const Flights = require('../models/Flights') ;
 
 adminRouter.route('/adminSearchFlights')
 .get((req,res,next)=>{
-    console.log(req);
-    if(req.body.constructor === Object && Object.keys(req.body).length === 0){   
+    console.log(req.params);
+    if(req.params.constructor === Object && Object.keys(req.params).length === 0){   
         Flights.find({})
         .then((result)=>{
+            console.log(result);
             res.setHeader('Content-Type', 'application/json');
-            res.end(JSON.stringify(result));
+            res.send(result);
         },(err)=>{next(err)})
         .catch((err)=>{next(err)});
     }
-    else if(req.body.flight_number){                              //if searching is done by flight number >>> it is unique               
-        Flights.find({flight_number: req.body.flight_number})
+    else if(req.params.flight_number){                              //if searching is done by flight number >>> it is unique               
+        Flights.find({flight_number: req.params.flight_number})
         .then((result)=>{
+            console.log(result);
             res.setHeader('Content-Type', 'application/json');
-            res.end(JSON.stringify(result));
+            res.send(result);
         },(err)=>{next(err)})
         .catch((err)=>{next(err)});
     }
     else{
         let query = [] ;
-        if(req.body.from){
-            query.push({from:req.body.from}); 
+        if(req.params.from){
+            query.push({from:req.params.from}); 
         }
-        if(req.body.to){
-            query.push({to:req.body.to}) ; 
+        if(req.params.to){
+            query.push({to:req.params.to}) ; 
         }
-        if(req.body.departure_time){
-            query.push({departure_time:{$gte:req.body.departure_time}}) ;
+        if(req.params.departure_time){
+            query.push({departure_time:{$gte:req.params.departure_time}}) ;
         }
-        if(req.body.arrival_time){
-            query.push({departure_time:{$lte:req.body.arrival_time}}) ;
+        if(req.params.arrival_time){
+            query.push({departure_time:{$lte:req.params.arrival_time}}) ;
         }
-        Flights.find({$or:query})
+        Flights.find({query})
         .then((results)=>{
+            console.log(result);
             res.setHeader('Content-Type', 'application/json');
-            res.end(JSON.stringify(results));
+            res.send(results);
         },(err)=>{next(err)})
         .catch((err)=>{next(err)});
     }   

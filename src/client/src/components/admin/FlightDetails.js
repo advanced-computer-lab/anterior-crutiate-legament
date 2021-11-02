@@ -7,7 +7,7 @@ class FlightDetails extends React.Component {
     
     render() {
         return (
-            <h1>Flight Details</h1>
+            <h1>{JSON.stringify(this.state)}</h1>
         );
     }
 }

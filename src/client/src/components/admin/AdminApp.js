@@ -31,9 +31,8 @@ class AdminApp extends React.Component {
         })
         .then(res => {
             this.setState({
-                flightsDetails: JSON.parse(res.data)
+                flightsDetails: res.data
             });
-            console.log(this.state.flightsDetails);
         })
         .catch(err =>{
             console.log('Error from getting flights details.');
