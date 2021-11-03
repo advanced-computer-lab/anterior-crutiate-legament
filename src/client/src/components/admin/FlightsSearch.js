@@ -24,24 +24,7 @@ class FlightsSearch extends React.Component {
             departure_time: this.state.departure_time,
             arrival_time: this.state.arrival_time
         };
-
-        console.log(flightData);
-        
-        axios
-        .post('http://localhost:8000/api/adminRouter/adminSearchFlights', flightData)
-        .then(res => {
-            this.setState({
-                flight_number: '',
-                from: '',
-                to: '',
-                departure_time: '',
-                arrival_time: ''
-            });
-            this.props.history.push('/');
-        })
-        .catch(err => {
-            console.log("Error in searching a flight to the database!");
-        });
+       this.props.displayFlights(flightData);
     }
 
     onChange(e) {

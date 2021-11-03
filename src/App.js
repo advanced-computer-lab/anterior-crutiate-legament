@@ -2,7 +2,7 @@ const express = require('express') ;
 const mongoose = require('mongoose') ;
 const logger = require('morgan');
 
-const db = 'mongodb+srv://aclteam4:acl@cluster0.0ipj2.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'; 
+const db = 'mongodb+srv://aclteam:MPPrCzCPwQJfRZDO@cluster0.0ipj2.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'; 
 
 var app = express() ;
 const API = require('./routes/api');

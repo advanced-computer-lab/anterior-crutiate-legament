@@ -9,6 +9,7 @@ class FlightRow extends React.Component {
     }
     
     render() {
+        console.log(this.props.data);
         return (
             <tr>
                 <td>{this.props.data.flight_number}</td>
@@ -16,9 +17,9 @@ class FlightRow extends React.Component {
                 <td>{this.props.data.to}</td>
                 <td>{this.props.data.departure_time}</td>
                 <td>{this.props.data.arrival_time}</td>
-                <td>{/*this.props.data.capin.Economy*/}</td>
-                <td>{/*this.props.data.capin.Business*/}</td>
-                <td>{/*this.props.data.capin.First*/}</td>
+                <td>{this.props.data.Economy}</td>
+                <td>{this.props.data.Business}</td>
+                <td>{this.props.data.First}</td>
                 <td><Link to={{
                     pathname: "/editFlight",
                     search: `${this.props.data._id}`,

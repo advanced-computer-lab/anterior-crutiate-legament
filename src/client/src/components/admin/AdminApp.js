@@ -21,8 +21,8 @@ class AdminApp extends React.Component {
 
     displayFlights(searchTerms) {
         axios
-        .get('http://localhost:8000/api/adminRouter/adminSearchFlights', {
-            params: {
+        .get('http://localhost:8000/api/admin/adminSearchFlights', {
+            body: {
                 flight_number: searchTerms.flight_number,
                 from: searchTerms.from,
                 to: searchTerms.to,
@@ -42,11 +42,9 @@ class AdminApp extends React.Component {
 
     render() {
         return (
-            <div className = "container">
-                <FlightsSearch displayFlightsFunciton={this.displayFlights}/>
-                <br />
-
                 <FlightsTable flights={this.state.flightsDetails}/>
+                <br />
+                <FlightsSearch displayFlights={this.displayFlights}/>
                 <br />
                 <Link to="/addFlight">Add Flight</Link>
             </div>
