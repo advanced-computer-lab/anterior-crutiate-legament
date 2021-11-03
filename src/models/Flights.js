@@ -1,6 +1,26 @@
 const mongoose = require('mongoose') ;
 const Schema = mongoose.Schema ;
 
+
+const capinSchema = new Schema({
+    Economy:{
+        type: Number,
+        default:0,
+        min:0
+    },
+    Business:{
+        type: Number,
+        default:0,
+        min: 0 
+    },
+    First:{
+        type: Number,
+        default:0,
+        min:0 
+    },
+    
+});
+
 const flightSchema = new Schema ({
     flight_number:{
         type: String,
@@ -73,6 +93,32 @@ flightSchema.methods.searchFlights = async requestBody => {
         }
         results = await Flights.find({$and:query});
     }
+
+    let results ;
+    if(requestBody.constructor === Object && Object.keys(requestBody).length === 0){   
+        results = await Flights.find({}); 
+    }
+       else if(requestBody.flight_number){                              //if searching is done by flight number >>> it is unique               
+        results = await Flights.find({flight_number: requestBody.flight_number});
+    }
+    else{
+        let query = [] ;
+        if(requestBody.from){
+            query.push({from:requestBody.from}); 
+        }
+        if(req.body.to){
+            query.push({to:requestBody.to}) ; 
+        }
+        if(requestBody.departure_time){
+            query.push({departure_time:{$gte:requestBody.departure_time}}) ;
+        }
+        if(requestBody.arrival_time){
+            query.push({departure_time:{$lte:requestBody.arrival_time}}) ;
+        }
+        results = await Flights.find({$and:query});
+      
+    }   
+    console.log(results) ;
     return results ;
 }
 

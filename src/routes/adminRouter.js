@@ -11,6 +11,7 @@ adminRouter.route('/adminSearchFlights')
     let results = await Flights.searchFlights(req.body) ;
     res.setHeader('Content-Type', 'application/json');
     res.send(results);
+    res.end(JSON.stringify(results));
 })
 .all((req,res,next)=>{
     res.statusCode = 403;
