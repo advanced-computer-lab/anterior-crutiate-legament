@@ -54,31 +54,29 @@ const flightSchema = new Schema ({
 
 flightSchema.methods.searchFlights = async requestBody => {
     let results ;
- 
-    if(requestBody.constructor === Object && Object.keys(requestBody).length === 0){   
+    if(requestBody.constructor === Object && Object.keys(requestBody).length === 0) {   
         results = await Flights.find({}); 
-    }
-       else if(requestBody.flight_number){                              //if searching is done by flight number >>> it is unique               
-        results = await Flights.find({flight_number: requestBody.flight_number});
-    }
-    else{
+    } else if (requestBody._id) {                              //if searching is done by _id >>> it is unique               
+        results = await Flights.find({_id: requestBody._id});
+    } else {
         let query = [] ;
-        if(requestBody.from){
+        if(requestBody.flight_number) {
+            query.push({flight_number:requestBody.flight_number}); 
+        }
+        if(requestBody.from) {
             query.push({from:requestBody.from}); 
         }
-        if(requestBody.to){
+        if(req.body.to) {
             query.push({to:requestBody.to}) ; 
         }
-        if(requestBody.departure_time){
+        if(requestBody.departure_time) {
             query.push({departure_time:{$gte:requestBody.departure_time}}) ;
         }
-        if(requestBody.arrival_time){
+        if(requestBody.arrival_time) {
             query.push({departure_time:{$lte:requestBody.arrival_time}}) ;
         }
-        console.log(query) ;
         results = await Flights.find({$and:query});
-      
-    }   
+    }
     return results ;
 }
 
