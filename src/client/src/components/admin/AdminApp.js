@@ -42,10 +42,11 @@ class AdminApp extends React.Component {
 
     render() {
         return (
-            <div>
-                <FlightsTable flights={this.state.flightsDetails}/>
-                <br />
+            <div className = "container">
                 <FlightsSearch displayFlightsFunciton={this.displayFlights}/>
+                <br />
+
+                <FlightsTable flights={this.state.flightsDetails}/>
                 <br />
                 <Link to="/addFlight">Add Flight</Link>
             </div>
