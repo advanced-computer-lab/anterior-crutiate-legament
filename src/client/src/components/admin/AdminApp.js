@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import FlightsTable from './FlightsTable.js';
 import FlightsSearch from './FlightsSearch.js';
-import './Admin.css';
+import './AdminApp.css';
 
 class AdminApp extends React.Component {
     constructor(props) {
@@ -43,7 +43,7 @@ class AdminApp extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className = "admin-home-page">
                 <FlightsTable flights={this.state.flightsDetails} />
                 <br />
                 <FlightsSearch displayFlights={this.displayFlights}/>

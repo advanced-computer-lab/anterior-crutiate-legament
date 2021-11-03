@@ -42,8 +42,24 @@ const flightSchema = new Schema ({
         type: Date,
         required: true
     },
-    
-    capin: capinSchema
+    Economy:{
+        type: Number,
+        default:0,
+        min:0,
+        required: true
+    },
+    Business:{
+        type: Number,
+        default:0,
+        min: 0,
+        required: true
+    },
+    First:{
+        type: Number,
+        default:0,
+        min:0,
+        required: true
+    }
 },
 { 
     timestamps: true 

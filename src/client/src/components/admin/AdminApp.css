@@ -1,5 +1,4 @@
-body.maincontainer {
-	background: url(../../res/background.png);
+body.admin-home-page {
 	height: auto;
     text-align: center;
     position: relative;
@@ -26,3 +25,6 @@ button:hover{
 	cursor: pointer;
 }
 
+tr {
+    border-bottom: 1px solid #ddd;
+}

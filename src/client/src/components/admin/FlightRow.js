@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import './Admin.css';
+import './AdminApp.css';
 
 class FlightRow extends React.Component {
     constructor(props) {
@@ -23,7 +23,7 @@ class FlightRow extends React.Component {
                 <td><Link to={{
                     pathname: "/editFlight",
                     search: `${this.props.data._id}`,
-                }}> Go </Link> </td>
+                }}> <button>Control Flight</button> </Link> </td>
             </tr>
         );
     }
