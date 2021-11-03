@@ -10,12 +10,13 @@ class FlightsTable extends React.Component {
     
     render() {
         let flightRows = this.props.flights.map(
-            flight => <FlightRow id={flight.flight_number} data={flight} />
+            flight => <FlightRow id={flight._id} data={flight} />
         );
+        
         return (
             <table>
                 <tr>
-                    <th>Flight ID</th>
+                    <th>Flight Number</th>
                     <th>From</th>
                     <th>To</th>
                     <th>Departure Time</th>

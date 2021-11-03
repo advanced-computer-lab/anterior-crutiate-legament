@@ -9,7 +9,10 @@ class AddFlight extends React.Component {
             from: '',
             to: '',
             departure_time: '',
-            arrival_time: ''
+            arrival_time: '',
+            economy: 0,
+            business: 0,
+            first: 0
         };
         this.onSubmit = this.onSubmit.bind(this);
         this.onChange = this.onChange.bind(this);
@@ -22,20 +25,26 @@ class AddFlight extends React.Component {
             from: this.state.from,
             to: this.state.to,
             departure_time: this.state.departure_time,
-            arrival_time: this.state.arrival_time
+            arrival_time: this.state.arrival_time,
+            Economy: this.state.economy,
+            Business: this.state.business,
+            First: this.state.first
         };
 
         console.log(flightData);
         
         axios
-        .post('http://localhost:8000/api/adminRouter/adminCreateFlight', flightData)
+        .post('http://localhost:8000/api/admin/adminCreateFlight', flightData)
         .then(res => {
             this.setState({
                 flight_number: '',
                 from: '',
                 to: '',
                 departure_time: '',
-                arrival_time: ''
+                arrival_time: '',
+                economy: 0,
+                business: 0,
+                first: 0
             });
             this.props.history.push('/');
         })
@@ -104,6 +113,39 @@ class AddFlight extends React.Component {
                         name='arrival_time'
                         className='form-control'
                         value={this.state.arrival_time}
+                        onChange={this.onChange}
+                    />
+                </div>
+                <br />
+                <div>
+                    <input
+                        type="number"
+                        placeholder='Economy Class Seats'
+                        name='economy'
+                        className='form-control'
+                        value={this.state.economy}
+                        onChange={this.onChange}
+                    />
+                </div>
+                <br />
+                <div>
+                    <input
+                        type="number"
+                        placeholder='Business Class Seats'
+                        name='business'
+                        className='form-control'
+                        value={this.state.business}
+                        onChange={this.onChange}
+                    />
+                </div>
+                <br />
+                <div>
+                    <input
+                        type="number"
+                        placeholder='First Class Seats'
+                        name='first'
+                        className='form-control'
+                        value={this.state.first}
                         onChange={this.onChange}
                     />
                 </div>

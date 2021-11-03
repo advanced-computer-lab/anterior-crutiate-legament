@@ -5,9 +5,8 @@ var adminRouter = require('./adminRouter');
 
 
 
-apiRouter.use('/adminRouter',adminRouter);
+apiRouter.use('/admin',adminRouter);
 
 
 
 module.exports = apiRouter ;
-
