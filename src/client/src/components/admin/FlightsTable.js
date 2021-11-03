@@ -1,6 +1,8 @@
 import React from 'react';
 import FlightRow from './FlightRow.js'
 
+import './Admin.css';
+
 class FlightsTable extends React.Component {
     constructor(props) {
         super(props);
@@ -8,21 +10,22 @@ class FlightsTable extends React.Component {
     
     render() {
         let flightRows = this.props.flights.map(
-            flight => <FlightRow id={flight.flight_number} props={flight} />
+            flight => <FlightRow id={flight._id} data={flight} />
         );
+        
         return (
             <table>
-                <th>
-                    <td>Flight ID</td>
-                    <td>From</td>
-                    <td>To</td>
-                    <td>Departure Time</td>
-                    <td>Arrival Time</td>
-                    <td>Available Economy Seats</td>
-                    <td>Available Business Seats</td>
-                    <td>Available First Class Seats</td>
-                    <td></td>
-                </th>
+                <tr>
+                    <th>Flight Number</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Departure Time</th>
+                    <th>Arrival Time</th>
+                    <th>Available Economy Seats</th>
+                    <th>Available Business Seats</th>
+                    <th>Available First Class Seats</th>
+                    <th></th>
+                </tr>
                 {flightRows}
             </table>
         );

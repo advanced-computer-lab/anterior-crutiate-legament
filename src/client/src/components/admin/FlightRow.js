@@ -1,7 +1,7 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-import FlightDetails from './FlightDetails';
+import './Admin.css';
 
 class FlightRow extends React.Component {
     constructor(props) {
@@ -9,17 +9,21 @@ class FlightRow extends React.Component {
     }
     
     render() {
+        console.log(this.props.data);
         return (
             <tr>
-                <td>{this.props.flight_number}</td>
-                <td>{this.props.from}</td>
-                <td>{this.props.to}</td>
-                <td>{this.props.departure_time}</td>
-                <td>{this.props.arrival_time}</td>
-                <td>{this.props.capin.Economy}</td>
-                <td>{this.props.capin.Business}</td>
-                <td>{this.props.capin.First}</td>
-                <td>{/* Link here */}</td>
+                <td>{this.props.data.flight_number}</td>
+                <td>{this.props.data.from}</td>
+                <td>{this.props.data.to}</td>
+                <td>{this.props.data.departure_time}</td>
+                <td>{this.props.data.arrival_time}</td>
+                <td>{this.props.data.Economy}</td>
+                <td>{this.props.data.Business}</td>
+                <td>{this.props.data.First}</td>
+                <td><Link to={{
+                    pathname: "/editFlight",
+                    search: `${this.props.data._id}`,
+                }}> Go </Link> </td>
             </tr>
         );
     }
