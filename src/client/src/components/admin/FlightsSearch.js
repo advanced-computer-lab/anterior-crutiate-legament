@@ -17,14 +17,25 @@ class FlightsSearch extends React.Component {
 
     onSubmit(e) {
         e.preventDefault();
-        const flightData = {
-            flight_number: this.state.flight_number,
-            from: this.state.from,
-            to: this.state.to,
-            departure_time: this.state.departure_time,
-            arrival_time: this.state.arrival_time
-        };
-       this.props.displayFlights(flightData);
+        const flightData = {};
+        if(this.state.flight_number != '')
+            flightData.flight_number = this.state.flight_number;
+        if(this.state.from != '')
+            flightData.from = this.state.from;
+        if(this.state.to != '')
+            flightData.to = this.state.to;
+        if(this.state.departure_time != '')
+            flightData.departure_time = this.state.departure_time;
+        if(this.state.arrival_time != '')
+            flightData.arrival_time = this.state.arrival_time;
+        this.props.displayFlights(flightData);
+        this.setState({
+            flight_number: '',
+            from: '',
+            to: '',
+            departure_time: '',
+            arrival_time: '',
+        });
     }
 
     onChange(e) {

@@ -20,6 +20,7 @@ class AdminApp extends React.Component {
     }
 
     displayFlights(searchTerms) {
+        console.log(searchTerms);
         axios
         .get('http://localhost:8000/api/admin/adminSearchFlights', {
             body: {
@@ -42,7 +43,8 @@ class AdminApp extends React.Component {
 
     render() {
         return (
-                <FlightsTable flights={this.state.flightsDetails}/>
+            <div>
+                <FlightsTable flights={this.state.flightsDetails} />
                 <br />
                 <FlightsSearch displayFlights={this.displayFlights}/>
                 <br />
