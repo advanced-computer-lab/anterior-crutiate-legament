@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import FlightsTable from './FlightsTable.js';
 import FlightsSearch from './FlightsSearch.js';
-import './AdminApp.css';
+
 
 class AdminApp extends React.Component {
     constructor(props) {

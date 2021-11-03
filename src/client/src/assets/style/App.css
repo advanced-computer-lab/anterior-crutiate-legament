@@ -1,5 +1,17 @@
-body.maincontainer {
-	background: url(../../res/background.png);
+@import "tables.css";
+
+body {
+	background: url(../images/background.png);
+}
+
+.home-page {
+	height: auto;
+    text-align: center;
+    position: relative;
+}
+
+.admin-home-page {
+    background: #fff;
 	height: auto;
     text-align: center;
     position: relative;
@@ -22,7 +34,7 @@ button {
 	margin-bottom: 50px;
 	box-shadow: 0 3px 20px 0 #0000003b;
 }
+
 button:hover{
 	cursor: pointer;
 }
-

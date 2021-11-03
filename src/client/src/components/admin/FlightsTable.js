@@ -1,8 +1,6 @@
 import React from 'react';
 import FlightRow from './FlightRow.js'
 
-import './AdminApp.css';
-
 class FlightsTable extends React.Component {
     constructor(props) {
         super(props);

@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import './AdminApp.css';
 
 class FlightRow extends React.Component {
     constructor(props) {
