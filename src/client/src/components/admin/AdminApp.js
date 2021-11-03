@@ -42,7 +42,6 @@ class AdminApp extends React.Component {
 
     render() {
         return (
-            <div>
                 <FlightsTable flights={this.state.flightsDetails}/>
                 <br />
                 <FlightsSearch displayFlights={this.displayFlights}/>
