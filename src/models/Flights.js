@@ -42,24 +42,8 @@ const flightSchema = new Schema ({
         type: Date,
         required: true
     },
-    Economy:{
-        type: Number,
-        default:0,
-        min:0,
-        required: true
-    },
-    Business:{
-        type: Number,
-        default:0,
-        min: 0,
-        required: true
-    },
-    First:{
-        type: Number,
-        default:0,
-        min:0,
-        required: true
-    }
+    
+    capin: capinSchema
 },
 { 
     timestamps: true 
@@ -70,31 +54,7 @@ const flightSchema = new Schema ({
 
 flightSchema.methods.searchFlights = async requestBody => {
     let results ;
-    if(requestBody.constructor === Object && Object.keys(requestBody).length === 0) {   
-        results = await Flights.find({}); 
-    } else if (requestBody._id) {                              //if searching is done by _id >>> it is unique               
-        results = await Flights.find({_id: requestBody._id});
-    } else {
-        let query = [] ;
-        if(requestBody.flight_number) {
-            query.push({flight_number:requestBody.flight_number}); 
-        }
-        if(requestBody.from) {
-            query.push({from:requestBody.from}); 
-        }
-        if(req.body.to) {
-            query.push({to:requestBody.to}) ; 
-        }
-        if(requestBody.departure_time) {
-            query.push({departure_time:{$gte:requestBody.departure_time}}) ;
-        }
-        if(requestBody.arrival_time) {
-            query.push({departure_time:{$lte:requestBody.arrival_time}}) ;
-        }
-        results = await Flights.find({$and:query});
-    }
-
-    let results ;
+ 
     if(requestBody.constructor === Object && Object.keys(requestBody).length === 0){   
         results = await Flights.find({}); 
     }
@@ -106,7 +66,7 @@ flightSchema.methods.searchFlights = async requestBody => {
         if(requestBody.from){
             query.push({from:requestBody.from}); 
         }
-        if(req.body.to){
+        if(requestBody.to){
             query.push({to:requestBody.to}) ; 
         }
         if(requestBody.departure_time){
@@ -115,10 +75,10 @@ flightSchema.methods.searchFlights = async requestBody => {
         if(requestBody.arrival_time){
             query.push({departure_time:{$lte:requestBody.arrival_time}}) ;
         }
+        console.log(query) ;
         results = await Flights.find({$and:query});
       
     }   
-    console.log(results) ;
     return results ;
 }
 

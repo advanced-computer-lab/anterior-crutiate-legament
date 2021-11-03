@@ -10,7 +10,6 @@ adminRouter.route('/adminSearchFlights')
 .get(async(req,res,next)=>{
     let results = await Flights.searchFlights(req.body) ;
     res.setHeader('Content-Type', 'application/json');
-    res.send(results);
     res.end(JSON.stringify(results));
 })
 .all((req,res,next)=>{
