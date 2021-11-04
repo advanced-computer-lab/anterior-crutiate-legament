@@ -8,7 +8,6 @@ class FlightRow extends React.Component {
     }
     
     render() {
-        console.log(this.props.data);
         return (
             <tr>
                 <td>{this.props.data.flight_number}</td>
@@ -19,10 +18,14 @@ class FlightRow extends React.Component {
                 <td>{this.props.data.Economy}</td>
                 <td>{this.props.data.Business}</td>
                 <td>{this.props.data.First}</td>
-                <td><Link to={{
-                    pathname: "/editFlight",
-                    search: `${this.props.data._id}`,
-                }}> <button>Control Flight</button> </Link> </td>
+                <td>
+                    <Link to={{
+                        pathname: "/editFlight",
+                        search: `${this.props.data._id}`,
+                    }}>
+                        <button className="edit-flight-button">Edit</button>
+                    </Link>
+                </td>
             </tr>
         );
     }

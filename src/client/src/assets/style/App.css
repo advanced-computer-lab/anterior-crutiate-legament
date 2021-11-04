@@ -1,37 +1,21 @@
+/* general styling */
 @import "tables.css";
 
-body {
-	background: url(../images/background.png);
-}
-
-.home-page {
-	height: auto;
-    text-align: center;
-    position: relative;
-}
-
-.admin-home-page {
-    background: #fff;
-	height: auto;
-    text-align: center;
-    position: relative;
-}
+/* specific page styling */
+@import "admin.css";
+@import "home.css";
 
 h1 {
 	font-family: 'Dancing Script', cursive;
-	font-size: 80px;
-	margin-bottom: 30px;
-    color:white;
 }
 
 button {
 	border: none;
 	outline: none;
-	padding: 10px 20px;
+	padding: 10px 15px;
 	border-radius: 50px;
 	color: #333;
 	background: #fff;
-	margin-bottom: 50px;
 	box-shadow: 0 3px 20px 0 #0000003b;
 }
 

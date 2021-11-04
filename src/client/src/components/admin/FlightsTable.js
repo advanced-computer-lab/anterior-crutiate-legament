@@ -12,7 +12,7 @@ class FlightsTable extends React.Component {
         );
         
         return (
-            <table>
+            <table className="admin-flights-table">
                 <tr>
                     <th>Flight Number</th>
                     <th>From</th>

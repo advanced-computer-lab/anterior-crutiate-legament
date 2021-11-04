@@ -1,24 +1,22 @@
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-
-}
-
 th {
     background-color: #04AA6D;
     color: white;
     border-bottom: 1px solid #ddd;
 }
 
-td {
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
 
+td {
+    height: fit-content;
+    width: fit-content;
+    vertical-align: middle;
+    text-align: center;
 }
 
 th, td {
-    padding: 15px;
-    text-align: left;
+    padding: 10px;
     border-bottom: 1px solid #ddd;
 }
-
 

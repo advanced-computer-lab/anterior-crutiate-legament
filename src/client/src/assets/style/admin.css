@@ -1,0 +1,20 @@
+.admin-home-page-container {
+    background: #fff;
+}
+
+.admin-add-flight-button-container {
+    float: right;
+    margin-right:150px;
+}
+
+.admin-flights-table-text {
+    margin-left: 125px;
+}
+
+.admin-flights-table-container {
+    overflow-x:auto;
+    padding: 50px;
+    padding-top: 0px;
+    margin: 75px;
+    margin-top: 40px;
+}

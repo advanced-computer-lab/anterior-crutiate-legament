@@ -43,12 +43,21 @@ class AdminApp extends React.Component {
 
     render() {
         return (
-            <div className = "admin-home-page">
-                <FlightsTable flights={this.state.flightsDetails} />
-                <br />
-                <FlightsSearch displayFlights={this.displayFlights}/>
-                <br />
-                <Link to="/addFlight">Add Flight</Link>
+            <div className="admin-home-page-container">
+                <div className="admin-add-flight-button-container">
+                    <Link to="/addFlight">
+                        <button className="add-flights-button">Add Flight</button>
+                    </Link>
+                </div>
+                <div className="admin-flights-table-text">
+                    <h1>Flights Table</h1>
+                </div>
+                <div className="admin-flights-table-container">
+                    <FlightsTable flights={this.state.flightsDetails} />
+                </div>
+                <div className="admin-flights-search-container">
+                    <FlightsSearch displayFlights={this.displayFlights}/>
+                </div>
             </div>
         );
     }

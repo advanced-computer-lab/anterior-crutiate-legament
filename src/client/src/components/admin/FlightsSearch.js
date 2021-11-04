@@ -13,6 +13,7 @@ class FlightsSearch extends React.Component {
         };
         this.onSubmit = this.onSubmit.bind(this);
         this.onChange = this.onChange.bind(this);
+        this.clearFields = this.clearFields.bind(this);
     }
 
     onSubmit(e) {
@@ -41,6 +42,16 @@ class FlightsSearch extends React.Component {
     onChange(e) {
         this.setState({
             [e.target.name]: e.target.value
+        });
+    }
+
+    clearFields() {
+        this.setState({
+            flight_number: '',
+            from: '',
+            to: '',
+            departure_time: '',
+            arrival_time: '',
         });
     }
 
@@ -107,7 +118,7 @@ class FlightsSearch extends React.Component {
                 <br />
             </form>
             <br/>
-            <a href="http://localhost:3000/admin/">  
+            <a onClick={this.clearFields}>  
                 <button>CLEAR ALL FILTERS</button>  
             </a>
             </div>
