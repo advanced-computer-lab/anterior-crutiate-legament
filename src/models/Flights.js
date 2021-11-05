@@ -2,25 +2,6 @@ const mongoose = require('mongoose') ;
 const Schema = mongoose.Schema ;
 
 
-const capinSchema = new Schema({
-    Economy:{
-        type: Number,
-        default:0,
-        min:0
-    },
-    Business:{
-        type: Number,
-        default:0,
-        min: 0 
-    },
-    First:{
-        type: Number,
-        default:0,
-        min:0 
-    },
-    
-});
-
 const flightSchema = new Schema ({
     flight_number:{
         type: String,
@@ -42,8 +23,21 @@ const flightSchema = new Schema ({
         type: Date,
         required: true
     },
-    
-    capin: capinSchema
+    Economy:{
+        type: Number,
+        default:0,
+        min:0,
+    },
+    Business:{
+        type: Number,
+        default:0,
+        min: 0,
+    },
+    First:{
+        type: Number,
+        default:0,
+        min:0,
+    }
 },
 { 
     timestamps: true 
@@ -52,35 +46,34 @@ const flightSchema = new Schema ({
 
 
 
-flightSchema.methods.searchFlights = async requestBody => {
-    let results ;
- 
-    if(requestBody.constructor === Object && Object.keys(requestBody).length === 0){   
-        results = await Flights.find({}); 
+flightSchema.methods.searchFlights = async searchFilters => {
+
+    if(Object.keys(searchFilters).length === 0) {   
+        return await Flights.find({}); 
+    } 
+    else if (searchFilters._id) {                              //if searching is done by _id >>> it is unique               
+        return await Flights.find({_id: searchFilters._id});
     }
-       else if(requestBody.flight_number){                              //if searching is done by flight number >>> it is unique               
-        results = await Flights.find({flight_number: requestBody.flight_number});
-    }
-    else{
+    else {
         let query = [] ;
-        if(requestBody.from){
-            query.push({from:requestBody.from}); 
+        if(searchFilters.flight_number) {
+            query.push({flight_number:searchFilters.flight_number}); 
         }
-        if(requestBody.to){
-            query.push({to:requestBody.to}) ; 
+        if(searchFilters.from) {
+            query.push({from:searchFilters.from}); 
         }
-        if(requestBody.departure_time){
-            query.push({departure_time:{$gte:requestBody.departure_time}}) ;
+        if(searchFilters.to) {
+            query.push({to:searchFilters.to}) ; 
         }
-        if(requestBody.arrival_time){
-            query.push({departure_time:{$lte:requestBody.arrival_time}}) ;
+        if(searchFilters.departure_time) {
+            query.push({departure_time:{$gte:searchFilters.departure_time}}) ;
         }
-        console.log(query) ;
-        results = await Flights.find({$and:query});
-      
-    }   
-    return results ;
-}
+        if(searchFilters.arrival_time) {
+            query.push({departure_time:{$lte:searchFilters.arrival_time}}) ;
+        }
+        return  await Flights.find({$and:query});
+    }
+ }
 
 flightSchema.methods.createFlight = async requestBody => {
     return await Flights.create(requestBody);
