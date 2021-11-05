@@ -26,17 +26,17 @@ const flightSchema = new Schema ({
     Economy:{
         type: Number,
         default:0,
-        min:0,
+        min:0
     },
     Business:{
         type: Number,
         default:0,
-        min: 0,
+        min: 0
     },
     First:{
         type: Number,
         default:0,
-        min:0,
+        min:0
     }
 },
 { 
