@@ -45,10 +45,10 @@ const flightSchema = new Schema ({
 
 
 flightSchema.methods.searchFlights = async searchFilters => {
-    if(Object.keys(searchFilters).length === 0) {  
+    if(Object.keys(searchFilters).length === 0) {   
         return await Flights.find({}); 
     } 
-    else if (searchFilters._id) {                                  //if searching is done by _id >>> it is unique               
+    else if (searchFilters._id) {                              //if searching is done by _id >>> it is unique               
         return await Flights.find({_id: searchFilters._id});
     }
     else {
