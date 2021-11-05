@@ -44,10 +44,7 @@ const flightSchema = new Schema ({
 });
 
 
-
-
 flightSchema.methods.searchFlights = async searchFilters => {
-
     if(Object.keys(searchFilters).length === 0) {   
         return await Flights.find({}); 
     } 
@@ -71,7 +68,7 @@ flightSchema.methods.searchFlights = async searchFilters => {
         if(searchFilters.arrival_time) {
             query.push({departure_time:{$lte:searchFilters.arrival_time}}) ;
         }
-        return  await Flights.find({$and:query});
+        return await Flights.find({$and:query});
     }
  }
 

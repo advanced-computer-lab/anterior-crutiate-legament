@@ -1,0 +1,12 @@
+.home-page {
+	background: url(../images/background.png);
+	position: absolute;
+    top: 0; right: 0; bottom: 0; left: 0;
+	text-align: center;
+}
+
+h1.home-page {
+    color:white;
+    font-size: 80px;
+	margin-bottom: 30px;
+}

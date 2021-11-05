@@ -30,8 +30,6 @@ class AddFlight extends React.Component {
             Business: this.state.business,
             First: this.state.first
         };
-
-        console.log(flightData);
         
         axios
         .post('http://localhost:8000/api/admin/adminCreateFlight', flightData)

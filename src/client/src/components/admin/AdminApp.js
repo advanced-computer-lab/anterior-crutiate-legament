@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import FlightsTable from './FlightsTable.js';
 import FlightsSearch from './FlightsSearch.js';
-import './Admin.css';
+
 
 class AdminApp extends React.Component {
     constructor(props) {
@@ -20,17 +20,9 @@ class AdminApp extends React.Component {
     }
 
     displayFlights(searchTerms) {
-        console.log(searchTerms);
+        let encodedSearchTerms = encodeURIComponent(JSON.stringify(searchTerms));
         axios
-        .get('http://localhost:8000/api/admin/adminSearchFlights', {
-            body: {
-                flight_number: searchTerms.flight_number,
-                from: searchTerms.from,
-                to: searchTerms.to,
-                departure_time: searchTerms.departure_time,
-                arrival_time: searchTerms.arrival_time
-            }
-        })
+        .get(`http://localhost:8000/api/admin/adminSearchFlights?searchFilters=${encodedSearchTerms}`)
         .then(res => {
             this.setState({
                 flightsDetails: res.data
@@ -43,12 +35,21 @@ class AdminApp extends React.Component {
 
     render() {
         return (
-            <div>
-                <FlightsTable flights={this.state.flightsDetails} />
-                <br />
-                <FlightsSearch displayFlights={this.displayFlights}/>
-                <br />
-                <Link to="/addFlight">Add Flight</Link>
+            <div className="admin-home-page-container">
+                <div className="admin-add-flight-button-container">
+                    <Link to="/addFlight">
+                        <button className="add-flights-button">Add Flight</button>
+                    </Link>
+                </div>
+                <div className="admin-flights-table-text">
+                    <h1>Flights Table</h1>
+                </div>
+                <div className="admin-flights-table-container">
+                    <FlightsTable flights={this.state.flightsDetails} />
+                </div>
+                <div className="admin-flights-search-container">
+                    <FlightsSearch displayFlights={this.displayFlights}/>
+                </div>
             </div>
         );
     }
