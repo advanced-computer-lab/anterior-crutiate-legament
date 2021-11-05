@@ -20,17 +20,9 @@ class AdminApp extends React.Component {
     }
 
     displayFlights(searchTerms) {
-        console.log(searchTerms);
+        let encodedSearchTerms = encodeURIComponent(JSON.stringify(searchTerms));
         axios
-        .get('http://localhost:8000/api/admin/adminSearchFlights', {
-            body: {
-                flight_number: searchTerms.flight_number,
-                from: searchTerms.from,
-                to: searchTerms.to,
-                departure_time: searchTerms.departure_time,
-                arrival_time: searchTerms.arrival_time
-            }
-        })
+        .get(`http://localhost:8000/api/admin/adminSearchFlights?searchFilters=${encodedSearchTerms}`)
         .then(res => {
             this.setState({
                 flightsDetails: res.data
