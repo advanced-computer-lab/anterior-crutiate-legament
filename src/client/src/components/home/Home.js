@@ -10,7 +10,7 @@ class Home extends React.Component {
     return (
      <div className="home-page">
        <div className="home-page-components">
-          <h1>Greatest Unique Country Airlines</h1>
+          <h1 className="website-title">Greatest Unique Country Airlines</h1>
           <a href="http://localhost:3000/admin/">  
             <button>Admin Login</button>  
           </a>
