@@ -4,17 +4,56 @@
 
 .admin-add-flight-button-container {
     float: right;
-    margin-right:150px;
+    margin-right:10%;
+}
+
+.welcone-admin-text {
+    margin-left: 10%;
+}
+
+.admin-logout-text {
+    float: right;
+    margin-right: 11%;
+}
+
+.add-flight-back-text {
+    float: right;
+    margin-right: 11%;
 }
 
 .admin-flights-table-text {
-    margin-left: 125px;
+    margin-left: 10%;
+}
+
+.admin-flights-search-text {
+    margin-left: 10%;
+}
+
+.add-flight-text {
+    margin-left: 2%;
 }
 
 .admin-flights-table-container {
     overflow-x:auto;
-    padding: 50px;
-    padding-top: 0px;
-    margin: 75px;
-    margin-top: 40px;
+    padding: 5%;
+    padding-top: 0%;
+    padding-bottom: 1%;
+    margin: 5%;
+    margin-top: 2.5%;
+    margin-bottom: 0%;
+}
+
+.admin-flights-search-container {
+    padding: 5%;
+    padding-top: 0%;
+    margin: 5%;
+    margin-top: 2.5%;
+}
+
+.search-input {
+    margin: 2% 2% 2% 2%;
+}
+
+.add-flight-input {
+    margin: 2% 2% 2% 2%;
 }

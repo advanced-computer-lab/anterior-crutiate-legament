@@ -11,12 +11,10 @@ class App extends React.Component {
   render() {
     return (
       <Router>
-        <div>
           <Route exact path='/' component={Home} />
-          <Route path='/admin/' component={AdminApp} />
-          <Route path='/addFlight' component={AddFlight} />
-          <Route path='/editFlight' component={EditFlight} />
-        </div>
+          <Route exact path='/admin' component={AdminApp} />
+          <Route exact path='/admin/addFlight' component={AddFlight} />
+          <Route exact path='/admin/editFlight' component={EditFlight} />
       </Router>
     );
   }

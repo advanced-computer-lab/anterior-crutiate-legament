@@ -20,7 +20,7 @@ class FlightRow extends React.Component {
                 <td>{this.props.data.First}</td>
                 <td>
                     <Link to={{
-                        pathname: "/editFlight",
+                        pathname: "/admin/editFlight",
                         search: `${this.props.data._id}`,
                     }}>
                         <button className="edit-flight-button">Edit</button>
