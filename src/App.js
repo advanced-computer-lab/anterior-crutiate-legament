@@ -4,7 +4,7 @@ const logger = require('morgan');
 const bodyParser = require("body-parser") ;
 
 
-const uri = "mongodb://acl:zIwVuZCX6yZT1etC@cluster0-shard-00-00.0ipj2.mongodb.net:27017,cluster0-shard-00-01.0ipj2.mongodb.net:27017,cluster0-shard-00-02.0ipj2.mongodb.net:27017/myFirstDatabase?ssl=true&replicaSet=atlas-c97c0j-shard-0&authSource=admin&retryWrites=true&w=majority";
+const uri="mongodb+srv://MahmoudJobeel:jobeel@cluster0.isboy.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 
 var app = express() ;
 const API = require('./routes/api');
