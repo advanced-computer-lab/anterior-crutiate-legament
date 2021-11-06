@@ -10,9 +10,9 @@ class AddFlight extends React.Component {
             to: '',
             departure_time: '',
             arrival_time: '',
-            economy: 0,
-            business: 0,
-            first: 0
+            economy: '',
+            business: '',
+            first: ''
         };
         this.onSubmit = this.onSubmit.bind(this);
         this.onChange = this.onChange.bind(this);
@@ -30,8 +30,6 @@ class AddFlight extends React.Component {
             Business: this.state.business,
             First: this.state.first
         };
-
-        console.log(flightData);
         
         axios
         .post('http://localhost:8000/api/admin/adminCreateFlight', flightData)
@@ -42,11 +40,12 @@ class AddFlight extends React.Component {
                 to: '',
                 departure_time: '',
                 arrival_time: '',
-                economy: 0,
-                business: 0,
-                first: 0
+                economy: '',
+                business: '',
+                first: ''
             });
             this.props.history.push('/');
+            window.location = "/admin"
         })
         .catch(err => {
             console.log("Error in adding a flight to the database!");
@@ -61,97 +60,86 @@ class AddFlight extends React.Component {
 
     render() {
         return (
-            <form onSubmit={this.onSubmit}>
-                <div>
+            <div>
+                <div className="add-flight-back-text">
+                    <a href="/admin">Check Flights</a>
+                </div>
+                <form onSubmit={this.onSubmit}>
+                    <h1 className="add-flight-text">Create a new flight</h1>
+                    <p className="add-flight-text">Enter the flight details</p>
                     <input
                         type='text'
                         placeholder='Flight Number'
                         name='flight_number'
-                        className='form-control'
+                        className='add-flight-input'
                         value={this.state.flight_number}
                         onChange={this.onChange}
                     />
-                </div>
-                <br />
-                <div>
+                    <br />
                     <input
                         type='text'
                         placeholder='From'
                         name='from'
-                        className='form-control'
+                        className='add-flight-input'
                         value={this.state.from}
                         onChange={this.onChange}
                     />
-                </div>
-                <br />
-                <div>
                     <input
                         type='text'
                         placeholder='To'
                         name='to'
-                        className='form-control'
+                        className='add-flight-input'
                         value={this.state.to}
                         onChange={this.onChange}
                     />
-                </div>
-                <br />
-                <div>
+                    <p className='add-flight-input'>Departure Time &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Arrival Time</p>
                     <input
                         type="datetime-local"
                         placeholder='Departure Time'
                         name='departure_time'
-                        className='form-control'
+                        className='add-flight-input'
                         value={this.state.departure_time}
                         onChange={this.onChange}
                     />
-                </div>
-                <br />
-                <div>
                     <input
                         type="datetime-local"
                         placeholder='Arrival Time'
                         name='arrival_time'
-                        className='form-control'
+                        className='add-flight-input'
                         value={this.state.arrival_time}
                         onChange={this.onChange}
                     />
-                </div>
-                <br />
-                <div>
+                    <br />
                     <input
                         type="number"
                         placeholder='Economy Class Seats'
                         name='economy'
-                        className='form-control'
+                        className='add-flight-input'
                         value={this.state.economy}
                         onChange={this.onChange}
                     />
-                </div>
-                <br />
-                <div>
                     <input
                         type="number"
                         placeholder='Business Class Seats'
                         name='business'
-                        className='form-control'
+                        className='add-flight-input'
                         value={this.state.business}
                         onChange={this.onChange}
                     />
-                </div>
-                <br />
-                <div>
                     <input
                         type="number"
                         placeholder='First Class Seats'
                         name='first'
-                        className='form-control'
+                        className='add-flight-input'
                         value={this.state.first}
                         onChange={this.onChange}
                     />
-                </div>
-                <br />
-                <input type="submit" />
-            </form>
+                    <br />
+                    <button className='add-flight-input' type="submit">Add Flight</button>
+                </form>
+            </div>
         );
     }
 }

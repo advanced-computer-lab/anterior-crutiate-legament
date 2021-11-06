@@ -1,10 +1,10 @@
 const express = require('express') ;
 const mongoose = require('mongoose') ;
+require('dotenv').config()
 const logger = require('morgan');
 const bodyParser = require("body-parser") ;
 
-
-const uri="mongodb+srv://MahmoudJobeel:jobeel@cluster0.isboy.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const uri = process.env.DB_CONNECTION_STRING;
 
 var app = express() ;
 const API = require('./routes/api');

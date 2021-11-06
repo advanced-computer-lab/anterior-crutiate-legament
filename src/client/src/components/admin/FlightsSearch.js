@@ -13,6 +13,7 @@ class FlightsSearch extends React.Component {
         };
         this.onSubmit = this.onSubmit.bind(this);
         this.onChange = this.onChange.bind(this);
+        this.clearFields = this.clearFields.bind(this);
     }
 
     onSubmit(e) {
@@ -44,72 +45,70 @@ class FlightsSearch extends React.Component {
         });
     }
 
+    clearFields() {
+        this.setState({
+            flight_number: '',
+            from: '',
+            to: '',
+            departure_time: '',
+            arrival_time: '',
+        });
+    }
+
     render() {
         return (
             <div>
-            <form onSubmit={this.onSubmit}>
-                <div>
+                <form onSubmit={this.onSubmit}>
                     <input
                         type='search'
                         placeholder='Flight Number'
                         name='flight_number'
-                        className='form-control'
+                        className='search-input'
                         value={this.state.flight_number}
                         onChange={this.onChange}
                     />
-                </div>
-                <br />
-                <div>
-                    <input
+                    <br />
+                    <input 
                         type='search'
                         placeholder='From'
                         name='from'
-                        className='form-control'
+                        className='search-input'
                         value={this.state.from}
                         onChange={this.onChange}
                     />
-                </div>
-                <br />
-                <div>
                     <input
                         type='search'
                         placeholder='To'
                         name='to'
-                        className='form-control'
+                        className='search-input'
                         value={this.state.to}
                         onChange={this.onChange}
                     />
-                </div>
-                <br />
-                <div>
+                    <p className='add-flight-input'>Departure Time &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Arrival Time</p>
                     <input
                         type="datetime-local"
                         placeholder='Departure Time'
                         name='departure_time'
-                        className='form-control'
+                        className='search-input'
                         value={this.state.departure_time}
                         onChange={this.onChange}
                     />
-                </div>
-                <br />
-                <div>
                     <input
                         type="datetime-local"
                         placeholder='Arrival Time'
                         name='arrival_time'
-                        className='form-control'
+                        className='search-input'
                         value={this.state.arrival_time}
                         onChange={this.onChange}
                     />
-                </div>
-                <br />
-                <input type="submit" />
-                <br />
-            </form>
-            <br/>
-            <a href="http://localhost:3000/admin/">  
-                <button>CLEAR ALL FILTERS</button>  
-            </a>
+                    <br />
+                    <button className='search-input' type="submit">Submit</button>
+                    <a onClick={this.clearFields}>  
+                        <button className='search-input'>CLEAR ALL FILTERS</button>  
+                    </a>
+                </form>
             </div>
         );
     }
