@@ -4,6 +4,37 @@ var adminRouter = express.Router () ;
 const Flights = new require('../models/Flights')() ;
 
 
+
+// delete Flight record by its mongoDB id
+adminRouter.route('/adminDeleteFlight')
+.delete(async (req,res,next)=>{
+   // console.log(req);
+    var result =  await Flights.deleteFlight(req.body._id);
+    if(result){
+        res.send("Flight deleted successfully");
+    }else{
+        res.send("There's no such flight");
+    }
+})
+.all((req,res,next)=>{
+    res.statusCode = 403;
+    res.end('operation not supported');
+});
+
+
+// update flight information
+
+adminRouter.route('/adminUpdateFlight')
+.put(async (req,res,next)=>{
+    await Flights.updateFlight(req.body);
+    res.end("Flight Updated");
+})
+.all((req,res,next)=>{
+    res.statusCode = 403;
+    res.end('operation not supported');
+});
+
+
 //get all flights in the database, if there is no filter (empty body) ... to be modified later if the database got big to return a query results with reasonable number.
 //get the all flights having some search filters
 adminRouter.route('/adminSearchFlights')
