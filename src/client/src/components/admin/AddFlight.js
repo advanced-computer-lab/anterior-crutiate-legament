@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import { now } from 'mongoose';
 
 class AddFlight extends React.Component {
     constructor(props) {
@@ -30,26 +31,33 @@ class AddFlight extends React.Component {
             Business: this.state.business,
             First: this.state.first
         };
-        
-        axios
-        .post('http://localhost:8000/api/admin/adminCreateFlight', flightData)
-        .then(res => {
-            this.setState({
-                flight_number: '',
-                from: '',
-                to: '',
-                departure_time: '',
-                arrival_time: '',
-                economy: '',
-                business: '',
-                first: ''
+
+        const departure_time = new Date(flightData.departure_time);
+        const arrival_time = new Date(flightData.arrival_time) ;
+        if(departure_time.getTime()<new Date().getTime() || departure_time.getTime()>arrival_time.getTime()){
+            this.setState({error:"Error: enter valid data and try again!"}) ;    
+        }   
+        else{
+            axios
+            .post('http://localhost:8000/api/admin/adminCreateFlight', flightData)
+            .then(res => {
+                this.setState({
+                    flight_number: '',
+                    from: '',
+                    to: '',
+                    departure_time: '',
+                    arrival_time: '',
+                    economy: '',
+                    business: '',
+                    first: ''
+                });
+                this.props.history.push('/');
+                window.location = "/admin"
+            })
+            .catch(err => {
+                console.log("Error in adding a flight to the database!");
             });
-            this.props.history.push('/');
-            window.location = "/admin"
-        })
-        .catch(err => {
-            console.log("Error in adding a flight to the database!");
-        });
+        }
     }
 
     onChange(e) {
@@ -139,6 +147,12 @@ class AddFlight extends React.Component {
                     <br />
                     <button className='add-flight-input' type="submit">Add Flight</button>
                 </form>
+
+                <h1>
+                    {
+                        this.state.error
+                    }
+                </h1>
             </div>
         );
     }

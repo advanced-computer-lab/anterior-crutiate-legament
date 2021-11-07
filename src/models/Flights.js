@@ -8,11 +8,6 @@ const flightSchema = new Schema ({
         type: String,
         required: true,
     },
-    PType:{
-        type: String,
-        enum : ["Boeing","Airbus","Safran","Raytheon"],
-        default:"Boeing"
-    },
     from: {
         type: String,
         required : true,
@@ -33,38 +28,17 @@ const flightSchema = new Schema ({
     },
     Economy:{
         type: Number,
-        default: function() {
-            switch (this.PType){
-                case "Boeing": return 70;
-                case "Airbus": return 80;
-                case "Safran": return 90;
-                case "Raytheon": return 100;
-            }
-        },
+        default: 0,
         min:0
     },
     Business:{
         type: Number,
-        default:function() {
-            switch (this.PType){
-                case "Boeing": return 40;
-                case "Airbus": return 30;
-                case "Safran": return 40;
-                case "Raytheon": return 10;
-            }
-        },
+        default: 0,
         min: 0
     },
     First:{
         type: Number,
-        default:function() {
-            switch (this.PType){
-                case "Boeing": return 20;
-                case "Airbus": return 15;
-                case "Safran": return 10;
-                case "Raytheon": return 5;
-            }
-        },
+        default: 0,
         min:0
     },
 },

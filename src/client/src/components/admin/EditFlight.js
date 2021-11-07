@@ -30,10 +30,18 @@ class EditFlight extends React.Component {
             showDeletePopUp : false
         };
     }
+
+
     sendEditRequest =  async (event) => {
         event.preventDefault()
+        const departure_time = new Date(this.state.flight.departure_time);
+        const arrival_time = new Date(this.state.flight.arrival_time) ;
+        if(departure_time.getTime()<new Date().getTime() || departure_time.getTime()>arrival_time.getTime()){
+            this.setState({error:"Error: enter valid data and try again!"}) ;    
+        }   
+        else{
         let endpoint = `http://localhost:8000/api/admin/adminUpdateFlight`
-        await axios.put(endpoint, this.state.flight)
+        await axios.put(endpoint, this.state.flight)}
     }
     deleteFlight = async (event) => {
         event.preventDefault()
@@ -86,11 +94,11 @@ class EditFlight extends React.Component {
                     <br></br>
 
                     <label>Departure time: </label>
-                    <input type="date" defaultValue={this.state.flight.departure_time} onChange={this.set("departure_time")}></input>
+                    <input type="datetime-local" defaultValue={this.state.flight.departure_time} onChange={this.set("departure_time")}></input>
                     <br></br>
 
                     <label>Arrival time: </label>
-                    <input type="date" defaultValue={this.state.flight.arrival_time} onChange={this.set("arrival_time")}></input>
+                    <input type="datetime-local" defaultValue={this.state.flight.arrival_time} onChange={this.set("arrival_time")}></input>
                     <br></br>
 
                     <label>Economy seats: </label>
@@ -107,6 +115,11 @@ class EditFlight extends React.Component {
                     <input type="submit" value="Save"></input>
                 </form>
                 <button onClick={() => {this.setState({showDeletePopUp : true}); console.log(this.state.showDeletePopUp)}}>Delete</button>
+                <h1>
+                    {
+                        this.state.error
+                    }
+                </h1>
             </div>
         );
     }

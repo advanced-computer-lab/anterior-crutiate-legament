@@ -1,1 +1,0 @@
-DB_CONNECTION_STRING=mongodb+srv://acl:acl@cluster0.0ipj2.mongodb.net/AirflightsSystem?retryWrites=true&w=majority

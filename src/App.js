@@ -4,7 +4,7 @@ require('dotenv').config()
 const logger = require('morgan');
 const bodyParser = require("body-parser") ;
 
-const uri = "mongodb+srv://acl:acl@cluster0.0ipj2.mongodb.net/AirflightsSystem?retryWrites=true&w=majority";
+const uri = process.env.DB_CONNECTION_STRING;
 
 var app = express() ;
 const API = require('./routes/api');
