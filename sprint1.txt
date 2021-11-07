@@ -1,0 +1,34 @@
+Team Members :
+
+    1- Omar Tarek 46-9578 T-14
+    2- Mohamed Shetaya 46-16076 T-16
+    3- Mahmoud Jobeel 46-18406 T-13
+    4- Yahia Sherif 46-16162 T-18
+    5- Abdelrahman Khater 46-18829 T-18
+
+----------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------
+
+Team Tasks :
+
+Frontend :
+    1- Omar Tarek : 
+        - Display flights 
+        - Add flights
+    2- Abdelrahman Khater
+        - Home page 
+        - Search flights
+    3- Yahia Sherif
+        - Edit flights
+        - Delete flights
+
+Backend :
+    1- Mohamed Shetaya  
+        - Database model
+        - Search flights
+        - Create flights
+    2- Mahmoud Jobeel
+        - Update flights
+        - Delete flights
+
+
