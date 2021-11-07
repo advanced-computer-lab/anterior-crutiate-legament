@@ -1,6 +1,17 @@
 import React from 'react';
 import axios from 'axios'
 
+class DeletePopup extends React.Component {
+    render() {
+      return (
+          <div className='delete-pop-up'>
+            <h1>Are you sure you want to delete this flight? This action is irrevirsable</h1>
+            <button onClick={this.props.deleteFlight}>Delete</button>
+            <button onClick={this.props.hidePopUp}>Cancel</button>
+          </div>
+      );
+    }
+  }
 class EditFlight extends React.Component {
     constructor(props) {
         super(props);
@@ -15,7 +26,8 @@ class EditFlight extends React.Component {
                 Economy: "",
                 Business: "",
                 First: ""
-            }
+            },
+            showDeletePopUp : false
         };
     }
     sendEditRequest =  async (event) => {
@@ -27,6 +39,12 @@ class EditFlight extends React.Component {
         event.preventDefault()
         let endpoint = `http://localhost:8000/api/admin/adminDeleteFlight`
         await axios.delete(endpoint, {data : this.state.flight})
+        this.hidePopUp()
+        this.props.history.push('/admin')
+    }
+
+    hidePopUp = () => {
+        this.setState({showDeletePopUp: false})
     }
 
     
@@ -49,6 +67,11 @@ class EditFlight extends React.Component {
     render() {
         return (
             <div>
+                {
+                    this.state.showDeletePopUp ? 
+                    <DeletePopup deleteFlight={this.deleteFlight} hidePopUp={this.hidePopUp}/>
+                     : null
+                }
                 <form onSubmit={this.sendEditRequest}>
                     <label>Flight Number: </label>
                     <input type="text" defaultValue={this.state.flight.flight_number} onChange={this.set("flight_number")}></input>
@@ -83,7 +106,7 @@ class EditFlight extends React.Component {
                     <br></br>
                     <input type="submit" value="Save"></input>
                 </form>
-                <button onClick={this.popUpDelete}>Delete</button>
+                <button onClick={() => {this.setState({showDeletePopUp : true}); console.log(this.state.showDeletePopUp)}}>Delete</button>
             </div>
         );
     }
