@@ -8,7 +8,6 @@ const Flights = new require('../models/Flights')() ;
 // delete Flight record by its mongoDB id
 adminRouter.route('/adminDeleteFlight')
 .delete(async (req,res,next)=>{
-   // console.log(req);
     var result =  await Flights.deleteFlight(req.body._id);
     if(result){
         res.send("Flight deleted successfully");
