@@ -34,14 +34,28 @@ class EditFlight extends React.Component {
 
     sendEditRequest =  async (event) => {
         event.preventDefault()
+        let dataCorrect = true;
         const departure_time = new Date(this.state.flight.departure_time);
         const arrival_time = new Date(this.state.flight.arrival_time) ;
-        if(departure_time.getTime()<new Date().getTime() || departure_time.getTime()>arrival_time.getTime()){
+        if(departure_time.getTime()<new Date().getTime() || departure_time.getTime()>arrival_time.getTime())
+            dataCorrect = false;
+        if(this.state.flight.flight_number == '')
+            dataCorrect = false;
+        if(this.state.flight.from == '')
+            dataCorrect = false;
+        if(this.state.flight.to == '')
+            dataCorrect = false;
+        if(this.state.flight.departure_time == '')
+            dataCorrect = false;
+        if(this.state.flight.arrival_time == '')
+            dataCorrect = false;
+        if(!dataCorrect) {
             this.setState({error:"Error: enter valid data and try again!"}) ;    
-        }   
-        else{
-        let endpoint = `http://localhost:8000/api/admin/adminUpdateFlight`
-        await axios.put(endpoint, this.state.flight)}
+        } else {
+            let endpoint = `http://localhost:8000/api/admin/adminUpdateFlight`
+            await axios.put(endpoint, this.state.flight)
+            this.setState({error:"Flight Updated"}) ;    
+        }
     }
     deleteFlight = async (event) => {
         event.preventDefault()
@@ -57,7 +71,7 @@ class EditFlight extends React.Component {
 
     
     componentDidMount() {
-        let flightId = this.props.match.params.id
+        let flightId = this.props.location.search.substring(1, this.props.location.search.length);
         let encodedSearchTerms = encodeURIComponent(JSON.stringify({_id:flightId}));
         let endpoint = `http://localhost:8000/api/admin/adminSearchFlights?searchFilters=${encodedSearchTerms}`
         axios.get(endpoint).then(res => {
@@ -94,11 +108,11 @@ class EditFlight extends React.Component {
                     <br></br>
 
                     <label>Departure time: </label>
-                    <input type="datetime-local" defaultValue={this.state.flight.departure_time} onChange={this.set("departure_time")}></input>
+                    <input type="date" defaultValue={this.state.flight.departure_time} onChange={this.set("departure_time")}></input>
                     <br></br>
 
                     <label>Arrival time: </label>
-                    <input type="datetime-local" defaultValue={this.state.flight.arrival_time} onChange={this.set("arrival_time")}></input>
+                    <input type="date" defaultValue={this.state.flight.arrival_time} onChange={this.set("arrival_time")}></input>
                     <br></br>
 
                     <label>Economy seats: </label>

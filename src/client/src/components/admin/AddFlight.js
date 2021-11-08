@@ -11,9 +11,9 @@ class AddFlight extends React.Component {
             to: '',
             departure_time: '',
             arrival_time: '',
-            economy: '',
-            business: '',
-            first: ''
+            economy: 0,
+            business: 0,
+            first: 0
         };
         this.onSubmit = this.onSubmit.bind(this);
         this.onChange = this.onChange.bind(this);
@@ -32,12 +32,24 @@ class AddFlight extends React.Component {
             First: this.state.first
         };
 
+        let dataCorrect = true;
         const departure_time = new Date(flightData.departure_time);
         const arrival_time = new Date(flightData.arrival_time) ;
-        if(departure_time.getTime()<new Date().getTime() || departure_time.getTime()>arrival_time.getTime()){
-            this.setState({error:"Error: enter valid data and try again!"}) ;    
-        }   
-        else{
+        if(departure_time.getTime()<new Date().getTime() || departure_time.getTime()>arrival_time.getTime())
+            dataCorrect = false;
+        if(flightData.flight_number == '')
+            dataCorrect = false;
+        if(flightData.from == '')
+            dataCorrect = false;
+        if(flightData.to == '')
+            dataCorrect = false;
+        if(flightData.departure_time == '')
+            dataCorrect = false;
+        if(flightData.arrival_time == '')
+            dataCorrect = false;
+        if(!dataCorrect) {
+            this.setState({error:"Error: enter valid data and try again!"}) ;
+        } else {
             axios
             .post('http://localhost:8000/api/admin/adminCreateFlight', flightData)
             .then(res => {
@@ -47,9 +59,9 @@ class AddFlight extends React.Component {
                     to: '',
                     departure_time: '',
                     arrival_time: '',
-                    economy: '',
-                    business: '',
-                    first: ''
+                    economy: 0,
+                    business: 0,
+                    first: 0
                 });
                 this.props.history.push('/');
                 window.location = "/admin"
@@ -104,7 +116,7 @@ class AddFlight extends React.Component {
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Arrival Time</p>
                     <input
-                        type="datetime-local"
+                        type="date"
                         placeholder='Departure Time'
                         name='departure_time'
                         className='add-flight-input'
@@ -112,14 +124,16 @@ class AddFlight extends React.Component {
                         onChange={this.onChange}
                     />
                     <input
-                        type="datetime-local"
+                        type="date"
                         placeholder='Arrival Time'
                         name='arrival_time'
                         className='add-flight-input'
                         value={this.state.arrival_time}
                         onChange={this.onChange}
                     />
-                    <br />
+                    <p className='add-flight-input'>Economy Class Seats &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Business Class Seats &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; First Class Seats</p>
                     <input
                         type="number"
                         placeholder='Economy Class Seats'

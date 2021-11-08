@@ -72,10 +72,12 @@ flightSchema.methods.updateFlight= async flightData =>{
 
 
 flightSchema.methods.searchFlights = async searchFilters => {
+    console.log(searchFilters);
     if(Object.keys(searchFilters).length === 0) {   
         return await Flights.find({}); 
     } 
-    else if (searchFilters._id) {                              //if searching is done by _id >>> it is unique               
+    else if (searchFilters._id) {                  
+        console.log(searchFilters._id);            //if searching is done by _id >>> it is unique               
         return await Flights.find({_id: searchFilters._id});
     }
     else {
