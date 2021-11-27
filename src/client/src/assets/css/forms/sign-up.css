@@ -1,0 +1,88 @@
+/*
+*
+* ==========================================
+* CUSTOM UTIL CLASSES
+* ==========================================
+*
+*/
+
+.border-md {
+    border-width: 2px;
+}
+
+.btn-facebook {
+    background: #405D9D;
+    border: none;
+}
+
+.btn-facebook:hover, .btn-facebook:focus {
+    background: #314879;
+}
+
+.btn-twitter {
+    background: #42AEEC;
+    border: none;
+}
+
+.btn-twitter:hover, .btn-twitter:focus {
+    background: #1799e4;
+}
+
+
+
+/*
+*
+* ==========================================
+* FOR DEMO PURPOSES
+* ==========================================
+*
+*/
+
+body {
+    min-height: 100vh;
+}
+
+.form-control:not(select) {
+    padding: 1.5rem 0.5rem;
+}
+
+select.form-control {
+    height: 52px;
+    padding-left: 0.5rem;
+}
+
+.main-banner:before{
+    background-image: none !important;
+}
+
+.main-banner:after {
+    background-image: none !important;
+}
+
+.main-banner{
+    padding: 150px 0px 100px 0px !important;
+}
+.form-control{
+    padding: 0 0 0 0 !important;
+}
+
+#register-img{
+    padding-right: 60px;
+}
+
+.form-control::placeholder {
+    color: #ccc;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+.form-c:focus {
+    box-shadow: none;
+}
+
+#sub:focus {     
+    background-color:#ec3525;    
+}
+
+.form-c {
+    margin-left: 10px !important;
+}
