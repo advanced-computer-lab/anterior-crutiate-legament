@@ -1,22 +1,18 @@
 import React from 'react';
 
-import LandingNavBar from '../../templates/LandingNavBar';
-import "../../../assets/css/landing-page/fontawesome.css"
-import "../../../assets/css/landing-page/templatemo-digimedia-v3.css" ; 
-import 'bootstrap/dist/css/bootstrap.min.css';
+import NavBar from '../../templates/NavBar';
+import Footer from '../../templates/Footer';
 
 import mainImg from "../../../assets/img/undraw_journey_lwlj.svg" ;
 
-
-
-class LandingPage extends React.Component {
+function LandingPage() {
   
-    render() {
       return (
 
         <>
-            <LandingNavBar/>
+            <NavBar/>
 
+            
             <div className="main-banner wow fadeIn" id="top" data-wow-duration="1s" data-wow-delay="0.5s">
                 <div className="container">
                 <div className="row">
@@ -49,10 +45,11 @@ class LandingPage extends React.Component {
                 </div>
             </div>
 
+            <Footer/>
+
         </>  
       
-     )
-    };
+     );
   }
   
   export default LandingPage ;

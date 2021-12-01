@@ -1,24 +1,38 @@
-import React from 'react';
+import React  from 'react';
 
 import SideNav from '../../templates/SideNav';
 
-import "../../../assets/css/dashboard/nucleo-icons.css" ; 
-import "../../../assets/css/dashboard/nucleo-svg.css" ; 
-import "../../../assets/css/dashboard/soft-ui-dashboard.css" ; 
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { Grid , Paper, TextField } from '@material-ui/core';
 
  
-//import Footer from './Footer'; //Include Footer
+function DashBoard(props) {
 
- 
-class DashBoard extends React.Component {
-  
-  render() {
+  const [value, setValue] = React.useState(new Date());
+
     return (
-         <SideNav/>
-  
-   )
-  };
+
+      <Grid container >
+           <SideNav/>
+           <Grid item md = {1} sm= {1} xs = {0} ></Grid>
+           <Grid item md = {8} sm= {6} xs = {6} style={{marginTop:"7%"}} >
+            <Paper style={{padding:"1.5%", backgroundColor:"#F7F7F7"}} >
+               
+             <TextField id="filled-basic" label="From" style={{width:"18%", margin:"1%"}} variant="filled" />
+             <TextField id="filled-basic" label="To" style={{width:"18%", margin:"1%"}} variant="filled" />
+
+   
+
+             <TextField id="filled-basic" label="" style={{width:"18%", margin:"1%"}} variant="filled" />
+
+
+             </Paper> 
+
+             <hr style = {{marginTop:"20px"}}/>
+
+           </Grid>
+      </Grid>
+
+   );
 }
 
 export default DashBoard;
