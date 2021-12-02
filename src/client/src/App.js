@@ -13,6 +13,12 @@ import AdminApp from './components/pages/admin/AdminApp.js'
 import AddFlight from './components/pages/admin/AddFlight.js';
 import EditFlight from './components/pages/admin/EditFlight.js';
 
+
+import DateFnsUtils from '@date-io/date-fns'; 
+import   {MuiPickersUtilsProvider} from '@material-ui/pickers';
+
+
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "./assets/css/main/main.css"
  
@@ -20,6 +26,8 @@ import "./assets/css/main/main.css"
  
 function App() {
   return (
+    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+
     <BrowserRouter>
     <Routes>
     <Route exact path='/' element={<LandingPage/>} />
@@ -31,6 +39,9 @@ function App() {
     <Route exact path='/admin/editFlight' element={<EditFlight/>} />
   </Routes>
   </BrowserRouter>
+
+  </MuiPickersUtilsProvider>
+
   );
 }
 

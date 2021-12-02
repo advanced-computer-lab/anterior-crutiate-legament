@@ -1,38 +1,35 @@
-import React  from 'react';
+import React, { useState,useRef } from 'react';
+
 
 import SideNav from '../../templates/SideNav';
+import SearchFilters from '../../templates/SearchFilters';
+import CollapsibleTable from '../../templates/FlightsTable';
+import Footer from "../../templates/Footer";
+import PageHeaderSvg from '../../basic components/PageHeaderSvg';
 
-import { Grid , Paper, TextField } from '@material-ui/core';
+import 
+{
+ Grid,
+ TextField} 
+from '@material-ui/core';
+import { Stack } from '@mui/material';
 
- 
-function DashBoard(props) {
 
-  const [value, setValue] = React.useState(new Date());
+export default function Dashboard() {
 
-    return (
 
+  return (
       <Grid container >
            <SideNav/>
-           <Grid item md = {1} sm= {1} xs = {0} ></Grid>
-           <Grid item md = {8} sm= {6} xs = {6} style={{marginTop:"7%"}} >
-            <Paper style={{padding:"1.5%", backgroundColor:"#F7F7F7"}} >
-               
-             <TextField id="filled-basic" label="From" style={{width:"18%", margin:"1%"}} variant="filled" />
-             <TextField id="filled-basic" label="To" style={{width:"18%", margin:"1%"}} variant="filled" />
-
-   
-
-             <TextField id="filled-basic" label="" style={{width:"18%", margin:"1%"}} variant="filled" />
-
-
-             </Paper> 
-
-             <hr style = {{marginTop:"20px"}}/>
-
+           <Grid item md = {9} sm= {6} xs = {6} style={{marginLeft:"3%"}} >
+              <Stack>
+                <PageHeaderSvg headerText = "Find Your Flight Now" src = "https://www.gstatic.com/travel-frontend/animation/hero/flights_3.svg"/>
+              <SearchFilters/>
+              </Stack>
+           </Grid>
+           <Grid item md={12} style={{marginTop:"15%", left:"0" , right:"0", bottom:"0"}}>
+           <Footer/>
            </Grid>
       </Grid>
-
-   );
+  );
 }
-
-export default DashBoard;

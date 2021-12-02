@@ -1,5 +1,5 @@
 #logo {
-    width: 40% ;
+    width: 25% ;
     height: auto;
 }
 
@@ -7,6 +7,7 @@
     word-wrap: break-word;
     margin-top: 15%;
     margin-left: 15% ;
+    margin-bottom: 0%;
 }
 
  

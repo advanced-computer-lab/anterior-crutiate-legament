@@ -5,11 +5,11 @@ import logo from  "../../assets/img/logo-ct-2.png";
 function NavBar () {
     return (
 
-      <header className="header-area header-sticky wow slideInDown" data-wow-duration="0.75s" data-wow-delay="0s">
+      <header className="header-area header-sticky wow slideInDown"style={{backgroundColor:"#F3F1F5"}} data-wow-duration="0.75s" data-wow-delay="0s">
       <div className="container">
         <div className="row">
           <div className="col-12">
-            <nav className="main-nav">
+            <nav className="main-nav" >
               <a href="/" className="logo">
                 <img src= {logo} alt=""/>
               </a>
