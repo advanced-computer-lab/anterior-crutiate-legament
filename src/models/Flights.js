@@ -41,6 +41,10 @@ const flightSchema = new Schema ({
         default: 0,
         min:0
     },
+    Seats:{
+        type: [[Number]],
+        default: []
+    }
 },
 { 
     timestamps: true 
@@ -104,6 +108,18 @@ flightSchema.methods.createFlight = async requestBody => {
     return await Flights.create(requestBody);
 }
 
+
+flightSchema.methods.reserveSeats = async requestBody => {
+    var arr = requestBody.seats;
+    return await Flights.findByIdAndUpdate(requestBody._id,
+        {$push:{Seats:arr}});
+}
+
+flightSchema.methods.unReserveSeats = async requestBody => {
+    var arr = requestBody.seats;
+    return await Flights.findByIdAndUpdate(requestBody._id,
+        {$pull:{Seats:arr}});
+}
 
 
 var Flights = mongoose.model('Flights',flightSchema);
