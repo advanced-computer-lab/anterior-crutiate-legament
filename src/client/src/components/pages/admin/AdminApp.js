@@ -1,66 +1,130 @@
-import React from 'react';
-import axios from 'axios';
-import { Link } from 'react-router-dom';
+import React from "react";
+import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 
-import FlightsTable from './FlightsTable.js';
-import FlightsSearch from './FlightsSearch.js';
+import FlightsTable from "./FlightsTable.js";
+import FlightsSearch from "./FlightsSearch.js";
 
-class AdminApp extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            flightsDetails: []
-        };
-        this.displayFlights = this.displayFlights.bind(this);
-    }
-
-    componentDidMount() {
-        this.displayFlights({});
-    }
-
-    displayFlights(searchTerms) {
-        let encodedSearchTerms = encodeURIComponent(JSON.stringify(searchTerms));
-        axios
-        .get(`http://localhost:8000/api/admin/adminSearchFlights?searchFilters=${encodedSearchTerms}`)
-        .then(res => {
-            this.setState({
-                flightsDetails: res.data
-            });
-        })
-        .catch(err =>{
-            console.log('Error from getting flights details.');
-        });
-    }
-
-    render() {
-        return (
-            <div className="admin-home-page-container">
-                <div className="admin-logout-text">
-                    <a href="/">Logout</a>
-                </div>
-                <div className="welcone-admin-text">
-                    <p>Welcome 'Main Admin'</p>
-                </div>
-                <div className="admin-add-flight-button-container">
-                    <Link to="/admin/addFlight">
-                        <button className="add-flights-button">Add Flight</button>
-                    </Link>
-                </div>
-                <div className="admin-flights-table-text">
-                    <h1>Flights Table</h1>
-                </div>
-                <div className="admin-flights-table-container">
-                    <FlightsTable flights={this.state.flightsDetails} />
-                </div>
-                <div className="admin-flights-search-text">
-                    <h1>Flights Search</h1>
-                </div>
-                <div className="admin-flights-search-container">
-                    <FlightsSearch displayFlights={this.displayFlights}/>
-                </div>
-            </div>
-        );
-    }
+export default function RootFunction(props) {
+  const navigation = useNavigate();
+  return <AdminApp navigation={navigation} getToken={props.getToken} />;
 }
 
-export default AdminApp;
+class AdminApp extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      flightsDetails: [],
+    };
+    this.displayFlights = this.displayFlights.bind(this);
+  }
+  /*
+  componentWillMount() {
+    console.log(this.props.getToken() === undefined);
+    if (this.props.getToken() === undefined)
+      this.props.navigation("/adminLogin");
+  }
+*/
+  componentDidMount() {
+    this.displayFlights({});
+  }
+
+  displayFlights(searchTerms) {
+    let encodedSearchTerms = encodeURIComponent(JSON.stringify(searchTerms));
+    axios
+      .get(
+        `http://localhost:8000/api/admin/adminSearchFlights?searchFilters=${encodedSearchTerms}`
+      )
+      .then((res) => {
+        this.setState({
+          flightsDetails: res.data,
+        });
+      })
+      .catch((err) => {
+        console.log("Error from getting flights details.");
+      });
+  }
+
+  render() {
+    return (
+      <div className="container-fluid">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+              Welcome, Admin Name
+            </a>
+            <button
+              class="navbar-toggler"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarNavAltMarkup"
+              aria-controls="navbarNavAltMarkup"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+              <div class="navbar-nav mx-auto">
+                <a class="nav-link active" aria-current="page" href="#">
+                  Search Flights
+                </a>
+                <a class="nav-link" href="#">
+                  Add Flight
+                </a>
+                <a
+                  class="nav-link disabled"
+                  href="#"
+                  tabindex="-1"
+                  aria-disabled="true"
+                >
+                  Edit Flight
+                </a>
+                <a class="nav-link" href="#">
+                  Add Admin
+                </a>
+              </div>
+              <div>
+                <a class="nav-link" href="#">
+                  Log Out
+                </a>
+              </div>
+            </div>
+          </div>
+        </nav>
+
+        {/*
+        <div className="navbar">
+          <div className="col-lg-3">
+            <p>Welcome 'Main Admin'</p>
+          </div>
+          <div className="col-lg-9">
+            <Link to="/admin/addFlight">
+              <button className="btn btn-default ">Add Flight</button>
+            </Link>
+            <a href="/">Logout</a>
+          </div>
+          </div>
+        */}
+        <div className="row">
+          <div className="text-center">
+            <br />
+            <h2>Flights Table</h2>
+            <br />
+          </div>
+          <div className="table table-bordered table-responsive">
+            <FlightsTable flights={this.state.flightsDetails} />
+          </div>
+          <div className="text-center">
+            <br />
+            <h2>Flights Search</h2>
+            <br />
+          </div>
+          <div>
+            <FlightsSearch displayFlights={this.displayFlights} />
+          </div>
+        </div>
+      </div>
+    );
+  }
+}

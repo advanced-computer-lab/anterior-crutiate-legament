@@ -1,7 +1,7 @@
 const express = require('express') ;
 var adminRouter = express.Router () ;
 
-const Flights = new require('../../models/Flights')() ;
+const Flights = new require('../models/Flights.js')() ;
 
 
 
