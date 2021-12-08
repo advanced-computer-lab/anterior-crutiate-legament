@@ -14,6 +14,7 @@ const userSchema = new Schema ({
         },
         email: {
             type: String,
+            unique: true,
             required: true,
         },
         password: {
@@ -26,7 +27,7 @@ const userSchema = new Schema ({
         },
         reservations: {
             type: [[Schema.Types.Mixed]],
-            default: []
+            default: undefined,
         }
     },
     {
@@ -34,24 +35,23 @@ const userSchema = new Schema ({
     });
 
 
-// delete flight using its id
 
-flightSchema.methods.updateUser= async userData =>{
-    var oldFlight=Users.find(userData._id);
+userSchema.methods.updateUser= async userData =>{
+    var oldUser=Users.find(userData._id);
     return await Users.findByIdAndUpdate(userData._id,
         {
-            firstName: flightData.firstName? flightData.firstName : oldFlight.firstName,
-            lastName: flightData.lastName ? flightData.lastName : oldFlight.lastName,
-            email: flightData.email ? flightData.email : oldFlight.email,
-            password: flightData.password ? flightData.password : oldFlight.password,
-            passport: flightData.passport ? flightData.passport : oldFlight.passport,
+            firstName: userData.firstName? userData.firstName : oldUser.firstName,
+            lastName: userData.lastName ? userData.lastName : oldUser.lastName,
+            email: userData.email ? userData.email : oldUser.email,
+            password: userData.password ? userData.password : oldUser.password,
+            passport: userData.passport ? userData.passport : oldUser.passport,
         },
         {new:true},
     );
 };
 
 
-flightSchema.methods.searchUser = async searchFilters => {
+userSchema.methods.searchUser = async searchFilters => {
     if(Object.keys(searchFilters).length === 0) {
         return await Users.find({});
     }
@@ -77,24 +77,44 @@ flightSchema.methods.searchUser = async searchFilters => {
     }
 }
 
-flightSchema.methods.createUser = async requestBody => {
+userSchema.methods.loginUser = async searchFilters => {
+    if(Object.keys(searchFilters).length === 0) {
+        return undefined;
+    }
+    else{
+        if(searchFilters.email) {
+            query.push({email:searchFilters.email}) ;
+        }
+        if(searchFilters.password) {
+            query.push({password:searchFilters.password}) ;
+        }
+        return await Users.find({$and:query});
+    }
+}
+
+
+userSchema.methods.createUser = async requestBody => {
     return await Users.create(requestBody);
 }
 
 
-flightSchema.methods.getreservedSeats = async requestBody => {
+userSchema.methods.getReservedSeats = async requestBody => {
+    return await Users.find({"_id": requestBody.userId}, {reservations: {$elemMatch: {flight_id: requestBody.flightId,cabin: requestBody.cabin}}});
 
-    return await Users.find({"_id": requestBody.userId}, {reservations: {$elemMatch: {flight_id: requestBody.flightId}}});
 }
 
-flightSchema.methods.cancelReservation = async requestBody => {
+userSchema.methods.cancelReservation = async requestBody => {
     return await Users.findByIdAndUpdate(requestBody.userId,
-        {$pull:{reservations: {$elemMatch: {flight_id: requestBody.flightId}}}});
+        {$pull:{reservations: {$elemMatch: {flight_id: requestBody.flightId,cabin: requestBody.cabin}}}});
 }
-
+userSchema.methods.reserveSeats = async requestBody => {
+    var arr = requestBody.seats;
+    return await Users.findByIdAndUpdate(requestBody.userId,
+        {$push:{reservations: {$elemMatch: {flight_id: requestBody.flightId,cabin: requestBody.cabin}}},arr});
+}
 
 var Users = mongoose.model('Users',userSchema);
 
 
 
-module.exports = Flights;
+module.exports = Users;
