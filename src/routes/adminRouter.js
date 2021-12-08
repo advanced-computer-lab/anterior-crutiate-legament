@@ -72,5 +72,4 @@ adminRouter.route('/adminLogin')
     });
 adminRouter()
 
-
 module.exports = adminRouter ;
