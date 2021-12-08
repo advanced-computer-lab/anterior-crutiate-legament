@@ -21,7 +21,7 @@ class FlightRow extends React.Component {
           <Link
             to={{
               pathname: "/admin/editFlight",
-              search: `${this.props.data._id}`,
+              state: {"flight_id": `this.props.data._id}`},
             }}
           >
             <button className="btn btn-secondary">Edit</button>

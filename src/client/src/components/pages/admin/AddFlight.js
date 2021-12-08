@@ -1,11 +1,10 @@
 import React from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { now } from "mongoose";
+import { useHistory } from "react-router-dom";
 
 export default function RootFunction(props) {
-  const navigation = useNavigate();
-  return <AddFlight navigation={navigation} getToken={props.getToken} />;
+  const history = useHistory();
+  return <AddFlight history={history}/>;
 }
 
 class AddFlight extends React.Component {
@@ -26,8 +25,7 @@ class AddFlight extends React.Component {
   }
 
   componentWillMount() {
-    if (this.props.getToken() === undefined)
-      this.props.navigation("/adminLogin");
+    // authentication
   }
 
   onSubmit(e) {
