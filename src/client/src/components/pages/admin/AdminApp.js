@@ -1,13 +1,13 @@
 import React from "react";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useHistory } from "react-router-dom";
 
 import FlightsTable from "./FlightsTable.js";
 import FlightsSearch from "./FlightsSearch.js";
 
 export default function RootFunction(props) {
-  const navigation = useNavigate();
-  return <AdminApp navigation={navigation} getToken={props.getToken} />;
+  const history = useHistory();
+  return <AdminApp history={history} />;
 }
 
 class AdminApp extends React.Component {
@@ -18,13 +18,11 @@ class AdminApp extends React.Component {
     };
     this.displayFlights = this.displayFlights.bind(this);
   }
-  /*
+
   componentWillMount() {
-    console.log(this.props.getToken() === undefined);
-    if (this.props.getToken() === undefined)
-      this.props.navigation("/adminLogin");
+    // authentication
   }
-*/
+
   componentDidMount() {
     this.displayFlights({});
   }
@@ -67,10 +65,10 @@ class AdminApp extends React.Component {
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
               <div class="navbar-nav mx-auto">
                 <a class="nav-link active" aria-current="page" href="#">
-                  Search Flights
+                  <Link to={{ pathname: "/admin" }}>Search Flights</Link>
                 </a>
                 <a class="nav-link" href="#">
-                  Add Flight
+                  <Link to={{ pathname: "/admin/addFlight" }}>Add Flight</Link>
                 </a>
                 <a
                   class="nav-link disabled"
@@ -81,12 +79,12 @@ class AdminApp extends React.Component {
                   Edit Flight
                 </a>
                 <a class="nav-link" href="#">
-                  Add Admin
+                  <Link to={{ pathname: "/admin" }}>Add Admin</Link>
                 </a>
               </div>
               <div>
                 <a class="nav-link" href="#">
-                  Log Out
+                  <Link to={{ pathname: "/" }}>Logout</Link>
                 </a>
               </div>
             </div>

@@ -1,10 +1,10 @@
 import React from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 export default function RootFunction(props) {
-  const navigation = useNavigate();
-  return <AdminLogin navigation={navigation} setToken={props.setToken}getToken={props.getToken} />;
+  const history = useHistory();
+  return <AdminLogin history={history} />;
 }
 
 class AdminLogin extends React.Component {
@@ -19,8 +19,7 @@ class AdminLogin extends React.Component {
   }
 
   componentWillMount() {
-    if (this.props.getToken() !== undefined)
-      this.props.navigation("/admin");
+    // if authenticated, go to admin
   }
 
   onSubmit(e) {
@@ -38,8 +37,8 @@ class AdminLogin extends React.Component {
         console.log("Error wjen contacting login API.");
     });
     */
-    this.props.setToken(adminToken);
-    this.props.navigation("/admin");
+    
+    this.props.history.push("/admin");
   }
 
   onChange(e) {
