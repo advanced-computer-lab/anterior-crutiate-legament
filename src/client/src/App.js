@@ -12,6 +12,7 @@ import SignIn from './components/pages/auth/SignIn';
 import AdminApp from './components/pages/admin/AdminApp.js'
 import AddFlight from './components/pages/admin/AddFlight.js';
 import EditFlight from './components/pages/admin/EditFlight.js';
+import Profile from "./components/pages/profile/Profile.js";
 
 
 import DateFnsUtils from '@date-io/date-fns'; 
@@ -37,6 +38,8 @@ function App() {
     <Route exact path='/admin' element={<AdminApp/>} />
     <Route exact path='/admin/addFlight' element={<AddFlight/>} />
     <Route exact path='/admin/editFlight' element={<EditFlight/>} />
+    <Route exact path='/Profile' element={<Profile/>} />
+
   </Routes>
   </BrowserRouter>
 
