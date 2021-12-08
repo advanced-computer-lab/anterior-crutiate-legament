@@ -1,8 +1,9 @@
 const express = require('express') ;
 var adminRouter = express.Router () ;
 
+ 
 const Flights = new require('../models/Flights.js')() ;
-
+ 
 
 
 // delete Flight record by its mongoDB id
