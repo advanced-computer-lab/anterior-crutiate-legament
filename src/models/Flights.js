@@ -41,6 +41,10 @@ const flightSchema = new Schema ({
         default: 0,
         min:0
     },
+    Seats:{
+        type: [[Number]],
+        default: []
+    }
 },
 { 
     timestamps: true 
@@ -75,7 +79,8 @@ flightSchema.methods.searchFlights = async searchFilters => {
     if(Object.keys(searchFilters).length === 0) {   
         return await Flights.find({}); 
     } 
-    else if (searchFilters._id) {                              //if searching is done by _id >>> it is unique               
+    else if (searchFilters._id) {                  
+        console.log(searchFilters._id);            //if searching is done by _id >>> it is unique               
         return await Flights.find({_id: searchFilters._id});
     }
     else {
@@ -103,6 +108,18 @@ flightSchema.methods.createFlight = async requestBody => {
     return await Flights.create(requestBody);
 }
 
+
+flightSchema.methods.reserveSeats = async requestBody => {
+    var arr = requestBody.seats;
+    return await Flights.findByIdAndUpdate(requestBody._id,
+        {$push:{Seats:arr}});
+}
+
+flightSchema.methods.unReserveSeats = async requestBody => {
+    var arr = requestBody.seats;
+    return await Flights.findByIdAndUpdate(requestBody._id,
+        {$pull:{Seats:arr}});
+}
 
 
 var Flights = mongoose.model('Flights',flightSchema);
