@@ -1,9 +1,9 @@
 const express = require('express') ;
 var adminRouter = express.Router () ;
 
- 
 const Flights = new require('../models/Flights.js')() ;
- 
+const Admin = new require('../models/Admin.js')() ;
+
 
 
 // delete Flight record by its mongoDB id
@@ -52,11 +52,24 @@ adminRouter.route('/adminSearchFlights')
 adminRouter.route('/adminCreateFlight')
 .post(async (req,res,next)=>{
     await Flights.createFlight(req.body) ;
-    res.end('flight created');  
+    res.end('flight created');
 })
 .all((req,res,next)=>{
     res.statusCode = 403;
     res.end('operation not supported');
 });
+
+// admin login
+adminRouter.route('/adminLogin')
+    .get(async(req,res,next)=>{
+        let results = await Admin.loginAdmin(JSON.parse(req.query.searchFilters)) ;
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify(results));
+    })
+    .all((req,res,next)=>{
+        res.statusCode = 403;
+        res.end('operation not supported');
+    });
+adminRouter()
 
 module.exports = adminRouter ;

@@ -41,9 +41,48 @@ const flightSchema = new Schema ({
         default: 0,
         min:0
     },
-    Seats:{
-        type: [[Number]],
-        default: []
+
+    childEconomyPrice:{
+        type: Number,
+        default: 0,
+        min:0
+    },
+    childBusinessPrice:{
+        type: Number,
+        default: 0,
+        min: 0
+    },
+    childFirstPrice:{
+        type: Number,
+        default: 0,
+        min:0
+    },
+    adultEconomyPrice:{
+        type: Number,
+        default: 0,
+        min:0
+    },
+    adultBusinessPrice:{
+        type: Number,
+        default: 0,
+        min: 0
+    },
+    adultFirstPrice:{
+        type: Number,
+        default: 0,
+        min:0
+    },
+    businessCabin:{
+        type:[[Number]],
+        default:undefined,
+    },
+    firstCabin:{
+        type:[[Number]],
+        default:undefined,
+    },
+    economyCabin:{
+        type:[[Number]],
+        default:undefined,
     }
 },
 { 
@@ -111,14 +150,28 @@ flightSchema.methods.createFlight = async requestBody => {
 
 flightSchema.methods.reserveSeats = async requestBody => {
     var arr = requestBody.seats;
+    if(requestBody.firstCabin){
     return await Flights.findByIdAndUpdate(requestBody._id,
-        {$push:{Seats:arr}});
+        {$push:{firstCabin:arr}});}
+    if(requestBody.businessCabin){
+        return await Flights.findByIdAndUpdate(requestBody._id,
+            {$push:{businessCabin:arr}});}
+    if(requestBody.economyCabin){
+        return await Flights.findByIdAndUpdate(requestBody._id,
+            {$push:{economyCabin:arr}});}
 }
 
-flightSchema.methods.unReserveSeats = async requestBody => {
+flightSchema.methods.unreserveSeats = async requestBody => {
     var arr = requestBody.seats;
-    return await Flights.findByIdAndUpdate(requestBody._id,
-        {$pull:{Seats:arr}});
+    if(requestBody.firstCabin){
+        return await Flights.findByIdAndUpdate(requestBody._id,
+        {$pull:{firstCabin:arr}});}
+    if(requestBody.businessCabin){
+        return await Flights.findByIdAndUpdate(requestBody._id,
+            {$pull:{businessCabin:arr}});}
+    if(requestBody.economyCabin){
+        return await Flights.findByIdAndUpdate(requestBody._id,
+            {$pull:{economyCabin:arr}});}
 }
 
 
