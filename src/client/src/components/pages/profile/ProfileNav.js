@@ -7,6 +7,7 @@ import TabPanel from '@material-ui/lab/TabPanel';
 import ChangePassword from './ChangePassword';
 import PersonInfo from './PersonInfo';
 import NoTicketsYet from './NoTicketsYet';
+import MyTickets from "./MyTickets" ;
 
 export default function ProfileNav() {
   const [value, setValue] = React.useState('1');
@@ -31,7 +32,7 @@ export default function ProfileNav() {
 
               </Tabs>
               <TabPanel value="1"><PersonInfo /></TabPanel>
-              <TabPanel value="2"><NoTicketsYet /></TabPanel>
+              <TabPanel value="2"><MyTickets /></TabPanel>
               <TabPanel value="3"><ChangePassword /></TabPanel>
           </TabContext>
       </Box>

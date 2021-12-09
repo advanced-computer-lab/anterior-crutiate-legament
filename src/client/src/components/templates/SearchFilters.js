@@ -57,7 +57,7 @@ export default function SearchResults (props) {
   const [searchResults , setSearchResults] = useState ([]);
   
     const getSearchResults = async (e) => {
-      const res = await axios.get(axios.defaults.baseURL+"api/user/searchFlights" , searchFilters) ;
+      //const res = await axios.get(axios.defaults.baseURL+"api/user/searchFlights" , searchFilters) ;
       
       setSearchResults(res) ; 
     };
@@ -93,7 +93,7 @@ export default function SearchResults (props) {
 
             <DateTimePicker 
             value={searchFilters.arrival_time} 
-            label="Arrival" style={{width:"17%", margin:"0.7%"}} 
+            label="Return" style={{width:"17%", margin:"0.7%"}} 
             onChange = {(e) => setSearchFilters({...searchFilters, arrival_time: e})} 
 
             />

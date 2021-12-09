@@ -70,6 +70,5 @@ adminRouter.route('/adminLogin')
         res.statusCode = 403;
         res.end('operation not supported');
     });
-adminRouter()
 
 module.exports = adminRouter ;
