@@ -1,3 +1,4 @@
+import { Button } from "@material-ui/core";
 import React from "react";
 import { Link } from "react-router-dom";
 
@@ -21,10 +22,10 @@ class FlightRow extends React.Component {
           <Link
             to={{
               pathname: "/admin/editFlight",
-              state: {"flight_id": `this.props.data._id}`},
+              state: {"flight_id": `${this.props.data._id}`},
             }}
           >
-            <button className="btn btn-secondary">Edit</button>
+            <Button>Primary</Button>
           </Link>
         </td>
       </tr>

@@ -3,7 +3,6 @@ import React, { useState,useRef } from 'react';
 
 import SideNav from '../../templates/SideNav';
 import SearchFilters from '../../templates/SearchFilters';
-import CollapsibleTable from '../../templates/FlightsTable';
 import Footer from "../../templates/Footer";
 import PageHeaderSvg from '../../basic components/PageHeaderSvg';
 

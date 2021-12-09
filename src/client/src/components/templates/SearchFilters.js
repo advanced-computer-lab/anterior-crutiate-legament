@@ -1,6 +1,8 @@
 import React , {useState} from 'react';
 import PropTypes from 'prop-types';
 import Box from '@material-ui/core/Box';
+import { Link } from "react-router-dom";
+
 import Collapse from '@material-ui/core/Collapse';
 import IconButton from '@material-ui/core/IconButton';
 import Table from '@material-ui/core/Table';
@@ -28,8 +30,8 @@ import
  Button,
  MenuItem,
  TextField,
- Link} 
-from '@material-ui/core';
+ } 
+from '@material-ui/core'; 
 
 
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -91,7 +93,7 @@ export default function SearchResults (props) {
 
             <DateTimePicker 
             value={searchFilters.arrival_time} 
-            label="Arrival" style={{width:"17%", margin:"0.7%"}} 
+            label="Return" style={{width:"17%", margin:"0.7%"}} 
             onChange = {(e) => setSearchFilters({...searchFilters, arrival_time: e})} 
 
             />
@@ -182,7 +184,8 @@ function Row(props) {
  
   const redirecrCheckOut = (e) => {
       // here to handle the redirect to the check out page and pass the two id's of departure and return 
-      
+      console.log(e.t); 
+
   }
 
   return (
@@ -233,7 +236,19 @@ function Row(props) {
                       <TableCell align="right">{returnRow.to}</TableCell>
                       <TableCell align="right">{format(returnRow.departure_time,"PPPPp")}</TableCell>
                       <TableCell align="right">{format(returnRow.departure_time,"PPPPp")}</TableCell>
-                      <TableCell align="right"><Button variant="text" departureFlight= {row._id} arrivalFlight= {returnRow._id} onClick={redirecrCheckOut}>Check out</Button></TableCell>
+                       <TableCell align="right">
+                        <Link
+                          to={{
+                            pathname: "/checkOut",
+                            state: {"departure_id": `${row._id}`,
+                                    "arrival_id" : `${returnRow._id}`
+                                  },
+                          }}
+                        >
+                          <button className="btn btn-secondary">Check Out</button>
+                        </Link>
+                      </TableCell>
+                       
                     </TableRow>
                   ))}
                 </TableBody>
