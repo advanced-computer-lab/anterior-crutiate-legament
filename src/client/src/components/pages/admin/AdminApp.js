@@ -1,9 +1,11 @@
 import React from "react";
 import axios from "axios";
+import { getAdminToken } from "../../../handleToken.js";
 import { Link, useNavigate, useHistory } from "react-router-dom";
 
 import FlightsTable from "./FlightsTable.js";
 import FlightsSearch from "./FlightsSearch.js";
+import AdminNavbar from "./AdminNavbar.js";
 
 export default function RootFunction(props) {
   const history = useHistory();
@@ -20,7 +22,7 @@ class AdminApp extends React.Component {
   }
 
   componentWillMount() {
-    // authentication
+    if (!getAdminToken()) this.props.history.push("/adminLogin");
   }
 
   componentDidMount() {
@@ -41,69 +43,13 @@ class AdminApp extends React.Component {
       .catch((err) => {
         console.log("Error from getting flights details.");
       });
+    window.scrollTo(0, 0);
   }
 
   render() {
     return (
       <div className="container-fluid">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-          <div class="container-fluid">
-            <a class="navbar-brand" href="#">
-              Welcome, Admin Name
-            </a>
-            <button
-              class="navbar-toggler"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#navbarNavAltMarkup"
-              aria-controls="navbarNavAltMarkup"
-              aria-expanded="false"
-              aria-label="Toggle navigation"
-            >
-              <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-              <div class="navbar-nav mx-auto">
-                <a class="nav-link active" aria-current="page" href="#">
-                  <Link to={{ pathname: "/admin" }}>Search Flights</Link>
-                </a>
-                <a class="nav-link" href="#">
-                  <Link to={{ pathname: "/admin/addFlight" }}>Add Flight</Link>
-                </a>
-                <a
-                  class="nav-link disabled"
-                  href="#"
-                  tabindex="-1"
-                  aria-disabled="true"
-                >
-                  Edit Flight
-                </a>
-                <a class="nav-link" href="#">
-                  <Link to={{ pathname: "/admin" }}>Add Admin</Link>
-                </a>
-              </div>
-              <div>
-                <a class="nav-link" href="#">
-                  <Link to={{ pathname: "/" }}>Logout</Link>
-                </a>
-              </div>
-            </div>
-          </div>
-        </nav>
-
-        {/*
-        <div className="navbar">
-          <div className="col-lg-3">
-            <p>Welcome 'Main Admin'</p>
-          </div>
-          <div className="col-lg-9">
-            <Link to="/admin/addFlight">
-              <button className="btn btn-default ">Add Flight</button>
-            </Link>
-            <a href="/">Logout</a>
-          </div>
-          </div>
-        */}
+        <AdminNavbar />
         <div className="row">
           <div className="text-center">
             <br />
@@ -118,7 +64,7 @@ class AdminApp extends React.Component {
             <h2>Flights Search</h2>
             <br />
           </div>
-          <div>
+          <div id="flights-search-id">
             <FlightsSearch displayFlights={this.displayFlights} />
           </div>
         </div>

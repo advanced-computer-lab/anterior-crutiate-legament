@@ -10,6 +10,7 @@ import AdminApp from "./components/pages/admin/AdminApp.js";
 import AddFlight from "./components/pages/admin/AddFlight.js";
 import EditFlight from "./components/pages/admin/EditFlight.js";
 import AdminLogin from "./components/pages/admin/AdminLogin";
+import AddAdmin from "./components/pages/admin/AddAdmin";
 import Profile from "./components/pages/profile/Profile.js";
  
 import DateFnsUtils from "@date-io/date-fns";
@@ -19,17 +20,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./assets/css/main/main.css";
 
 function App() {
-  function setAdminToken(adminToken) {
-    sessionStorage.setItem("adminToken", JSON.stringify(adminToken));
-    console.log(adminToken);
-  }
-
-  function getAdminToken() {
-    const tokenString = sessionStorage.getItem("adminToken");
-    const adminToken = JSON.parse(tokenString);
-    return adminToken?.token;
-  }
-
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
  
@@ -43,6 +33,7 @@ function App() {
       <Route exact path="/admin" component={AdminApp} />
       <Route exact path="/admin/addFlight" component={AddFlight} />
       <Route exact path="/admin/editFlight" component={EditFlight} />
+      <Route exact path="/admin/addAdmin" component={AddAdmin} />
     </MuiPickersUtilsProvider>
    );
 }

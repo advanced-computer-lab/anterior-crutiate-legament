@@ -61,14 +61,24 @@ adminRouter.route('/adminCreateFlight')
 
 // admin login
 adminRouter.route('/adminLogin')
-    .get(async(req,res,next)=>{
-        let results = await Admin.loginAdmin(JSON.parse(req.query.searchFilters)) ;
-        res.setHeader('Content-Type', 'application/json');
-        res.end(JSON.stringify(results));
-    })
-    .all((req,res,next)=>{
-        res.statusCode = 403;
-        res.end('operation not supported');
-    });
+.get(async(req,res,next)=>{
+    let results = await Admin.loginAdmin(JSON.parse(req.query.loginDetails)) ;
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify(results));
+})
+.all((req,res,next)=>{
+    res.statusCode = 403;
+    res.end('operation not supported');
+});
+
+adminRouter.route('/addAdmin')
+.post(async (req,res,next)=>{
+    await Admin.createAdmin(req.body);
+    res.end('New Admin Added');
+})
+.all((req,res,next)=>{
+    res.statusCode = 403;
+    res.end('operation not supported');
+});
 
 module.exports = adminRouter ;

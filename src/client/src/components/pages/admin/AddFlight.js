@@ -1,6 +1,8 @@
 import React from "react";
 import axios from "axios";
+import { getAdminToken } from "../../../handleToken.js";
 import { useHistory } from "react-router-dom";
+import AdminNavbar from "./AdminNavbar.js";
 
 export default function RootFunction(props) {
   const history = useHistory();
@@ -18,14 +20,14 @@ class AddFlight extends React.Component {
       arrival_time: "",
       economy: 0,
       business: 0,
-      first: 0,
+      first: 0
     };
     this.onSubmit = this.onSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
   }
 
   componentWillMount() {
-    // authentication
+    if (!getAdminToken()) this.props.history.push("/adminLogin");
   }
 
   onSubmit(e) {
@@ -88,6 +90,7 @@ class AddFlight extends React.Component {
   render() {
     return (
       <div>
+        <AdminNavbar />
         <div className="add-flight-back-text">
           <a href="/admin">Check Flights</a>
         </div>

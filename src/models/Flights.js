@@ -106,7 +106,7 @@ flightSchema.methods.updateFlight= async flightData =>{
         departure_time: flightData.departure_time ? flightData.departure_time : oldFlight.departure_time,
         arrival_time: flightData.arrival_time ? flightData.arrival_time : oldFlight.arrival_time,
         Economy: flightData.Economy ? flightData.Economy : oldFlight.Economy,
-        business: flightData.business ? flightData.business : oldFlight.business,
+        Business: flightData.Business ? flightData.Business : oldFlight.Business,
         First: flightData.First ? flightData.First : oldFlight.First,
     },
     {new:true},
