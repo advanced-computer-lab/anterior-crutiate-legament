@@ -1,6 +1,8 @@
 import React from "react";
 import axios from "axios";
+import { getAdminToken } from "../../../handleToken.js";
 import { useHistory } from "react-router-dom";
+import AdminNavbar from "./AdminNavbar.js";
 
 class DeletePopup extends React.Component {
   render() {
@@ -79,7 +81,7 @@ class EditFlight extends React.Component {
   };
 
   componentWillMount() {
-    // authentication
+    if (!getAdminToken()) this.props.history.push("/adminLogin");
   }
 
   componentDidMount() {
@@ -105,6 +107,7 @@ class EditFlight extends React.Component {
   render() {
     return (
       <div>
+        <AdminNavbar />
         {this.state.showDeletePopUp ? (
           <DeletePopup
             deleteFlight={this.deleteFlight}

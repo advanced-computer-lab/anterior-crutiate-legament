@@ -1,5 +1,10 @@
 import React from "react";
 import axios from "axios";
+import {
+  setAdminName,
+  setAdminToken,
+  getAdminToken,
+} from "../../../handleToken.js";
 import { useHistory } from "react-router-dom";
 
 export default function RootFunction(props) {
@@ -19,26 +24,31 @@ class AdminLogin extends React.Component {
   }
 
   componentWillMount() {
-    // if authenticated, go to admin
+    if (getAdminToken()) this.props.history.push("/admin");
   }
 
   onSubmit(e) {
     e.preventDefault();
-    let adminToken = 5;
-    /*
+    let loginDetails = {
+      email: this.state.email,
+      password: this.state.password,
+    };
+    let encodedLogin = encodeURIComponent(JSON.stringify(loginDetails));
     axios
-    .get(`http://localhost:8000/api/admin/adminSearchFlights?searchFilters=`)
-    .then((res) => {
-        this.setState({
-            flightsDetails: res.data,
-        });
-    })
-    .catch((err) => {
-        console.log("Error wjen contacting login API.");
-    });
-    */
-    
-    this.props.history.push("/admin");
+      .get(
+        `http://localhost:8000/api/admin/adminLogin?loginDetails=${encodedLogin}`
+      )
+      .then((res) => {
+        setAdminToken(res.data[0]._id);
+        setAdminName(res.data[0].firstName + " " + res.data[0].lastName);
+        if (getAdminToken()) this.props.history.push("/admin");
+        else console.log("token not found");
+      })
+      .catch((err) => {
+        console.log("Error when contacting login API.");
+      });
+
+    //console.log(getAdminToken());
   }
 
   onChange(e) {
@@ -58,6 +68,7 @@ class AdminLogin extends React.Component {
             <div className="col-lg-3"></div>
             <div className="col-lg-6">
               <form onSubmit={this.onSubmit}>
+                <br />
                 <div className="form-group">
                   <label for="exampleInputEmail1">Email Address</label>
                   <input
@@ -66,11 +77,12 @@ class AdminLogin extends React.Component {
                     id="exampleInputEmail1"
                     placeholder=" Email Address"
                     name="email"
-                    value={this.state.flight_number}
+                    value={this.state.email}
                     onChange={this.onChange}
                     required
                   />
                 </div>
+                <br />
                 <div className="form-group">
                   <label for="exampleInputPassword1">Password</label>
                   <input
@@ -79,21 +91,12 @@ class AdminLogin extends React.Component {
                     id="exampleInputPassword1"
                     placeholder=" Password"
                     name="password"
-                    value={this.state.flight_number}
+                    value={this.state.password}
                     onChange={this.onChange}
                     required
                   />
                 </div>
-                <div className="form-check">
-                  <input
-                    type="checkbox"
-                    className="form-check-input"
-                    id="exampleCheck1"
-                  />
-                  <label className="form-check-label" for="exampleCheck1">
-                    Remember Me
-                  </label>
-                </div>
+                <br />
                 <button type="submit" className="btn btn-primary">
                   Log In
                 </button>
