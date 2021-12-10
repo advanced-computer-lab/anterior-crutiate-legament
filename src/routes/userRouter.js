@@ -4,8 +4,38 @@ var userRouter = express.Router () ;
 const Flights = new require('../models/Flights.js')() ;
 const User = new require('../models/User.js')() ;
 
-// update user information
 
+ 
+
+userRouter.route('/searchFlights')
+.get(async(req,res,next)=>{
+
+    const searchFilters = JSON.parse(req.query.searchFilters); 
+    var results;
+
+    if( searchFilters.from &&
+        searchFilters.to  &&
+        searchFilters.departure_time &&
+        searchFilters.arrival_time &&
+        searchFilters.flight_class &&
+        searchFilters.adults &&
+        searchFilters.childs   
+    ) {
+        console.log("nnojjpowf"); 
+        console.log(searchFilters); 
+
+        results = await Flights.searchFlights(searchFilters) ;
+    }
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify(results));
+})
+.all((req,res,next)=>{
+    res.statusCode = 403;
+    res.end('operation not supported');
+});
+
+// update user information
+/* 
 userRouter.route('/editUserData')
     .put(async (req,res,next)=>{
         await User.updateUser(req.body);
@@ -14,10 +44,10 @@ userRouter.route('/editUserData')
     .all((req,res,next)=>{
         res.statusCode = 403;
         res.end('operation not supported');
-    });
+    }); */
 
 
-//get the user information
+/* //get the user information
 userRouter.route('/getUserDetails')
     .get(async(req,res,next)=>{
         let results = await User.searchUser(JSON.parse(req.query.searchFilters)) ;
@@ -100,6 +130,6 @@ userRouter.route('/reserveSeats')
         res.end('operation not supported');
     });
 
-
+ */
 
 module.exports = userRouter ;

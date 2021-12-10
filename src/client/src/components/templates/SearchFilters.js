@@ -48,7 +48,7 @@ export default function SearchResults (props) {
       to: "",
       departure_time: new Date(),
       arrival_time: new Date(),
-      class: "",
+      flight_class: "",
       adults: 0 ,
       childs:0
     }
@@ -101,9 +101,9 @@ export default function SearchResults (props) {
             <FormControl style={{width:"9%",margin:"0.7%"}}>
             <InputLabel id="demo-simple-select-label">Class</InputLabel>
               <Select
-                value={searchFilters.class}
+                value={searchFilters.flight_class}
                 label="Class"
-                onChange = {(e) => setSearchFilters({...searchFilters, class: e.target.value})}  
+                onChange = {(e) => setSearchFilters({...searchFilters, flight_class: e.target.value})}  
                 >
                 <MenuItem value={"First"}>First</MenuItem>
                 <MenuItem value={"Business"}>Business</MenuItem>

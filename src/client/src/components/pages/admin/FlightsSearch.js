@@ -19,7 +19,7 @@ class FlightsSearch extends React.Component {
   onSubmit(e) {
     e.preventDefault();
     const flightData = {};
-    if (this.state.flight_number != "")
+    if (this.state.flight_number != "") 
       flightData.flight_number = this.state.flight_number;
     if (this.state.from != "") flightData.from = this.state.from;
     if (this.state.to != "") flightData.to = this.state.to;
