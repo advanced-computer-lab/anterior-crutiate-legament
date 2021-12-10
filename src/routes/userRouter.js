@@ -2,13 +2,14 @@ const express = require('express') ;
 var userRouter = express.Router () ;
 
 const Flights = new require('../models/Flights.js')() ;
-const User = new require('../models/User.js')() ;
+const Users = new require('../models/User.js')() ;
 
 // update user information
 
 userRouter.route('/editUserData')
     .put(async (req,res,next)=>{
-        await User.updateUser(req.body);
+        console.log(req.body);
+        await Users.updateUser(JSON.parse(JSON.stringify(req.body)));
         res.end("User Details Updated");
     })
     .all((req,res,next)=>{
@@ -20,7 +21,8 @@ userRouter.route('/editUserData')
 //get the user information
 userRouter.route('/getUserDetails')
     .get(async(req,res,next)=>{
-        let results = await User.searchUser(JSON.parse(req.query.searchFilters)) ;
+        console.log(req.query);
+        let results = await Users.searchUser(JSON.parse(JSON.stringify(req.query))) ;
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(results));
     })
@@ -32,7 +34,8 @@ userRouter.route('/getUserDetails')
 // register a user
  userRouter.route('/userRegister')
     .post(async (req,res,next)=>{
-        await User.createUser(req.body) ;
+        console.log("HI WORLD!");
+        await Users.createUser(JSON.parse(JSON.stringify(req.body))) ;
         res.end('user register');
     })
     .all((req,res,next)=>{
@@ -40,10 +43,15 @@ userRouter.route('/getUserDetails')
         res.end('operation not supported');
     });
 
-// admin login
+// user login
 userRouter.route('/userLogin')
     .get(async(req,res,next)=>{
-        let results = await User.loginUser(JSON.parse(req.query.searchFilters)) ;
+        let results;
+        const info = JSON.parse(JSON.stringify(req.query.signInfo));
+        results = await Users.loginUser(info) ;
+        console.log(results);
+        if(results.length!=0) res.statusCode = 200;
+        else res.statusCode = 203;
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(results));
     })
@@ -54,22 +62,18 @@ userRouter.route('/userLogin')
 
 
 userRouter.route('/cancelReservation')
-    .delete(async (req,res,next)=>{
-        var result =  await User.cancelReservation(req.body);
-        let requestBody = {_id: result.flight_id,seats:  result.seats};
-        if(req.cabin === "First") {
+    .put(async (req,res,next)=>{
+        await Users.cancelReservation(JSON.parse(JSON.stringify(req.body)));
+        let requestBody = {flight_id: req.body.flightId,seats:  req.body.seats};
+        if(req.body.cabin === "First") {
             requestBody.firstCabin = true
-        } else  if(req.cabin === "Business") {
+        } else  if(req.body.cabin === "Business") {
             requestBody.businessCabin = true
         } else {
             requestBody.economyCabin = true
         }
         Flights.unreserveSeats(requestBody)
-        if(result){
-            res.send("Reservation cancelled successfully");
-        }else{
-            res.send("There's no such reservation");
-        }
+        res.send("Reservation cancelled successfully");
     })
     .all((req,res,next)=>{
         res.statusCode = 403;
@@ -78,17 +82,19 @@ userRouter.route('/cancelReservation')
 
 
 userRouter.route('/reserveSeats')
-    .delete(async (req,res,next)=>{
-        var result =  await User.reserveSeats(req.body);
+    .put(async (req,res,next)=>{
+        var result =  await Users.reserveSeats(JSON.parse(JSON.stringify(req.body)));
         let requestBody = {_id: result.flight_id,seats:  result.seats};
-        if(req.cabin === "First") {
+        console.log(result+"      hello world!");
+        if(result.cabin === "First") {
             requestBody.firstCabin = true
-        } else  if(req.cabin === "Business") {
+        } else  if(result.cabin === "Business") {
             requestBody.businessCabin = true
         } else {
             requestBody.economyCabin = true
         }
-        Flights.reserveSeats(requestBody)
+        console.log(requestBody+"      hello world!");
+        Flights.reserveSeats(requestBody);
         if(result){
             res.send("Reservation done successfully");
         }else{
@@ -96,8 +102,9 @@ userRouter.route('/reserveSeats')
         }
     })
     .all((req,res,next)=>{
+        console.log(req.body);
         res.statusCode = 403;
-        res.end('operation not supported');
+        res.end('hello world');
     });
 
 

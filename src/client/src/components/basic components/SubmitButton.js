@@ -6,7 +6,7 @@ function SubmitButton (props) {
 
      return (
 
-        <button class="button-40" role="button">{props.buttonText}</button>
+        <button class="button-40" role="button" onClick={props.click}>{props.buttonText}</button>
 
         );
     }
