@@ -14,8 +14,6 @@ import axios from "axios";
  
  
 function SignIn (props){
-
-
     const history = useHistory();
     const [submitted, setSubmitted] = useState(false);
     const [error, setError] = useState(false);
