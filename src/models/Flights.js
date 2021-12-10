@@ -108,6 +108,12 @@ flightSchema.methods.updateFlight= async flightData =>{
         Economy: flightData.Economy ? flightData.Economy : oldFlight.Economy,
         Business: flightData.Business ? flightData.Business : oldFlight.Business,
         First: flightData.First ? flightData.First : oldFlight.First,
+        adultEconomyPrice: flightData.adultEconomyPrice ? flightData.adultEconomyPrice : oldFlight.adultEconomyPrice,
+        adultBusinessPrice: flightData.adultBusinessPrice ? flightData.adultBusinessPrice : oldFlight.adultBusinessPrice,
+        adultFirstPrice: flightData.adultFirstPrice ? flightData.adultFirstPrice : oldFlight.adultFirstPrice,
+        childEconomyPrice: flightData.childEconomyPrice ? flightData.childEconomyPrice : oldFlight.childEconomyPrice,
+        childBusinessPrice: flightData.childBusinessPrice ? flightData.childBusinessPrice : oldFlight.childBusinessPrice,
+        childFirstPrice: flightData.childFirstPrice ? flightData.childFirstPrice : oldFlight.childFirstPrice,
     },
     {new:true},
    );
@@ -186,7 +192,5 @@ flightSchema.methods.unreserveSeats = async requestBody => {
 
 
 var Flights = mongoose.model('Flights',flightSchema);
-
-
 
 module.exports = Flights;

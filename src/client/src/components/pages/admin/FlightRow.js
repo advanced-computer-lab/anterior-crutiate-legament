@@ -13,11 +13,14 @@ class FlightRow extends React.Component {
         <td>{this.props.data.flight_number}</td>
         <td>{this.props.data.from}</td>
         <td>{this.props.data.to}</td>
-        <td>{this.props.data.departure_time}</td>
-        <td>{this.props.data.arrival_time}</td>
+        <td>{(new Date(this.props.data.departure_time)).toLocaleString()}</td>
+        <td>{(new Date(this.props.data.arrival_time)).toLocaleString()}</td>
         <td>{this.props.data.Economy}</td>
         <td>{this.props.data.Business}</td>
         <td>{this.props.data.First}</td>
+        <td>{this.props.data.adultEconomyPrice + " " + this.props.data.childEconomyPrice}</td>
+        <td>{this.props.data.adultBusinessPrice + " " + this.props.data.childBusinessPrice}</td>
+        <td>{this.props.data.adultFirstPrice + " " + this.props.data.childFirstPrice}</td>
         <td>
           <Link
             to={{
@@ -25,7 +28,7 @@ class FlightRow extends React.Component {
               state: {"flight_id": `${this.props.data._id}`},
             }}
           >
-            <Button>Primary</Button>
+            <p className="btn btn-secondary">Edit</p>
           </Link>
         </td>
       </tr>
