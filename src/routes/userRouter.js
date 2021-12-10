@@ -2,13 +2,14 @@ const express = require('express') ;
 var userRouter = express.Router () ;
 
 const Flights = new require('../models/Flights.js')() ;
-const User = new require('../models/User.js')() ;
+const Users = new require('../models/User.js')() ;
 
 // update user information
 
 userRouter.route('/editUserData')
     .put(async (req,res,next)=>{
-        await User.updateUser(req.body);
+        console.log(req.body);
+        await Users.updateUser(JSON.parse(JSON.stringify(req.body)));
         res.end("User Details Updated");
     })
     .all((req,res,next)=>{
@@ -20,7 +21,7 @@ userRouter.route('/editUserData')
 //get the user information
 userRouter.route('/getUserDetails')
     .get(async(req,res,next)=>{
-        let results = await User.searchUser(JSON.parse(req.query.searchFilters)) ;
+        let results = await Users.searchUser(JSON.parse(req.query.in)) ;
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(results));
     })
@@ -32,7 +33,7 @@ userRouter.route('/getUserDetails')
 // register a user
  userRouter.route('/userRegister')
     .post(async (req,res,next)=>{
-        await User.createUser(req.body) ;
+        await Users.createUser(JSON.parse(JSON.stringify(req.body))) ;
         res.end('user register');
     })
     .all((req,res,next)=>{
@@ -43,7 +44,7 @@ userRouter.route('/getUserDetails')
 // admin login
 userRouter.route('/userLogin')
     .get(async(req,res,next)=>{
-        let results = await User.loginUser(JSON.parse(req.query.searchFilters)) ;
+        let results = await Users.loginUser(JSON.parse(JSON.stringify(req.body))) ;
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(results));
     })
@@ -55,7 +56,7 @@ userRouter.route('/userLogin')
 
 userRouter.route('/cancelReservation')
     .delete(async (req,res,next)=>{
-        var result =  await User.cancelReservation(req.body);
+        var result =  await Users.cancelReservation(JSON.parse(JSON.stringify(req.body)));
         let requestBody = {_id: result.flight_id,seats:  result.seats};
         if(req.cabin === "First") {
             requestBody.firstCabin = true
@@ -79,7 +80,7 @@ userRouter.route('/cancelReservation')
 
 userRouter.route('/reserveSeats')
     .delete(async (req,res,next)=>{
-        var result =  await User.reserveSeats(req.body);
+        var result =  await Users.reserveSeats(JSON.parse(JSON.stringify(req.body)));
         let requestBody = {_id: result.flight_id,seats:  result.seats};
         if(req.cabin === "First") {
             requestBody.firstCabin = true
