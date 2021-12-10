@@ -12,10 +12,7 @@ import SubmitButton from '../../basic components/SubmitButton';
  
  
 function SignIn (props){
-
-
-
- 
+     
         return (
 
             <>
