@@ -47,7 +47,7 @@ class AddAdmin extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="container-fluid">
         <AdminNavbar />
         <div className="row">
           <div className="col-3"></div>

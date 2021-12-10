@@ -22,6 +22,9 @@ class FlightsTable extends React.Component {
           <th>Available Economy Seats</th>
           <th>Available Business Seats</th>
           <th>Available First Class Seats</th>
+          <th>Economy Price (Adult - Child)</th>
+          <th>Business Price</th>
+          <th>First Class Price</th>
           <th></th>
         </tr>
         {flightRows}
