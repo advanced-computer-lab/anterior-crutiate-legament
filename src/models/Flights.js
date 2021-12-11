@@ -22,7 +22,7 @@ const flightSchema = new Schema ({
         min: Date()
     },
     arrival_time:{
-        type: Date,
+        type: Date  ,
         required: true,
         min: this.departure_time
     },
@@ -41,6 +41,49 @@ const flightSchema = new Schema ({
         default: 0,
         min:0
     },
+
+    childEconomyPrice:{
+        type: Number,
+        default: 0,
+        min:0
+    },
+    childBusinessPrice:{
+        type: Number,
+        default: 0,
+        min: 0
+    },
+    childFirstPrice:{
+        type: Number,
+        default: 0,
+        min:0
+    },
+    adultEconomyPrice:{
+        type: Number,
+        default: 0,
+        min:0
+    },
+    adultBusinessPrice:{
+        type: Number,
+        default: 0,
+        min: 0
+    },
+    adultFirstPrice:{
+        type: Number,
+        default: 0,
+        min:0
+    },
+    businessCabin:{
+        type:[Number],
+        default:[],
+    },
+    firstCabin:{
+        type:[Number],
+        default:[],
+    },
+    economyCabin:{
+        type:[Number],
+        default:[],
+    }
 },
 { 
     timestamps: true 
@@ -63,8 +106,14 @@ flightSchema.methods.updateFlight= async flightData =>{
         departure_time: flightData.departure_time ? flightData.departure_time : oldFlight.departure_time,
         arrival_time: flightData.arrival_time ? flightData.arrival_time : oldFlight.arrival_time,
         Economy: flightData.Economy ? flightData.Economy : oldFlight.Economy,
-        business: flightData.business ? flightData.business : oldFlight.business,
+        Business: flightData.Business ? flightData.Business : oldFlight.Business,
         First: flightData.First ? flightData.First : oldFlight.First,
+        adultEconomyPrice: flightData.adultEconomyPrice ? flightData.adultEconomyPrice : oldFlight.adultEconomyPrice,
+        adultBusinessPrice: flightData.adultBusinessPrice ? flightData.adultBusinessPrice : oldFlight.adultBusinessPrice,
+        adultFirstPrice: flightData.adultFirstPrice ? flightData.adultFirstPrice : oldFlight.adultFirstPrice,
+        childEconomyPrice: flightData.childEconomyPrice ? flightData.childEconomyPrice : oldFlight.childEconomyPrice,
+        childBusinessPrice: flightData.childBusinessPrice ? flightData.childBusinessPrice : oldFlight.childBusinessPrice,
+        childFirstPrice: flightData.childFirstPrice ? flightData.childFirstPrice : oldFlight.childFirstPrice,
     },
     {new:true},
    );
@@ -72,43 +121,109 @@ flightSchema.methods.updateFlight= async flightData =>{
 
 
 flightSchema.methods.searchFlights = async searchFilters => {
+<<<<<<< HEAD
     console.log(searchFilters);
     if(Object.keys(searchFilters).length === 0) {   
         return await Flights.find({}); 
     } 
     else if (searchFilters._id) {                  
+=======
+    if(Object.keys(searchFilters).length === 0) {
+        return await Flights.find({});
+    }
+    else if (searchFilters._id) {
+>>>>>>> dev
         console.log(searchFilters._id);            //if searching is done by _id >>> it is unique               
         return await Flights.find({_id: searchFilters._id});
     }
     else {
         let query = [] ;
         if(searchFilters.flight_number) {
-            query.push({flight_number:searchFilters.flight_number}); 
+            query.push({flight_number:searchFilters.flight_number});
         }
         if(searchFilters.from) {
-            query.push({from:searchFilters.from}); 
+            query.push({from:searchFilters.from});
         }
         if(searchFilters.to) {
-            query.push({to:searchFilters.to}) ; 
+            query.push({to:searchFilters.to}) ;
         }
         if(searchFilters.departure_time) {
             query.push({departure_time:{$gte:searchFilters.departure_time}}) ;
         }
         if(searchFilters.arrival_time) {
-            query.push({departure_time:{$lte:searchFilters.arrival_time}}) ;
+            query.push({arrival_time:{$lte:searchFilters.arrival_time}}) ;
+        }
+        if(searchFilters.flight_class && searchFilters.flight_class == "Business"){
+            query.push({Business:{$gte:`${parseInt(searchFilters.adults) +   parseInt( searchFilters.childs)}`}}) ;
+        }
+        if(searchFilters.flight_class && searchFilters.flight_class == "Economy"){
+            query.push({Economy:{$gte:`${parseInt(searchFilters.adults) +   parseInt( searchFilters.childs)}`}}) ;
+        }
+        if(searchFilters.flight_class && searchFilters.flight_class == "First"){
+            query.push({First:{$gte:`${parseInt(searchFilters.adults) +   parseInt( searchFilters.childs)}`}}) ;
         }
         return await Flights.find({$and:query});
     }
- }
-
+}
 flightSchema.methods.createFlight = async requestBody => {
     return await Flights.create(requestBody);
 }
 
 
+flightSchema.methods.reserveSeats = async requestBody => {
+    var arr = requestBody.seats;
+    console.log(requestBody);
+    if(requestBody.firstCabin){
+    return await Flights.findByIdAndUpdate(requestBody._id,
+        {$push:{firstCabin:arr}});}
+    if(requestBody.businessCabin){
+        return await Flights.findByIdAndUpdate(requestBody._id,
+            {$push:{businessCabin:arr}});}
+    if(requestBody.economyCabin){
+        return await Flights.findByIdAndUpdate(requestBody._id,
+            {$push:{economyCabin:arr}});}
+}
+
+flightSchema.methods.unreserveSeats = async requestBody => {
+    var arr = requestBody.seats;
+    const flight = await Flights.findById(requestBody.flight_id);
+    console.log(flight);
+    if(requestBody.firstCabin){
+        var newfirstCabin = [];
+        for(j =0; j<flight.firstCabin.length; j++) newfirstCabin.push(flight.firstCabin[j]);
+        for(j =0; j<arr.length; j++){
+            const index = newfirstCabin.indexOf(arr[j]);
+            if (index > -1) {
+                newfirstCabin.splice(index, 1);
+            }
+        }
+        return await Flights.findByIdAndUpdate(requestBody.flight_id,
+        {firstCabin:newfirstCabin});}
+    else if(requestBody.businessCabin){
+        var newBusinessCabin = [];
+        for(j =0; j<flight.businessCabin.length; j++) newBusinessCabin.push(flight.businessCabin[j]);
+        for(j =0; j<arr.length; j++){
+            const index = newBusinessCabin.indexOf(arr[j]);
+            if (index > -1) {
+                newBusinessCabin.splice(index, 1);
+            }
+        }
+        return await Flights.findByIdAndUpdate(requestBody.flight_id,
+            {businessCabin:newBusinessCabin});}
+    else if(requestBody.economyCabin){
+        var newEconomyCabin = [];
+        for(j =0; j<flight.economyCabin.length; j++) newEconomyCabin.push(flight.economyCabin[j]);
+        for(j =0; j<arr.length; j++){
+            const index = newEconomyCabin.indexOf(arr[j]);
+            if (index > -1) {
+                newEconomyCabin.splice(index, 1);
+            }
+        }
+        return await Flights.findByIdAndUpdate(requestBody.flight_id,
+            {economyCabin:newEconomyCabin});}
+}
+
 
 var Flights = mongoose.model('Flights',flightSchema);
-
-
 
 module.exports = Flights;

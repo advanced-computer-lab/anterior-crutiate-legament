@@ -1,7 +1,8 @@
 const express = require('express') ;
 var adminRouter = express.Router () ;
 
-const Flights = new require('../models/Flights')() ;
+const Flights = new require('../models/Flights.js')() ;
+const Admin = new require('../models/Admin.js')() ;
 
 
 
@@ -51,7 +52,29 @@ adminRouter.route('/adminSearchFlights')
 adminRouter.route('/adminCreateFlight')
 .post(async (req,res,next)=>{
     await Flights.createFlight(req.body) ;
-    res.end('flight created');  
+    res.end('flight created');
+})
+.all((req,res,next)=>{
+    res.statusCode = 403;
+    res.end('operation not supported');
+});
+
+// admin login
+adminRouter.route('/adminLogin')
+.get(async(req,res,next)=>{
+    let results = await Admin.loginAdmin(JSON.parse(req.query.loginDetails)) ;
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify(results));
+})
+.all((req,res,next)=>{
+    res.statusCode = 403;
+    res.end('operation not supported');
+});
+
+adminRouter.route('/addAdmin')
+.post(async (req,res,next)=>{
+    await Admin.createAdmin(req.body);
+    res.end('New Admin Added');
 })
 .all((req,res,next)=>{
     res.statusCode = 403;

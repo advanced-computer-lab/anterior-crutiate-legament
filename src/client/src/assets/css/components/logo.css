@@ -1,0 +1,19 @@
+#logo {
+    width: 25% ;
+    height: auto;
+}
+
+.logo-wrapper {
+    word-wrap: break-word;
+    margin-top: 15%;
+    margin-left: 15% ;
+    margin-bottom: 0%;
+}
+
+ 
+a span {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #3B566E;
+    margin-left: 5%;
+}
