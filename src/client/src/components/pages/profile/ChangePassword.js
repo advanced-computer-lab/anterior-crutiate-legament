@@ -11,6 +11,7 @@ export default class ChangePassword extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            personID:props.personID,
             currentPassword: "",
             newPassword: "",
             confirmPassword: "",
@@ -19,20 +20,21 @@ export default class ChangePassword extends React.Component {
     }
     componentDidMount() {
         const data = {
-            _id: "61b38e1f43fb1cc2ab42101b"
+            _id: this.state.personID
         };
         let encodedId = encodeURIComponent(JSON.stringify(data));
 
         axios.get(`http://localhost:8000/api/user/getUserDetails?in=${encodedId}`)
             .then((res) => {
-                console.log(res.data[0].password+" test")
                 this.setState({
                     personPass: res.data[0].password,
                     currentPassword: res.data[0].password
                 })
-                console.log(this.state.currentPassword+" test")
             });
     }
+    
+        
+    
     render() {
         return (
             <div>
@@ -87,14 +89,15 @@ export default class ChangePassword extends React.Component {
                                     swal("Error", "Check your current password", "error");
                                 }else{
                                     const data = {
-                                        _id: "61b38e1f43fb1cc2ab42101b",
+                                        _id: this.state.personID,
                                         password: this.state.newPassword
                                     };
                                     let encodedId = encodeURIComponent(JSON.stringify(data));
-                                    console.log(this.state.passport);
+                                    
                                      axios.put(`http://localhost:8000/api/user/editUserData`,data);
            
                                     swal("Done", "Your Password is up to date", "success");
+                                    
                                 }
                                 
                             }}
