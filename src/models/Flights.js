@@ -121,34 +121,43 @@ flightSchema.methods.updateFlight= async flightData =>{
 
 
 flightSchema.methods.searchFlights = async searchFilters => {
-    if(Object.keys(searchFilters).length === 0) {   
-        return await Flights.find({}); 
-    } 
-    else if (searchFilters._id) {                  
+    if(Object.keys(searchFilters).length === 0) {
+        return await Flights.find({});
+    }
+    else if (searchFilters._id) {
         console.log(searchFilters._id);            //if searching is done by _id >>> it is unique               
         return await Flights.find({_id: searchFilters._id});
     }
     else {
         let query = [] ;
         if(searchFilters.flight_number) {
-            query.push({flight_number:searchFilters.flight_number}); 
+            query.push({flight_number:searchFilters.flight_number});
         }
         if(searchFilters.from) {
-            query.push({from:searchFilters.from}); 
+            query.push({from:searchFilters.from});
         }
         if(searchFilters.to) {
-            query.push({to:searchFilters.to}) ; 
+            query.push({to:searchFilters.to}) ;
         }
         if(searchFilters.departure_time) {
             query.push({departure_time:{$gte:searchFilters.departure_time}}) ;
         }
         if(searchFilters.arrival_time) {
-            query.push({departure_time:{$lte:searchFilters.arrival_time}}) ;
+            query.push({arrival_time:{$lte:searchFilters.arrival_time}}) ;
         }
+        if(searchFilters.flight_class && searchFilters.flight_class == "Business"){
+            query.push({Business:{$gte:`${parseInt(searchFilters.adults) +   parseInt( searchFilters.childs) }`}}) ;
+        }
+        if(searchFilters.flight_class && searchFilters.flight_class == "Economy"){
+            query.push({Economy:{$gte:`${parseInt(searchFilters.adults) +   parseInt( searchFilters.childs) }`}}) ;
+        }
+        if(searchFilters.flight_class && searchFilters.flight_class == "First"){
+            query.push({First:{$gte:`${parseInt(searchFilters.adults) +   parseInt( searchFilters.childs) }`}}) ;
+        }
+        console.log(query) ;
         return await Flights.find({$and:query});
     }
- }
-
+}
 flightSchema.methods.createFlight = async requestBody => {
     return await Flights.create(requestBody);
 }

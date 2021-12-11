@@ -4,6 +4,33 @@ var userRouter = express.Router () ;
 const Flights = new require('../models/Flights.js')() ;
 const Users = new require('../models/User.js')() ;
 
+// user search flights
+userRouter.route('/searchFlights')
+    .get(async(req,res,next)=>{
+
+        const searchFilters = JSON.parse(req.query.searchFilters);
+        var results = [];
+
+        console.log(searchFilters) ;
+        if( searchFilters.from &&
+            searchFilters.to  &&
+            searchFilters.departure_time &&
+            searchFilters.flight_class &&
+            searchFilters.adults &&
+            searchFilters.childs
+        ) {
+            results = await Flights.searchFlights(searchFilters) ;
+            results = results.map(({_id, flight_number ,from,to, departure_time, arrival_time}) =>({_id, flight_number ,from,to, departure_time, arrival_time}) ) ;
+        }
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify(results));
+    })
+    .all((req,res,next)=>{
+        res.statusCode = 403;
+        res.end('operation not supported');
+    });
+
+
 // update user information
 
 userRouter.route('/editUserData')
