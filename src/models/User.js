@@ -172,7 +172,7 @@ userSchema.methods.reserveSeats = async requestBody => {
     let newcurrentUser  = await Users.findById(requestBody.userId);
     return await retres;
 }
-flightSchema.methods.searchFlights = async searchFilters => {
+userSchema.methods.searchFlights = async searchFilters => {
     if(Object.keys(searchFilters).length === 0) {   
         return await Flights.find({}); 
     } 
