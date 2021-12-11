@@ -237,13 +237,13 @@ function Row(props) {
                        <TableCell align="right">
                         <Link
                           to={{
-                            pathname: "/checkOut",
+                            pathname: "/flightsSummary",
                             state: {"departure_id": `${row._id}`,
                                     "arrival_id" : `${returnRow._id}`
                                   },
                           }}
                         >
-                          <button className="btn btn-secondary">Check Out</button>
+                          <button className="btn btn-secondary">Continue</button>
                         </Link>
                       </TableCell>
                        

@@ -73,16 +73,16 @@ const flightSchema = new Schema ({
         min:0
     },
     businessCabin:{
-        type:[[Number]],
-        default:undefined,
+        type:[Number],
+        default:[],
     },
     firstCabin:{
-        type:[[Number]],
-        default:undefined,
+        type:[Number],
+        default:[],
     },
     economyCabin:{
-        type:[[Number]],
-        default:undefined,
+        type:[Number],
+        default:[],
     }
 },
 { 
@@ -108,6 +108,12 @@ flightSchema.methods.updateFlight= async flightData =>{
         Economy: flightData.Economy ? flightData.Economy : oldFlight.Economy,
         Business: flightData.Business ? flightData.Business : oldFlight.Business,
         First: flightData.First ? flightData.First : oldFlight.First,
+        adultEconomyPrice: flightData.adultEconomyPrice ? flightData.adultEconomyPrice : oldFlight.adultEconomyPrice,
+        adultBusinessPrice: flightData.adultBusinessPrice ? flightData.adultBusinessPrice : oldFlight.adultBusinessPrice,
+        adultFirstPrice: flightData.adultFirstPrice ? flightData.adultFirstPrice : oldFlight.adultFirstPrice,
+        childEconomyPrice: flightData.childEconomyPrice ? flightData.childEconomyPrice : oldFlight.childEconomyPrice,
+        childBusinessPrice: flightData.childBusinessPrice ? flightData.childBusinessPrice : oldFlight.childBusinessPrice,
+        childFirstPrice: flightData.childFirstPrice ? flightData.childFirstPrice : oldFlight.childFirstPrice,
     },
     {new:true},
    );
@@ -150,6 +156,7 @@ flightSchema.methods.createFlight = async requestBody => {
 
 flightSchema.methods.reserveSeats = async requestBody => {
     var arr = requestBody.seats;
+    console.log(requestBody);
     if(requestBody.firstCabin){
     return await Flights.findByIdAndUpdate(requestBody._id,
         {$push:{firstCabin:arr}});}
@@ -163,20 +170,44 @@ flightSchema.methods.reserveSeats = async requestBody => {
 
 flightSchema.methods.unreserveSeats = async requestBody => {
     var arr = requestBody.seats;
+    const flight = await Flights.findById(requestBody.flight_id);
+    console.log(flight);
     if(requestBody.firstCabin){
-        return await Flights.findByIdAndUpdate(requestBody._id,
-        {$pull:{firstCabin:arr}});}
-    if(requestBody.businessCabin){
-        return await Flights.findByIdAndUpdate(requestBody._id,
-            {$pull:{businessCabin:arr}});}
-    if(requestBody.economyCabin){
-        return await Flights.findByIdAndUpdate(requestBody._id,
-            {$pull:{economyCabin:arr}});}
+        var newfirstCabin = [];
+        for(j =0; j<flight.firstCabin.length; j++) newfirstCabin.push(flight.firstCabin[j]);
+        for(j =0; j<arr.length; j++){
+            const index = newfirstCabin.indexOf(arr[j]);
+            if (index > -1) {
+                newfirstCabin.splice(index, 1);
+            }
+        }
+        return await Flights.findByIdAndUpdate(requestBody.flight_id,
+        {firstCabin:newfirstCabin});}
+    else if(requestBody.businessCabin){
+        var newBusinessCabin = [];
+        for(j =0; j<flight.businessCabin.length; j++) newBusinessCabin.push(flight.businessCabin[j]);
+        for(j =0; j<arr.length; j++){
+            const index = newBusinessCabin.indexOf(arr[j]);
+            if (index > -1) {
+                newBusinessCabin.splice(index, 1);
+            }
+        }
+        return await Flights.findByIdAndUpdate(requestBody.flight_id,
+            {businessCabin:newBusinessCabin});}
+    else if(requestBody.economyCabin){
+        var newEconomyCabin = [];
+        for(j =0; j<flight.economyCabin.length; j++) newEconomyCabin.push(flight.economyCabin[j]);
+        for(j =0; j<arr.length; j++){
+            const index = newEconomyCabin.indexOf(arr[j]);
+            if (index > -1) {
+                newEconomyCabin.splice(index, 1);
+            }
+        }
+        return await Flights.findByIdAndUpdate(requestBody.flight_id,
+            {economyCabin:newEconomyCabin});}
 }
 
 
 var Flights = mongoose.model('Flights',flightSchema);
-
-
 
 module.exports = Flights;

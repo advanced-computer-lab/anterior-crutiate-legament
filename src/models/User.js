@@ -78,16 +78,17 @@ userSchema.methods.searchUser = async searchFilters => {
 }
 
 userSchema.methods.loginUser = async searchFilters => {
-    if(Object.keys(searchFilters).length === 0) {
+    const info = JSON.parse(searchFilters);
+    if(Object.keys(info).length === 0) {
         return undefined;
     }
     else{
         let query = [] ;
-        if(searchFilters.email) {
-            query.push({email:searchFilters.email}) ;
+        if(info.email) {
+            query.push({email:info.email}) ;
         }
-        if(searchFilters.password) {
-            query.push({password:searchFilters.password}) ;
+        if(info.password) {
+            query.push({password:info.password}) ;
         }
         return await Users.find({$and:query});
     }
