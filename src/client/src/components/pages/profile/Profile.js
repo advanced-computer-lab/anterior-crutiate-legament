@@ -1,10 +1,12 @@
-import React, { useState,useRef } from 'react';
+import React, {useState, useEffect} from 'react';
 import SideNav from '../../templates/SideNav';
+import { getUserToken } from "../../../handleToken.js";
 import Footer from "../../templates/Footer";
 import PageHeaderSvg from '../../basic components/PageHeaderSvg';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import ProfileNav from './ProfileNav.js'
+import {useHistory } from "react-router-dom";
 
 import 
 {
@@ -14,6 +16,13 @@ from '@material-ui/core';
 import { Stack } from '@mui/material';
 
 export default function Profile(){
+
+    const history = useHistory();
+    useEffect( () => {
+        if(!getUserToken())
+            history.push("/");
+    }, []);
+
     return (
         <Grid container >
             <SideNav />
