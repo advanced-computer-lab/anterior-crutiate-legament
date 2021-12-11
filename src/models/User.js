@@ -106,6 +106,7 @@ userSchema.methods.getReservedSeats = async requestBody => {
 }
 
 userSchema.methods.cancelReservation = async requestBody => {
+    
     var arr = requestBody.seats;
     const currentUser  = await Users.findById(requestBody.userId);
     var newReservations =[] ;
@@ -126,6 +127,7 @@ userSchema.methods.cancelReservation = async requestBody => {
                 seats : newArr
             }
             retres = newreserv;
+            if(newreserv.seats.length>0)
             newReservations.push(newreserv);
 
         }else{
@@ -172,7 +174,7 @@ userSchema.methods.reserveSeats = async requestBody => {
     let newcurrentUser  = await Users.findById(requestBody.userId);
     return await retres;
 }
-flightSchema.methods.searchFlights = async searchFilters => {
+userSchema.methods.searchFlights = async searchFilters => {
     if(Object.keys(searchFilters).length === 0) {   
         return await Flights.find({}); 
     } 
