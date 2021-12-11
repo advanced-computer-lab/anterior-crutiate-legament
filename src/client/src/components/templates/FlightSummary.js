@@ -7,6 +7,9 @@ import PageHeaderSvg from "../basic components/PageHeaderSvg";
 
 import { Grid } from "@material-ui/core";
 import { Stack } from "@mui/material";
+import axios from "axios";
+import FlightRow from "../pages/admin/FlightRow";
+import FlightsTable from "../pages/admin/FlightsTable";
 
 export default function RootFunction(props) {
   const history = useHistory();
@@ -18,9 +21,21 @@ class FlightSummary extends React.Component {
     super(props);
   }
 
-  render() {
+   render() {
+    let encodedSearchTerms = encodeURIComponent(JSON.stringify({_id:this.props._id}));
+    console.log("HELLO WORLD!");
+    console.log(encodedSearchTerms);
+    let flight = axios.get(`http://localhost:8000/api/user/searchFlights?searchFilters=${encodedSearchTerms}`)
+        .then((res) => {
+            console.log("success");
+          console.log(res);
+
+        });
     return (
-        <h1>{this.props.departure_id}</h1>
+        <div>
+            <h1>flight._id</h1>
+        </div>
+
     );
   }
 }
