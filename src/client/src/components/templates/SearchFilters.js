@@ -47,7 +47,7 @@ export default function SearchResults (props) {
       from : "",
       to: "",
       departure_time: new Date(),
-      arrival_time: new Date(),
+      return_time: new Date(),
       flight_class: "",
       adults: 0 ,
       childs:0
@@ -56,10 +56,15 @@ export default function SearchResults (props) {
   
   const [searchResults , setSearchResults] = useState ([]);
   
-    const getSearchResults = async (e) => {
-      //const res = await axios.get(axios.defaults.baseURL+"api/user/searchFlights" , searchFilters) ;
-      
-      setSearchResults(res) ; 
+    const getSearchResults =  (e) => {
+      setSearchResults([]);
+
+      let encodedSearchTerms = encodeURIComponent(JSON.stringify(searchFilters));
+
+      axios.get(`http://localhost:8000/api/user/SearchFlights?searchFilters=${encodedSearchTerms}`)
+           .then((r) => {
+              setSearchResults(r.data);
+           }) ;
     };
 
     return (
@@ -92,9 +97,9 @@ export default function SearchResults (props) {
             />
 
             <DateTimePicker 
-            value={searchFilters.arrival_time} 
+            value={searchFilters.return_time} 
             label="Return" style={{width:"17%", margin:"0.7%"}} 
-            onChange = {(e) => setSearchFilters({...searchFilters, arrival_time: e})} 
+            onChange = {(e) => setSearchFilters({...searchFilters, return_time: e})} 
 
             />
 
@@ -139,7 +144,7 @@ export default function SearchResults (props) {
 
             <hr style = {{marginTop:"20px"}}/>
 
-              <CollapsibleTable searchResults = {searchResults}/>
+              <CollapsibleTable return_time={searchFilters.return_time} flight_class = {searchFilters.flight_class} adults={searchFilters.adults} childs = {searchFilters.childs} searchResults = {searchResults}/>
 
             </Grid>
     ) ;
@@ -163,17 +168,31 @@ function Row(props) {
 
   const getReturnFlights = (e) => {
     if (!open){
-     /* const res = await axios.get(axios.defaults.baseURL+"api/user/searchFlights" , {
+      let encodedSearchTerms = encodeURIComponent(JSON.stringify(
+        {
+          from:  row.to,
+          to: row.from,
+          departure_time: row.arrival_time,
+          flight_class: props.flight_class,
+          adults: props.adults,
+          childs: props.childs
+        }       
+      ));
 
-        from : row.to,
-        to: row.from,
-        departure_time: row.arrival_time ,
-        class: row.class,
-        adults: row.adults,
-        childs: row.childs
+      console.log({
+        from: row.from,
+        to: row.to,
+        departure_time: props.return_time ,
+        flight_class: props.flight_class,
+        adults: props.adults,
+        childs: props.childs
+      }       );
+      axios.get(`http://localhost:8000/api/user/SearchFlights?searchFilters=${encodedSearchTerms}`)
+           .then((r) => {
+             console.log(r);
+            setReturnFlights(r.data);
 
-      }) ;*/
-      setReturnFlights(res); 
+           }) ;
     }
     else{
       setReturnFlights([]);
@@ -187,7 +206,6 @@ function Row(props) {
       console.log(e.t); 
 
   }
-
   return (
     <React.Fragment>
       <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
@@ -205,8 +223,8 @@ function Row(props) {
         </TableCell>
         <TableCell align="left">{row.from}</TableCell>
         <TableCell align="left">{row.to}</TableCell>
-        <TableCell align="left">{format(row.departure_time,"PPPPp")}</TableCell>
-        <TableCell align="left">{format(row.arrival_time,"PPPPp")}</TableCell>
+        <TableCell align="left">{format(Date.parse(row.departure_time),"PPPPp")}</TableCell>
+        <TableCell align="left">{format(Date.parse(row.arrival_time),"PPPPp")}</TableCell>
       </TableRow>
 
       <TableRow>
@@ -234,14 +252,17 @@ function Row(props) {
                       <TableCell align="left">{returnRow.flight_number}</TableCell>
                       <TableCell align="right">{returnRow.from}</TableCell>
                       <TableCell align="right">{returnRow.to}</TableCell>
-                      <TableCell align="right">{format(returnRow.departure_time,"PPPPp")}</TableCell>
-                      <TableCell align="right">{format(returnRow.departure_time,"PPPPp")}</TableCell>
+                      <TableCell align="right">{format(Date.parse(returnRow.departure_time),"PPPPp")}</TableCell>
+                      <TableCell align="right">{format(Date.parse(returnRow.arrival_time),"PPPPp")}</TableCell>
                        <TableCell align="right">
                         <Link
                           to={{
                             pathname: "/checkOut",
-                            state: {"departure_id": `${row._id}`,
-                                    "arrival_id" : `${returnRow._id}`
+                            state: {departure_id: `${row._id}`,
+                                    arrival_id : `${returnRow._id}`,
+                                    flight_class: props.flight_class,
+                                    adults: props.adults,
+                                    childs: props.childs
                                   },
                           }}
                         >
@@ -305,7 +326,9 @@ function CollapsibleTable(props) {
                   </TableHead>
                   <TableBody>
                     {props.searchResults.map((row) => (
-                      <Row id={row._id} row={row} />
+                      <Row id={row._id}
+                      return_time = {props.return_time} flight_class = {props.flight_class} adults={props.adults} childs = {props.childs}
+                      row={row} />
                     ))}
                   </TableBody>
                 </Table>

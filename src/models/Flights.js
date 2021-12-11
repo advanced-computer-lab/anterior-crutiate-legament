@@ -146,13 +146,13 @@ flightSchema.methods.searchFlights = async searchFilters => {
             query.push({arrival_time:{$lte:searchFilters.arrival_time}}) ;
         }
         if(searchFilters.flight_class && searchFilters.flight_class == "Business"){
-            query.push({Business:{$gte:`${searchFilters.adults + searchFilters.childs}`}}) ;
+            query.push({Business:{$gte:`${parseInt(searchFilters.adults) +   parseInt( searchFilters.childs)}`}}) ;
         }
         if(searchFilters.flight_class && searchFilters.flight_class == "Economy"){
-            query.push({Economy:{$gte:`${searchFilters.adults + searchFilters.childs}`}}) ;
+            query.push({Economy:{$gte:`${parseInt(searchFilters.adults) +   parseInt( searchFilters.childs)}`}}) ;
         }
         if(searchFilters.flight_class && searchFilters.flight_class == "First"){
-            query.push({First:{$gte:`${searchFilters.adults +    searchFilters.childs}`}}) ;
+            query.push({First:{$gte:`${parseInt(searchFilters.adults) +   parseInt( searchFilters.childs)}`}}) ;
         }
         console.log(query) ;
         return await Flights.find({$and:query});
