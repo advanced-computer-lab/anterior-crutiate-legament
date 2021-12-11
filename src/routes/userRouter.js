@@ -56,8 +56,8 @@ userRouter.route('/userLogin')
 
 userRouter.route('/cancelReservation')
     .delete(async (req, res, next) => {
-        var result = await Users.cancelReservation(JSON.parse(JSON.stringify(req.body)));
-        let requestBody = { _id: result.flight_id, seats: result.seats };
+        var result = await Users.cancelReservation(req.body);
+        let requestBody = { _id: result.flightId, seats: result.seats };
         if (req.cabin === "First") {
             requestBody.firstCabin = true
         } else if (req.cabin === "Business") {
@@ -79,12 +79,12 @@ userRouter.route('/cancelReservation')
 
 
 userRouter.route('/reserveSeats')
-    .delete(async (req, res, next) => {
-        var result = await Users.reserveSeats(JSON.parse(JSON.stringify(req.body)));
+    .put(async (req, res, next) => {
+        var result = await Users.reserveSeats(req.body);
         let requestBody = { _id: result.flight_id, seats: result.seats };
-        if (req.cabin === "First") {
+        if (req.body.cabin === "First") {
             requestBody.firstCabin = true
-        } else if (req.cabin === "Business") {
+        } else if (req.body.cabin === "Business") {
             requestBody.businessCabin = true
         } else {
             requestBody.economyCabin = true
@@ -102,15 +102,26 @@ userRouter.route('/reserveSeats')
     });
 
 
+//get Flight info using it's id
+userRouter.route('/flightData')
+.get(async(req,res,next)=>{
+    let results = await Flights.searchFlights(JSON.parse(req.query.searchFilters)) ;
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify(results));
+})
+.all((req,res,next)=>{
+    res.statusCode = 403;
+    res.end('operation not supported');
+});
 
 // Search Flight
 userRouter.route('/searchFlights')
     .get(async (req, res, next) => {
-
+        
         const searchFilters = JSON.parse(req.query.searchFilters);
         var results = [];
 
-        console.log(searchFilters);
+        
         if (searchFilters.from &&
             searchFilters.to &&
             searchFilters.departure_time &&
@@ -120,8 +131,10 @@ userRouter.route('/searchFlights')
         ) {
             results = await Flights.searchFlights(searchFilters);
             results = results.map(({ _id, flight_number, from, to, departure_time, arrival_time }) => ({ _id, flight_number, from, to, departure_time, arrival_time }));
+            
         }
         res.setHeader('Content-Type', 'application/json');
+        
         res.end(JSON.stringify(results));
     })
     .all((req, res, next) => {
