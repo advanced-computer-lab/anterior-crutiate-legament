@@ -27,6 +27,8 @@ class Summary extends React.Component {
   }
 
   render() {
+    let id1 = "61883f68293ea55d2eb27980";
+    let id2 = "61b3dfc377423c8fb74845a6";
     return (
       <Grid container>
         <SideNav />
@@ -37,10 +39,12 @@ class Summary extends React.Component {
               src="https://www.gstatic.com/travel-frontend/animation/hero/flights_3.svg"
             />
             <h3 className="text-center">Departing Flight</h3>
-            <FlightSummary _id={this.props.departure_id} />
+            {/*<FlightSummary _id={this.props.departure_id} />*/}
+            <FlightSummary _id={id1} />
             <hr />
             <h3 className="text-center">Returning Flight</h3>
-            <FlightSummary _id={this.props.arrival_id} />
+            {/*<FlightSummary _id={this.props.arrival_id} />*/}
+            <FlightSummary _id={id2} />
             <br />
             <Link
               to={{

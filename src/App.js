@@ -19,7 +19,7 @@ app.use(cors({ origin: true, credentials: true }));
 app.use(logger('dev'));
 
 
-mongoose.connect(uri);
+mongoose.connect("mongodb+srv://acl:acl@cluster0.0ipj2.mongodb.net/AirflightsSystem?retryWrites=true&w=majority");
 
 //Routers:
 app.use('/api',API) ;
