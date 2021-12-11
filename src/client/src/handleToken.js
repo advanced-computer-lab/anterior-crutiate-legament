@@ -11,7 +11,7 @@ async function setAdminName(adminName) {
     sessionStorage.setItem("adminName", JSON.stringify(adminName));
 }
 
-async function getAdminToken() {
+function getAdminToken() {
   const adminToken = sessionStorage.getItem("adminToken");
   return JSON.parse(adminToken) != null && JSON.parse(adminToken) != undefined;
 }
@@ -26,7 +26,7 @@ function getUserToken() {
   return JSON.parse(userToken) != null && JSON.parse(userToken) != undefined;
 }
 
-async function getAdminName() {
+function getAdminName() {
     const adminToken = sessionStorage.getItem("adminName");
     return JSON.parse(adminToken);
 }
