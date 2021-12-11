@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-
+import React, {useState, useEffect} from 'react';
+import { setUserToken, getUserToken } from "../../../handleToken.js";
 
 import NavBar from '../../templates/NavBar';
 import Footer from '../../templates/Footer';
@@ -8,13 +8,12 @@ import Footer from '../../templates/Footer';
 import TextField from '@mui/material/TextField';
 import Form from '@mui/material/FormGroup';
 import SubmitButton from '../../basic components/SubmitButton';
-import {useHistory} from "react-router-dom";
+import {useHistory, useLocation} from "react-router-dom";
 import axios from "axios";
-
- 
  
 function SignIn (props){
     const history = useHistory();
+    const data = useLocation();
     const [submitted, setSubmitted] = useState(false);
     const [error, setError] = useState(false);
     const [signInfo , setSignInfo] = useState(
@@ -25,7 +24,16 @@ function SignIn (props){
 
         }
     );
-
+    
+    // ComponentWillMount
+    useEffect( () => {
+        if(getUserToken())
+            if(data.state && data.state.redirect)
+                history.push(data.state.redirect, data.state.redirectProps);
+            else
+                history.push("/");
+        
+    }, []);
 
     const signin = async  (e) => {
         console.log("Hello world!");
@@ -42,6 +50,7 @@ function SignIn (props){
                     if(res.status!==203){
                     setSubmitted(true);
                     setError(false);
+                    setUserToken(res.data._id);
                     history.push("/home");}
                     else{
                         setError(true);

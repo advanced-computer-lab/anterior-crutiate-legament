@@ -1,24 +1,42 @@
 
-function setAdminToken(adminToken) {
+async function setAdminToken(adminToken) {
   sessionStorage.setItem("adminToken", JSON.stringify(adminToken));
 }
 
-function setAdminName(adminName) {
+async function setUserToken(userToken) {
+  sessionStorage.setItem("userToken", JSON.stringify(userToken));
+}
+
+async function setAdminName(adminName) {
     sessionStorage.setItem("adminName", JSON.stringify(adminName));
 }
 
-function getAdminToken() {
+async function getAdminToken() {
   const adminToken = sessionStorage.getItem("adminToken");
   return JSON.parse(adminToken) != null && JSON.parse(adminToken) != undefined;
 }
 
-function getAdminName() {
+async function getUserID() {
+  const userToken = sessionStorage.getItem("userToken");
+  return JSON.parse(userToken);
+}
+
+function getUserToken() {
+  const userToken = sessionStorage.getItem("userToken");
+  return JSON.parse(userToken) != null && JSON.parse(userToken) != undefined;
+}
+
+async function getAdminName() {
     const adminToken = sessionStorage.getItem("adminName");
     return JSON.parse(adminToken);
 }
 
-function deleteAdminToken() {
+async function deleteAdminToken() {
     sessionStorage.removeItem("adminToken");
 }
 
-export {setAdminToken, getAdminToken, deleteAdminToken, setAdminName, getAdminName};
+async function deleteUserToken() {
+  sessionStorage.removeItem("userToken");
+}
+
+export {setAdminToken, getAdminToken, deleteAdminToken, setUserToken, getUserToken, getUserID, deleteUserToken, setAdminName, getAdminName};

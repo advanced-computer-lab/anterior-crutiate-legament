@@ -1,6 +1,7 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { getUserToken } from "../../../handleToken.js";
 
 import SideNav from "../../templates/SideNav";
 import FlightSummary from "../../templates/FlightSummary";
@@ -21,8 +22,8 @@ class Summary extends React.Component {
   }
 
   componentWillMount() {
-    //if (!this.props.departure_id || !this.props.arrival_id)
-    //  this.props.history.push("/home");
+    if (!getUserToken())
+      this.props.history.push("/");
   }
 
   render() {
@@ -49,7 +50,7 @@ class Summary extends React.Component {
               to={{
                 pathname: "/signIn",
                 state: {
-                  redirect: "chooseSeats",
+                  redirect: "/chooseSeats",
                   redirectProps: {
                     departure_id: this.props.departure_id,
                     arrival_id: this.props.arrival_id,
