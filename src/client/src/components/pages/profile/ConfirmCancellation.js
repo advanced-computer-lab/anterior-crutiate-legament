@@ -6,6 +6,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import swal from 'sweetalert';
 
 export default function CancelRservation() {
   const [open, setOpen] = React.useState(false);
@@ -41,7 +42,7 @@ export default function CancelRservation() {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="error">Cancel</Button>
-          <Button onClick={handleClose}>Confirm</Button>
+          <Button onClick={handleClose} >Confirm</Button>
         </DialogActions>
       </Dialog>
     </div>

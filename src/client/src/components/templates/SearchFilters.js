@@ -33,8 +33,6 @@ import
  } 
 from '@material-ui/core'; 
 
-
-import InputAdornment from "@material-ui/core/InputAdornment";
 import SearchIcon from "@material-ui/icons/Search";
 
 
@@ -257,7 +255,7 @@ function Row(props) {
                        <TableCell align="right">
                         <Link
                           to={{
-                            pathname: "/checkOut",
+                            pathname: "/flightsSummary",
                             state: {departure_id: `${row._id}`,
                                     arrival_id : `${returnRow._id}`,
                                     flight_class: props.flight_class,
@@ -266,7 +264,7 @@ function Row(props) {
                                   },
                           }}
                         >
-                          <button className="btn btn-secondary">Check Out</button>
+                          <button className="btn btn-secondary">Continue</button>
                         </Link>
                       </TableCell>
                        
