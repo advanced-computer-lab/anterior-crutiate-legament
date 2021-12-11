@@ -21,7 +21,7 @@ async function getUserID() {
   return JSON.parse(userToken);
 }
 
-function getUserToken() {
+async function getUserToken() {
   const userToken = sessionStorage.getItem("userToken");
   return JSON.parse(userToken) != null && JSON.parse(userToken) != undefined;
 }
