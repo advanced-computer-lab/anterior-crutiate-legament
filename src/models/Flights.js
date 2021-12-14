@@ -153,7 +153,6 @@ flightSchema.methods.createFlight = async requestBody => {
     return await Flights.create(requestBody);
 }
 
-
 flightSchema.methods.reserveSeats = async requestBody => {
     var arr = requestBody.seats;
     console.log(requestBody);
