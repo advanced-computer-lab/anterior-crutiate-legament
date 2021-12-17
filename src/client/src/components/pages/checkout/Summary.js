@@ -1,5 +1,5 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { getUserToken } from "../../../handleToken.js";
 
@@ -13,7 +13,8 @@ import { Stack } from "@mui/material";
 
 export default function RootFunction(props) {
   const history = useHistory();
-  return <Summary history={history} />;
+  const data = useLocation();
+  return <Summary history={history} data={data} />;
 }
 
 class Summary extends React.Component {
@@ -27,8 +28,7 @@ class Summary extends React.Component {
   }
 
   render() {
-    let id1 = "61883f68293ea55d2eb27980";
-    let id2 = "61b3dfc377423c8fb74845a6";
+    console.log(this.props.data.state);
     return (
       <Grid container>
         <SideNav />
@@ -39,12 +39,10 @@ class Summary extends React.Component {
               src="https://www.gstatic.com/travel-frontend/animation/hero/flights_3.svg"
             />
             <h3 className="text-center">Departing Flight</h3>
-            {/*<FlightSummary _id={this.props.departure_id} />*/}
-            <FlightSummary _id={id1} />
+            <FlightSummary _id={this.props.data.state.departure_id} />
             <hr />
             <h3 className="text-center">Returning Flight</h3>
-            {/*<FlightSummary _id={this.props.arrival_id} />*/}
-            <FlightSummary _id={id2} />
+            <FlightSummary _id={this.props.data.state.arrival_id} />
             <br />
             <Link
               to={{
