@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { useHistory, useLocation } from "react-router-dom";
 
 import SideNav from "../../templates/SideNav";
@@ -14,7 +15,7 @@ import { getAdminToken } from "../../../handleToken";
 export default function RootFunction(props) {
   const history = useHistory();
   const data = useLocation();
-  return <ChooseSeats history={history} data={data}/>;
+  return <ChooseSeats history={history} data={data} />;
 }
 
 class ChooseSeats extends React.Component {
@@ -24,9 +25,9 @@ class ChooseSeats extends React.Component {
   }
 
   componentDidMount() {
-      var flightDepID = this.props.data.state.departure_id;
-      var flightArrID = this.props.data.state.arrival_id;
-      console.log(flightDepID + " " + flightArrID);
+    var flightDepID = this.props.data.state.departure_id;
+    var flightArrID = this.props.data.state.arrival_id;
+    console.log(flightDepID + " " + flightArrID);
 
     let encodedSearchTermsDepart = encodeURIComponent(
       JSON.stringify({ _id: flightDepID })
@@ -112,10 +113,16 @@ class ChooseSeats extends React.Component {
 
   render() {
     const rowsDepart = this.state.DepartFlightsDetails
-      ? this.setCabinArray(this.props.data.state.flight_class, this.state.DepartFlightsDetails)
+      ? this.setCabinArray(
+          this.props.data.state.flight_class,
+          this.state.DepartFlightsDetails
+        )
       : null;
     const rowsArrival = this.state.ArrivalFlightsDetails
-      ? this.setCabinArray(this.props.data.state.flight_class, this.state.ArrivalFlightsDetails)
+      ? this.setCabinArray(
+          this.props.data.state.flight_class,
+          this.state.ArrivalFlightsDetails
+        )
       : null;
     return (
       <Grid container>
@@ -153,6 +160,27 @@ class ChooseSeats extends React.Component {
             ) : (
               ""
             )}
+            <br />
+            <Link
+              to={{
+                pathname: "/checkOut",
+                state: {
+                  departure_id: this.props.data.state.departure_id,
+                  arrival_id: this.props.data.state.arrival_id,
+                  flight_class: this.props.data.state.flight_class,
+                  rowsDepart: rowsDepart,
+                  rowsArrival: rowsArrival,
+                  adults: this.props.data.state.adults,
+                  children: this.props.data.state.children,
+                },
+              }}
+            >
+              <button className="btn btn-primary">Continue</button>
+            </Link>
+            <br />
+            <Link to={{ pathname: "/home" }}>
+              <button className="btn btn-secondary">Go Back</button>
+            </Link>
           </Stack>
         </Grid>
         <Grid

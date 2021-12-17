@@ -260,6 +260,9 @@ function Row(props) {
                             state: {departure_id: row._id,
                                     arrival_id : returnRow._id,
                                     flight_class: props.flight_class,
+                                    adults: props.adults,
+                                    children: props.childs,
+
                             }
                           }}
                         >

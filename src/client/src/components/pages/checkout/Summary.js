@@ -53,6 +53,8 @@ class Summary extends React.Component {
                     departure_id: this.props.data.state.departure_id,
                     arrival_id: this.props.data.state.arrival_id,
                     flight_class: this.props.data.state.flight_class,
+                    adults: this.props.data.state.adults,
+                    children: this.props.data.state.children,
                   },
                 },
               }}
