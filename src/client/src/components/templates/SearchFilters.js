@@ -256,12 +256,11 @@ function Row(props) {
                         <Link
                           to={{
                             pathname: "/flightsSummary",
-                            state: {departure_id: `${row._id}`,
-                                    arrival_id : `${returnRow._id}`,
+                            state: {departure_id: row._id,
+                                    arrival_id : returnRow._id,
                                     flight_class: props.flight_class,
                                     adults: props.adults,
-                                    childs: props.childs
-                                  },
+                                    childs: props.childs}                                
                           }}
                         >
                           <button className="btn btn-secondary">Continue</button>
