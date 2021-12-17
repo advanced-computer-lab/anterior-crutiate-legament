@@ -6,21 +6,136 @@ const Users = new require('../models/User.js')();
 
 // user search flights
 userRouter.route('/searchFlights')
+    .get(async(req,res,next)=>{
+
+        const searchFilters = JSON.parse(req.query.searchFilters);
+        var results = [];
+
+        console.log(searchFilters) ;
+        if( searchFilters.from &&
+            searchFilters.to  &&
+            searchFilters.departure_time &&
+            searchFilters.flight_class &&
+            searchFilters.adults &&
+            searchFilters.childs
+        ) {
+            results = await Flights.searchFlights(searchFilters) ;
+            results = results.map(({_id, flight_number ,from,to, departure_time, arrival_time}) =>({_id, flight_number ,from,to, departure_time, arrival_time}) ) ;
+        }
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify(results));
+    })
+    .all((req,res,next)=>{
+        res.statusCode = 403;
+        res.end('operation not supported');
+    });
+
+
+// update user information
+
+userRouter.route('/editUserData')
+    .put(async (req, res, next) => {
+        console.log(req.body);
+        await Users.updateUser(JSON.parse(JSON.stringify(req.body)));
+        res.end("User Details Updated");
+    })
+    .all((req, res, next) => {
+        res.statusCode = 403;
+        res.end('operation not supported');
+    });
+
+
+//get the user information
+userRouter.route('/getUserDetails')
+    .get(async (req, res, next) => {
+        let results = await Users.searchUser(JSON.parse(req.query.in));
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify(results));
+    })
+    .all((req, res, next) => {
+        res.statusCode = 403;
+        res.end('operation not supported');
+    });
+
+// register a user
+userRouter.route('/userRegister')
+    .post(async (req, res, next) => {
+        await Users.createUser(JSON.parse(JSON.stringify(req.body)));
+        res.end('user register');
+    })
+    .all((req, res, next) => {
+        res.statusCode = 403;
+        res.end('operation not supported');
+    });
+
+//user login
+userRouter.route('/userLogin')
+    .get(async (req, res, next) => {
+        let results = await Users.loginUser(JSON.parse(JSON.stringify(req.query.signInfo)));
+        if(results === null )
+            res.statusCode = 203 ; 
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify(results));
+    })
+    .all((req, res, next) => {
+        res.statusCode = 403;
+        res.end('operation not supported');
+    });
+
+
+userRouter.route('/cancelReservation')
+    .delete(async (req, res, next) => {
+        var result = await Users.cancelReservation(req.body);
+        let requestBody = { _id: result.flightId, seats: result.seats };
+        if (req.cabin === "First") {
+            requestBody.firstCabin = true
+        } else if (req.cabin === "Business") {
+            requestBody.businessCabin = true
+        } else {
+            requestBody.economyCabin = true
+        }
+        Flights.unreserveSeats(requestBody)
+        if (result) {
+            res.send("Reservation cancelled successfully");
+        } else {
+            res.send("There's no such reservation");
+        }
+    })
+    .all((req, res, next) => {
+        res.statusCode = 403;
+        res.end('operation not supported');
+    });
+
+
+userRouter.route('/reserveSeats')
+    .put(async (req, res, next) => {
+        var result = await Users.reserveSeats(req.body);
+        let requestBody = { _id: result.flight_id, seats: result.seats };
+        if (req.body.cabin === "First") {
+            requestBody.firstCabin = true
+        } else if (req.body.cabin === "Business") {
+            requestBody.businessCabin = true
+        } else {
+            requestBody.economyCabin = true
+        }
+        Flights.reserveSeats(requestBody)
+        if (result) {
+            res.send("Reservation done successfully");
+        } else {
+            res.send("Error in reservation");
+        }
+    })
+    .all((req, res, next) => {
+        res.statusCode = 403;
+        res.end('operation not supported');
+    });
+
+ 
+
+//get Flight info using it's id
+userRouter.route('/flightData')
 .get(async(req,res,next)=>{
-
-    const searchFilters = JSON.parse(req.query.searchFilters); 
-    var results = [];
-
-    console.log(searchFilters) ;    
-    if( searchFilters.from &&
-        searchFilters.to  &&
-        searchFilters.departure_time && 
-        searchFilters.flight_class &&
-        searchFilters.adults &&
-        searchFilters.childs   
-    ) {
-        results = await Flights.searchFlights(searchFilters) ;
-    }
+    let results = await Flights.searchFlights(JSON.parse(req.query.searchFilters)) ;
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify(results));
 })
@@ -29,110 +144,44 @@ userRouter.route('/searchFlights')
     res.end('operation not supported');
 });
 
+// Search Flight
+userRouter.route('/searchFlights')
+.get(async (req, res, next) => {
 
-// update user information
-userRouter.route('/editUserData')
-    .put(async (req,res,next)=>{
-        console.log(req.body);
-        await Users.updateUser(JSON.parse(JSON.stringify(req.body)));
-        res.end("User Details Updated");
-    })
-    .all((req,res,next)=>{
-        res.statusCode = 403;
-        res.end('operation not supported');
-    });
+    const searchFilters = JSON.parse(req.query.searchFilters);
+    var results = [];
 
 
-//get the user information
-userRouter.route('/getUserDetails')
-    .get(async(req,res,next)=>{
-        console.log(req.query);
-        let results = await Users.searchUser(JSON.parse(JSON.stringify(req.query))) ;
-        res.setHeader('Content-Type', 'application/json');
-        res.end(JSON.stringify(results));
-    })
-    .all((req,res,next)=>{
-        res.statusCode = 403;
-        res.end('operation not supported');
-    });
+    if (searchFilters.from &&
+        searchFilters.to &&
+        searchFilters.departure_time &&
+        searchFilters.flight_class &&
+        searchFilters.adults &&
+        searchFilters.childs
+    ) {
+        results = await Flights.searchFlights(searchFilters);
+        results = results.map(({ _id, flight_number, from, to, departure_time, arrival_time }) => ({ _id, flight_number, from, to, departure_time, arrival_time }));
 
-// register a user
- userRouter.route('/userRegister')
-    .post(async (req,res,next)=>{
-        console.log("HI WORLD!");
-        await Users.createUser(JSON.parse(JSON.stringify(req.body))) ;
-        res.end('user register');
-    })
-    .all((req,res,next)=>{
-        res.statusCode = 403;
-        res.end('operation not supported');
-    });
+    }
+    res.setHeader('Content-Type', 'application/json');
 
-// user login
-userRouter.route('/userLogin')
-    .get(async(req,res,next)=>{
-        let results;
-        const info = JSON.parse(JSON.stringify(req.query.signInfo));
-        results = await Users.loginUser(info) ;
-        console.log(results);
-        if(results.length!=0) res.statusCode = 200;
-        else res.statusCode = 203;
-        res.setHeader('Content-Type', 'application/json');
-        res.end(JSON.stringify(results));
-    })
-    .all((req,res,next)=>{
-        res.statusCode = 403;
-        res.end('operation not supported');
-    });
+    res.end(JSON.stringify(results));
+})
+.all((req, res, next) => {
+    res.statusCode = 403;
+    res.end('operation not supported');
+});
 
-
-userRouter.route('/cancelReservation')
-    .put(async (req,res,next)=>{
-        await Users.cancelReservation(JSON.parse(JSON.stringify(req.body)));
-        let requestBody = {flight_id: req.body.flightId,seats:  req.body.seats};
-        if(req.body.cabin === "First") {
-            requestBody.firstCabin = true
-        } else  if(req.body.cabin === "Business") {
-            requestBody.businessCabin = true
-        } else {
-            requestBody.economyCabin = true
-        }
-        Flights.unreserveSeats(requestBody)
-        res.send("Reservation cancelled successfully");
-    })
-    .all((req,res,next)=>{
-        res.statusCode = 403;
-        res.end('operation not supported');
-    });
-
-
-userRouter.route('/reserveSeats')
-    .put(async (req,res,next)=>{
-        var result =  await Users.reserveSeats(JSON.parse(JSON.stringify(req.body)));
-        let requestBody = {_id: result.flight_id,seats:  result.seats};
-        console.log(result+"      hello world!");
-        if(result.cabin === "First") {
-            requestBody.firstCabin = true
-        } else  if(result.cabin === "Business") {
-            requestBody.businessCabin = true
-        } else {
-            requestBody.economyCabin = true
-        }
-        console.log(requestBody+"      hello world!");
-        Flights.reserveSeats(requestBody);
-        if(result){
-            res.send("Reservation done successfully");
-        }else{
-            res.send("Error in reservation");
-        }
-    })
-    .all((req,res,next)=>{
-        console.log(req.body);
-        res.statusCode = 403;
-        res.end('hello world');
-    });
-
-
+userRouter.route('/getFlightDetails')
+.get(async(req,res,next)=>{
+    let results = await Flights.searchFlights(JSON.parse(req.query.searchFilters)) ;
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify(results));
+})
+.all((req,res,next)=>{
+    res.statusCode = 403;
+    res.end('operation not supported');
+});
 
 
 module.exports = userRouter;
