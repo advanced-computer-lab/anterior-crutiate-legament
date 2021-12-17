@@ -24,8 +24,8 @@ class ChooseSeats extends React.Component {
   }
 
   componentDidMount() {
-      var flightDepID = JSON.parse(this.props.data.state).departure_id;
-      var flightArrID = JSON.parse(this.props.data.state).arrival_id;
+      var flightDepID = this.props.data.state.departure_id;
+      var flightArrID = this.props.data.state.arrival_id;
       console.log(flightDepID + " " + flightArrID);
 
     let encodedSearchTermsDepart = encodeURIComponent(
@@ -112,10 +112,10 @@ class ChooseSeats extends React.Component {
 
   render() {
     const rowsDepart = this.state.DepartFlightsDetails
-      ? this.setCabinArray(JSON.parse(this.props.data.state).flight_class, this.state.DepartFlightsDetails)
+      ? this.setCabinArray(this.props.data.state.flight_class, this.state.DepartFlightsDetails)
       : null;
     const rowsArrival = this.state.ArrivalFlightsDetails
-      ? this.setCabinArray(JSON.parse(this.props.data.state).flight_class, this.state.ArrivalFlightsDetails)
+      ? this.setCabinArray(this.props.data.state.flight_class, this.state.ArrivalFlightsDetails)
       : null;
     return (
       <Grid container>

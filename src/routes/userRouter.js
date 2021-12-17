@@ -72,6 +72,9 @@ userRouter.route('/userRegister')
 userRouter.route('/userLogin')
     .get(async (req, res, next) => {
         let results = await Users.loginUser(JSON.parse(JSON.stringify(req.query.signInfo)));
+
+        if(results === null )
+            res.statusCode = 203 ; 
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(results));
     })

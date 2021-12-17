@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { setUserToken, getUserToken } from "../../../handleToken.js";
+import {
+  setUserToken,
+  getUserToken,
+  deleteUserToken,
+} from "../../../handleToken.js";
 
 import NavBar from "../../templates/NavBar";
 import Footer from "../../templates/Footer";
@@ -22,13 +26,11 @@ function SignIn(props) {
 
   // ComponentWillMount
   useEffect(() => {
-    console.log(getUserToken());
-    getUserToken().then(() => {
-      console.log("hi");
-        if (data.state && data.state.redirect)
-          history.push(data.state.redirect, data.state.redirectProps);
-        else history.push("/");
-    });
+    deleteUserToken();
+    if (getUserToken())
+      if (data.state && data.state.redirect)
+        history.push(data.state.redirect, data.state.redirectProps);
+      else history.push("/");
   }, []);
 
   const signin = async (e) => {
@@ -46,12 +48,11 @@ function SignIn(props) {
           if (res.status !== 203) {
             setSubmitted(true);
             setError(false);
-            setUserToken(res.data._id).then(() => {
-              console.log(res.data._id);
-              if (data.state && data.state.redirect)
-                history.push(data.state.redirect, data.state.redirectProps);
-              else history.push("/");
-            });
+            setUserToken(res.data._id);
+            console.log(res.data._id);
+            if (data.state && data.state.redirect)
+              history.push(data.state.redirect, data.state.redirectProps);
+            else history.push("/");
           } else {
             setError(true);
             setSubmitted(false);
@@ -71,7 +72,7 @@ function SignIn(props) {
           display: submitted ? "" : "none",
         }}
       >
-        <h6>User {signInfo.email} successfully registered!!</h6>
+        <h6>User {signInfo.email} successfully signed in!!</h6>
       </div>
     );
   };
@@ -91,7 +92,7 @@ function SignIn(props) {
   };
 
   return (
-    <>
+    <div>
       <NavBar />
 
       <div
@@ -168,7 +169,7 @@ function SignIn(props) {
       </div>
 
       <Footer />
-    </>
+    </div>
   );
 }
 
