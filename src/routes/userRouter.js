@@ -71,7 +71,7 @@ userRouter.route('/userRegister')
 // admin login
 userRouter.route('/userLogin')
     .get(async (req, res, next) => {
-        let results = await Users.loginUser(JSON.parse(JSON.stringify(req.body)));
+        let results = await Users.loginUser(JSON.parse(JSON.stringify(req.query.signInfo)));
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(results));
     })

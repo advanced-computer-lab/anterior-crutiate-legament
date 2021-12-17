@@ -13,23 +13,24 @@ import FlightsTable from "../pages/admin/FlightsTable";
 
 export default function RootFunction(props) {
   const history = useHistory();
-  return <FlightSummary history={history} />;
+  return <FlightSummary history={history} _id={props._id}/>;
 }
 
 class FlightSummary extends React.Component {
   constructor(props) {
     super(props);
   }
-
-   render() {
+  
+  render() {
     let encodedSearchTerms = encodeURIComponent(
-      JSON.stringify({ _id: this.props.history.location.state.arrival_id })
+      JSON.stringify({ _id: this.props._id })
     );
     axios
       .get(
         `http://localhost:8000/api/user/getFlightDetails?searchFilters=${encodedSearchTerms}`
       )
       .then((res) => {
+        console.log(res);
       });
     return (
       <div>
