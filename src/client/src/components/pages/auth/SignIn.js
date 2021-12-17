@@ -48,10 +48,13 @@ function SignIn (props){
                     console.log("success")
                     console.log(res) ;
                     if(res.status!==203){
-                    setSubmitted(true);
-                    setError(false);
-                    setUserToken(res.data._id);
-                    history.push("/home");}
+                        setSubmitted(true);
+                        setError(false);
+                        setUserToken(res.data._id);
+                        if(data.state && data.state.redirect)
+                            history.push(data.state.redirect, data.state.redirectProps);
+                        else
+                            history.push("/");
                     else{
                         setError(true);
                         setSubmitted(false);
