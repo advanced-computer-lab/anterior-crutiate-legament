@@ -144,31 +144,42 @@ userRouter.route('/flightData')
 
 // Search Flight
 userRouter.route('/searchFlights')
-    .get(async (req, res, next) => {
-        
-        const searchFilters = JSON.parse(req.query.searchFilters);
-        var results = [];
+.get(async (req, res, next) => {
 
-        
-        if (searchFilters.from &&
-            searchFilters.to &&
-            searchFilters.departure_time &&
-            searchFilters.flight_class &&
-            searchFilters.adults &&
-            searchFilters.childs
-        ) {
-            results = await Flights.searchFlights(searchFilters);
-            results = results.map(({ _id, flight_number, from, to, departure_time, arrival_time }) => ({ _id, flight_number, from, to, departure_time, arrival_time }));
-            
-        }
-        res.setHeader('Content-Type', 'application/json');
-        
-        res.end(JSON.stringify(results));
-    })
-    .all((req, res, next) => {
-        res.statusCode = 403;
-        res.end('operation not supported');
-    });
+    const searchFilters = JSON.parse(req.query.searchFilters);
+    var results = [];
+
+
+    if (searchFilters.from &&
+        searchFilters.to &&
+        searchFilters.departure_time &&
+        searchFilters.flight_class &&
+        searchFilters.adults &&
+        searchFilters.childs
+    ) {
+        results = await Flights.searchFlights(searchFilters);
+        results = results.map(({ _id, flight_number, from, to, departure_time, arrival_time }) => ({ _id, flight_number, from, to, departure_time, arrival_time }));
+
+    }
+    res.setHeader('Content-Type', 'application/json');
+
+    res.end(JSON.stringify(results));
+})
+.all((req, res, next) => {
+    res.statusCode = 403;
+    res.end('operation not supported');
+});
+
+userRouter.route('/getFlightDetails')
+.get(async(req,res,next)=>{
+    let results = await Flights.searchFlights(JSON.parse(req.query.searchFilters)) ;
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify(results));
+})
+.all((req,res,next)=>{
+    res.statusCode = 403;
+    res.end('operation not supported');
+});
 
 
 module.exports = userRouter;
