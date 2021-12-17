@@ -22,20 +22,19 @@ class FlightSummary extends React.Component {
   }
 
    render() {
-    let encodedSearchTerms = encodeURIComponent(JSON.stringify({_id:this.props._id}));
-    console.log("HELLO WORLD!");
-    console.log(encodedSearchTerms);
-    let flight = axios.get(`http://localhost:8000/api/user/searchFlights?searchFilters=${encodedSearchTerms}`)
-        .then((res) => {
-            console.log("success");
-          console.log(res);
-
-        });
+    let encodedSearchTerms = encodeURIComponent(
+      JSON.stringify({ _id: this.props.history.location.state.arrival_id })
+    );
+    axios
+      .get(
+        `http://localhost:8000/api/user/getFlightDetails?searchFilters=${encodedSearchTerms}`
+      )
+      .then((res) => {
+      });
     return (
-        <div>
-            <h1>flight._id</h1>
-        </div>
+      <div>
 
+      </div>
     );
   }
 }
