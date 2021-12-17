@@ -50,8 +50,9 @@ class Summary extends React.Component {
                 state: {
                   redirect: "/chooseSeats",
                   redirectProps: {
-                    departure_id: this.props.departure_id,
-                    arrival_id: this.props.arrival_id,
+                    departure_id: this.props.data.state.departure_id,
+                    arrival_id: this.props.data.state.arrival_id,
+                    flight_class: this.props.data.state.flight_class,
                   },
                 },
               }}
