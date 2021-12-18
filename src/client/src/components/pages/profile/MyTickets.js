@@ -31,23 +31,6 @@ export default class MyTickets extends React.Component {
                
             });
     }
-    async componentDidUpdate() {
-        const data = {
-            _id: this.state.personID,
-        };
-        let encodedId = encodeURIComponent(JSON.stringify(data));
-        await axios.get(`http://localhost:8000/api/user/getUserDetails?in=${encodedId}`)
-            .then((res) => {
-
-                this.setState({
-                    ticketsList: res.data[0].reservations,
-                    name: res.data[0].firstName.concat(" ".concat(res.data[0].lastName)),
-                    personPass: res.data[0].password,
-                    isLoading: false
-                })
-               
-            });
-    }
 
     render() {
         if (this.state.isLoading) {
@@ -59,7 +42,7 @@ export default class MyTickets extends React.Component {
         if (ticketsList) {
            
             tickets = ticketsList.map((ticket, k) =>
-                <Ticket key={ticket.id} info={ticket} name={this.state.name} personID={this.state.personID} personPass={this.state.personPass}/>);
+                <Ticket key={ticket.id + "" + ticket.cabin} info={ticket} name={this.state.name} personID={this.state.personID} personPass={this.state.personPass}/>);
             return (
                 <div>
                     <Stack spacing={1}>

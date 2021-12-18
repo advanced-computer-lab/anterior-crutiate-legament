@@ -28,36 +28,36 @@ class CheckOut extends React.Component {
     console.log(this.props.data.state);
     // generate seats
     let seatsDepart = [];
-    for(let i of this.props.data.state.rowsDepart[0]) {
-      if(!i.isReserved && i.isSelected)
-        seatsDepart.push(i.number);
+    for (let i of this.props.data.state.rowsDepart[0]) {
+      if (!i.isReserved && i.isSelected) seatsDepart.push(i.number);
     }
     let seatsArrival = [];
-    for(let i of this.props.data.state.rowsArrival[0]) {
-      if(!i.isReserved && i.isSelected)
-      seatsArrival.push(i.number);
+    for (let i of this.props.data.state.rowsArrival[0]) {
+      if (!i.isReserved && i.isSelected) seatsArrival.push(i.number);
     }
 
     console.log(seatsDepart);
     console.log(seatsArrival);
-    
+
     let endpoint = `http://localhost:8000/api/user/reserveSeats`;
-    let reserveReq = {
+    let reserveReqDepart = {
       userId: getUserID(),
       flightId: this.props.data.state.departure_id,
       seats: seatsDepart,
       cabin: this.props.data.state.flight_class,
     };
-    axios.put(endpoint, reserveReq);
-    reserveReq = {
-      userId: getUserID(),
-      flightId: this.props.data.state.arrival_id,
-      seats: seatsArrival,
-      cabin: this.props.data.state.flight_class,
-    };
-    axios.put(endpoint, reserveReq);
-    this.props.history.push("/Profile");
-  }
+    axios.put(endpoint, reserveReqDepart).then(() => {
+      let reserveReqArrival = {
+        userId: getUserID(),
+        flightId: this.props.data.state.arrival_id,
+        seats: seatsArrival,
+        cabin: this.props.data.state.flight_class,
+      };
+      axios.put(endpoint, reserveReqArrival).then(() => {
+        this.props.history.push("/Profile");
+      });
+    });
+  };
 
   render() {
     return (

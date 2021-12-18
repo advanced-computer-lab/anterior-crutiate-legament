@@ -2,6 +2,7 @@ import * as React from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
+import { getUserID } from "../../../handleToken.js";
 import TabContext from '@material-ui/lab/TabContext';
 import TabPanel from '@material-ui/lab/TabPanel';
 import ChangePassword from './ChangePassword';
@@ -34,9 +35,9 @@ export default function ProfileNav() {
                     <Tab value="3" label="Password" />
 
                 </Tabs>
-                <TabPanel value="1"><PersonInfo key={"1"} personID={"61b38e1f43fb1cc2ab42101b"} /></TabPanel>
-                <TabPanel value="2"><MyTickets personID={"61b38e1f43fb1cc2ab42101b"}/></TabPanel>
-                <TabPanel value="3"><ChangePassword personID={"61b38e1f43fb1cc2ab42101b"}/></TabPanel>
+                <TabPanel value="1"><PersonInfo key={"1"} personID={getUserID()} /></TabPanel>
+                <TabPanel value="2"><MyTickets personID={getUserID()}/></TabPanel>
+                <TabPanel value="3"><ChangePassword personID={getUserID()}/></TabPanel>
             </TabContext>
         </Box>
     );
