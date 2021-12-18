@@ -84,15 +84,17 @@ userRouter.route('/userLogin')
 
 userRouter.route('/cancelReservation')
     .delete(async (req, res, next) => {
+        console.log(req.body);
         var result = await Users.cancelReservation(req.body);
-        let requestBody = { _id: result.flight_id, seats: result.seats };
-        if (req.cabin === "First") {
+        let requestBody = { _id: result.flight_id, seats: req.body.seats };
+        if (req.body.cabin === "First") {
             requestBody.firstCabin = true
-        } else if (req.cabin === "Business") {
+        } else if (req.body.cabin === "Business") {
             requestBody.businessCabin = true
         } else {
             requestBody.economyCabin = true
         }
+        console.log(requestBody)
         Flights.unreserveSeats(requestBody)
         if (result) {
             sendEmail(result.email);
