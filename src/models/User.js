@@ -115,12 +115,19 @@ userSchema.methods.cancelReservation = async requestBody => {
                 }
             }
             let newreserv = {
-                flight_id :currentUser.reservations[i].flight_id,
-                cabin :currentUser.reservations[i].cabin,
+                flight_id : currentUser.reservations[i].flight_id,
+                cabin : currentUser.reservations[i].cabin,
                 seats : newArr
             }
-            retres = newreserv;
-            newReservations.push(newreserv);
+            let newreservmail = {
+                flight_id : currentUser.reservations[i].flight_id,
+                cabin : currentUser.reservations[i].cabin,
+                seats : newArr,
+                email : currentUser.email,
+            }
+            retres = newreservmail;
+            if(newreserv.seats.length > 0)
+                newReservations.push(newreserv);
 
         }else{
             newReservations.push(currentUser.reservations[i]);

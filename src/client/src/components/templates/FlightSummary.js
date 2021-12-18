@@ -27,7 +27,7 @@ export default function  FlightSummary (props) {
     First:"" 
   }) ;
 
-   let encodedSearchTerms = encodeURIComponent(JSON.stringify({_id:"61883f26293ea55d2eb2797d"}));
+   let encodedSearchTerms = encodeURIComponent(JSON.stringify({_id:props._id}));
    if(! isSet){
         axios.get(`http://localhost:8000/api/user/searchFlights?searchFilters=${encodedSearchTerms}`)
         .then( flight => {

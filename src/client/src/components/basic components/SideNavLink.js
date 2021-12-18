@@ -39,7 +39,7 @@ function SideNavLink (props) {
                 </Paper>
             </Grid>
             
-
+            {/*
             <Grid container>
             <Paper  style={{backgroundColor:"#CFE9D5",paddingBottom:"3%",margin:"1%"}}>
 
@@ -53,8 +53,7 @@ function SideNavLink (props) {
                 </Link>
                 </Paper>
             </Grid>
-
-
+            */}
 
             <hr style = {{marginTop:"20%"}}/>
 

@@ -172,7 +172,6 @@ flightSchema.methods.reserveSeats = async requestBody => {
 flightSchema.methods.unreserveSeats = async requestBody => {
     var arr = requestBody.seats;
     const flight = await Flights.findById(requestBody._id);
-   console.log(flight);
     if(requestBody.firstCabin){
         var newfirstCabin = [];
         for(j =0; j<flight.firstCabin.length; j++) newfirstCabin.push(flight.firstCabin[j]);

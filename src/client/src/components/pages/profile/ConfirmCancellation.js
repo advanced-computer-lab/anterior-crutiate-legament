@@ -66,6 +66,7 @@ export default class CancelRservation extends React.Component {
                     cabin: this.state.cabin,
                     userId: this.state.personID
                   }
+                  console.log(data);
                   await axios.delete('http://localhost:8000/api/user/cancelReservation', { data: data })
                   swal("Done", "Flight deleted successfully", "success");
                 }

@@ -25,7 +25,6 @@ class CheckOut extends React.Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    console.log(this.props.data.state);
     // generate seats
     let seatsDepart = [];
     for (let i of this.props.data.state.rowsDepart[0]) {
@@ -36,6 +35,7 @@ class CheckOut extends React.Component {
       if (!i.isReserved && i.isSelected) seatsArrival.push(i.number);
     }
 
+    console.log(getUserID());
     console.log(seatsDepart);
     console.log(seatsArrival);
 

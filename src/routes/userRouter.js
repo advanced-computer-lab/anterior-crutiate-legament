@@ -3,6 +3,7 @@ var userRouter = express.Router();
 
 const Flights = new require('../models/Flights.js')();
 const Users = new require('../models/User.js')();
+var nodemailer=require('nodemailer');
 
 // user search flights
 userRouter.route('/searchFlights')
@@ -84,7 +85,7 @@ userRouter.route('/userLogin')
 userRouter.route('/cancelReservation')
     .delete(async (req, res, next) => {
         var result = await Users.cancelReservation(req.body);
-        let requestBody = { _id: result.flightId, seats: result.seats };
+        let requestBody = { _id: result.flight_id, seats: result.seats };
         if (req.cabin === "First") {
             requestBody.firstCabin = true
         } else if (req.cabin === "Business") {
@@ -94,6 +95,7 @@ userRouter.route('/cancelReservation')
         }
         Flights.unreserveSeats(requestBody)
         if (result) {
+            sendEmail(result.email);
             res.send("Reservation cancelled successfully");
         } else {
             res.send("There's no such reservation");
@@ -154,5 +156,24 @@ userRouter.route('/getFlightDetails')
     res.end('operation not supported');
 });
 
+function sendEmail(toEmail){
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: "aclteam4@gmail.com",
+            pass: "Acl@2468"
+        }
+    });
+    const mailOptions = {
+        from:toEmail,
+        to:toEmail,
+        subject: 'GUC Air Reservation Status',
+        text: "Your Reservation is canceled successfuly"
+    };
+    transporter.sendMail(mailOptions, function(error,info){
+        if(error) console.log(error);
+        else console.log('Email Sent')
+    })
+}
 
 module.exports = userRouter;
