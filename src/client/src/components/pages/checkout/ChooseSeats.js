@@ -21,7 +21,7 @@ export default function RootFunction(props) {
 class ChooseSeats extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = { rowsDepart: null, rowsArrival: null };
   }
 
   componentDidMount() {
@@ -37,7 +37,7 @@ class ChooseSeats extends React.Component {
       JSON.stringify({ _id: flightArrID })
     );
 
-    axios
+    let promise1 = axios
       .get(
         `http://localhost:8000/api/user/flightData/?searchFilters=${encodedSearchTermsDepart}`
       )
@@ -50,7 +50,7 @@ class ChooseSeats extends React.Component {
         console.log("Error from getting flights details.");
       });
 
-    axios
+    let promise2 = axios
       .get(
         `http://localhost:8000/api/user/flightData/?searchFilters=${encodedSearchTermsArrive}`
       )
@@ -62,6 +62,25 @@ class ChooseSeats extends React.Component {
       .catch((err) => {
         console.log("Error from getting flights details.");
       });
+
+    Promise.all([promise1, promise2]).then(() => {
+      this.setState({
+        rowsDepart: this.state.DepartFlightsDetails
+          ? this.setCabinArray(
+              this.props.data.state.flight_class,
+              this.state.DepartFlightsDetails
+            )
+          : null,
+      });
+      this.setState({
+        rowsArrival: this.state.ArrivalFlightsDetails
+          ? this.setCabinArray(
+              this.props.data.state.flight_class,
+              this.state.ArrivalFlightsDetails
+            )
+          : null,
+      });
+    });
   }
 
   setCabinArray(cabinType, flightsDetails) {
@@ -98,32 +117,32 @@ class ChooseSeats extends React.Component {
           isReserved: false,
         };
       }
-      console.log(rows);
+      //console.log(rows);
     }
     return [rows];
   }
 
-  addSeat = ({ row, number, id }, add) => {
+  addSeatDepart = ({ row, number, id }, add) => {
     add(row, number, id);
+    this.state.rowsDepart[0][number].isSelected = true;
   };
 
-  removeSeat = ({ row, number, id }, remove) => {
+  removeSeatDepart = ({ row, number, id }, remove) => {
     remove(row, number);
+    this.state.rowsDepart[0][number].isSelected = false;
+  };
+
+  addSeatArrival = ({ row, number, id }, add) => {
+    add(row, number, id);
+    this.state.rowsArrival[0][number].isSelected = true;
+  };
+
+  removeSeatArrival = ({ row, number, id }, remove) => {
+    remove(row, number);
+    this.state.rowsArrival[0][number].isSelected = false;
   };
 
   render() {
-    const rowsDepart = this.state.DepartFlightsDetails
-      ? this.setCabinArray(
-          this.props.data.state.flight_class,
-          this.state.DepartFlightsDetails
-        )
-      : null;
-    const rowsArrival = this.state.ArrivalFlightsDetails
-      ? this.setCabinArray(
-          this.props.data.state.flight_class,
-          this.state.ArrivalFlightsDetails
-        )
-      : null;
     return (
       <Grid container>
         <SideNav />
@@ -136,12 +155,12 @@ class ChooseSeats extends React.Component {
 
             <h3 className="text-center">Departing Flight</h3>
             <br />
-            {rowsDepart ? (
+            {this.state.rowsDepart ? (
               <SeatPicker
-                rows={rowsDepart}
+                rows={this.state.rowsDepart}
                 maxReservableSeats={100}
-                addSeatCallback={this.addSeat}
-                removeSeatCallback={this.removeSeat}
+                addSeatCallback={this.addSeatDepart}
+                removeSeatCallback={this.removeSeatDepart}
               />
             ) : (
               ""
@@ -150,12 +169,12 @@ class ChooseSeats extends React.Component {
             <hr />
             <h3 className="text-center">Arriving Flight</h3>
             <br />
-            {rowsArrival ? (
+            {this.state.rowsArrival ? (
               <SeatPicker
-                rows={rowsArrival}
+                rows={this.state.rowsArrival}
                 maxReservableSeats={100}
-                addSeatCallback={this.addSeat}
-                removeSeatCallback={this.removeSeat}
+                addSeatCallback={this.addSeatArrival}
+                removeSeatCallback={this.removeSeatArrival}
               />
             ) : (
               ""
@@ -168,8 +187,8 @@ class ChooseSeats extends React.Component {
                   departure_id: this.props.data.state.departure_id,
                   arrival_id: this.props.data.state.arrival_id,
                   flight_class: this.props.data.state.flight_class,
-                  rowsDepart: rowsDepart,
-                  rowsArrival: rowsArrival,
+                  rowsDepart: this.state.rowsDepart,
+                  rowsArrival: this.state.rowsArrival,
                   adults: this.props.data.state.adults,
                   children: this.props.data.state.children,
                 },
