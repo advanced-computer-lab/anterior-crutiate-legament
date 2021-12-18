@@ -176,7 +176,7 @@ function Row(props) {
           childs: props.childs
         }       
       ));
-
+        /*
       console.log({
         from: row.from,
         to: row.to,
@@ -185,9 +185,10 @@ function Row(props) {
         adults: props.adults,
         childs: props.childs
       }       );
+      */
       axios.get(`http://localhost:8000/api/user/SearchFlights?searchFilters=${encodedSearchTerms}`)
            .then((r) => {
-             console.log(r);
+             //console.log(r);
             setReturnFlights(r.data);
 
            }) ;
@@ -256,12 +257,13 @@ function Row(props) {
                         <Link
                           to={{
                             pathname: "/flightsSummary",
-                            state: {departure_id: `${row._id}`,
-                                    arrival_id : `${returnRow._id}`,
+                            state: {departure_id: row._id,
+                                    arrival_id : returnRow._id,
                                     flight_class: props.flight_class,
                                     adults: props.adults,
-                                    childs: props.childs
-                                  },
+                                    children: props.childs,
+
+                            }
                           }}
                         >
                           <button className="btn btn-secondary">Continue</button>

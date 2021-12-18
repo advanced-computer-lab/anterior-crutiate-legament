@@ -13,6 +13,7 @@ export default class PersonInfo extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            personID:props.personID,
             firstName: "",
             lastName: "",
             email: "",
@@ -21,7 +22,7 @@ export default class PersonInfo extends React.Component {
     }
     componentDidMount() {
         const data = {
-            _id: "61b38e1f43fb1cc2ab42101b"
+            _id: this.state.personID
         };
         let encodedId = encodeURIComponent(JSON.stringify(data));
 
@@ -101,7 +102,7 @@ export default class PersonInfo extends React.Component {
                                                     } else {
                                                         //Send data to server
                                                         const data = {
-                                                            _id: "61b38e1f43fb1cc2ab42101b",
+                                                            _id: this.state.personID,
                                                             firstName:this.state.firstName,
                                                             lastName:this.state.lastName,
                                                             email:this.state.email,

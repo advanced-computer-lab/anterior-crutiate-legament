@@ -77,20 +77,14 @@ userSchema.methods.searchUser = async searchFilters => {
     }
 }
 
-userSchema.methods.loginUser = async searchFilters => {
-    const info = JSON.parse(searchFilters);
-    if(Object.keys(info).length === 0) {
-        return undefined;
+userSchema.methods.loginUser = async signInInfo => {
+    const info = JSON.parse(signInInfo);
+    console.log(info);
+    if(!info.email || !info.password) {
+        return null ;
     }
     else{
-        let query = [] ;
-        if(info.email) {
-            query.push({email:info.email}) ;
-        }
-        if(info.password) {
-            query.push({password:info.password}) ;
-        }
-        return await Users.find({$and:query});
+        return await Users.findOne({$and:[{email:info.email},{password:info.password}]});
     }
 }
 
@@ -121,12 +115,19 @@ userSchema.methods.cancelReservation = async requestBody => {
                 }
             }
             let newreserv = {
-                flight_id :currentUser.reservations[i].flight_id,
-                cabin :currentUser.reservations[i].cabin,
+                flight_id : currentUser.reservations[i].flight_id,
+                cabin : currentUser.reservations[i].cabin,
                 seats : newArr
             }
-            retres = newreserv;
-            newReservations.push(newreserv);
+            let newreservmail = {
+                flight_id : currentUser.reservations[i].flight_id,
+                cabin : currentUser.reservations[i].cabin,
+                seats : newArr,
+                email : currentUser.email,
+            }
+            retres = newreservmail;
+            if(newreserv.seats.length > 0)
+                newReservations.push(newreserv);
 
         }else{
             newReservations.push(currentUser.reservations[i]);
@@ -210,6 +211,7 @@ userSchema.methods.searchFlights = async searchFilters => {
         return await Flights.find({$and:query});
     }
  }
+ 
 
 var Users = mongoose.model('Users',userSchema);
 

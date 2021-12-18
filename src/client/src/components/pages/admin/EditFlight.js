@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 import { getAdminToken } from "../../../handleToken.js";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import AdminNavbar from "./AdminNavbar.js";
 
 class DeletePopup extends React.Component {
@@ -26,7 +26,8 @@ class DeletePopup extends React.Component {
 
 export default function RootFunction(props) {
   const history = useHistory();
-  return <EditFlight history={history} getToken={props.getToken} />;
+  const data = useLocation();
+  return <EditFlight history={history} data={data} getToken={props.getToken} />;
 }
 
 class EditFlight extends React.Component {
@@ -89,7 +90,7 @@ class EditFlight extends React.Component {
   }
 
   componentDidMount() {
-    let flightId = this.props.flight_id;
+    let flightId = this.props.data.state.flight_id;
     let encodedSearchTerms = encodeURIComponent(
       JSON.stringify({ _id: flightId })
     );

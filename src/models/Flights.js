@@ -22,7 +22,7 @@ const flightSchema = new Schema ({
         min: Date()
     },
     arrival_time:{
-        type: Date  ,
+        type: Date,
         required: true,
         min: this.departure_time
     },
@@ -121,54 +121,42 @@ flightSchema.methods.updateFlight= async flightData =>{
 
 
 flightSchema.methods.searchFlights = async searchFilters => {
-<<<<<<< HEAD
     console.log(searchFilters);
     if(Object.keys(searchFilters).length === 0) {   
         return await Flights.find({}); 
     } 
     else if (searchFilters._id) {                  
-=======
     if(Object.keys(searchFilters).length === 0) {
         return await Flights.find({});
     }
     else if (searchFilters._id) {
->>>>>>> dev
         console.log(searchFilters._id);            //if searching is done by _id >>> it is unique               
         return await Flights.find({_id: searchFilters._id});
     }
     else {
         let query = [] ;
         if(searchFilters.flight_number) {
-            query.push({flight_number:searchFilters.flight_number});
+            query.push({flight_number:searchFilters.flight_number}); 
         }
         if(searchFilters.from) {
-            query.push({from:searchFilters.from});
+            query.push({from:searchFilters.from}); 
         }
         if(searchFilters.to) {
-            query.push({to:searchFilters.to}) ;
+            query.push({to:searchFilters.to}) ; 
         }
         if(searchFilters.departure_time) {
             query.push({departure_time:{$gte:searchFilters.departure_time}}) ;
         }
         if(searchFilters.arrival_time) {
-            query.push({arrival_time:{$lte:searchFilters.arrival_time}}) ;
-        }
-        if(searchFilters.flight_class && searchFilters.flight_class == "Business"){
-            query.push({Business:{$gte:`${parseInt(searchFilters.adults) +   parseInt( searchFilters.childs)}`}}) ;
-        }
-        if(searchFilters.flight_class && searchFilters.flight_class == "Economy"){
-            query.push({Economy:{$gte:`${parseInt(searchFilters.adults) +   parseInt( searchFilters.childs)}`}}) ;
-        }
-        if(searchFilters.flight_class && searchFilters.flight_class == "First"){
-            query.push({First:{$gte:`${parseInt(searchFilters.adults) +   parseInt( searchFilters.childs)}`}}) ;
+            query.push({departure_time:{$lte:searchFilters.arrival_time}}) ;
         }
         return await Flights.find({$and:query});
     }
-}
+ }
+
 flightSchema.methods.createFlight = async requestBody => {
     return await Flights.create(requestBody);
 }
-
 
 flightSchema.methods.reserveSeats = async requestBody => {
     var arr = requestBody.seats;
@@ -186,7 +174,8 @@ flightSchema.methods.reserveSeats = async requestBody => {
 
 flightSchema.methods.unreserveSeats = async requestBody => {
     var arr = requestBody.seats;
-    const flight = await Flights.findById(requestBody.flight_id);
+    const flight = await Flights.findById(requestBody._id);
+    console.log(requestBody);
     console.log(flight);
     if(requestBody.firstCabin){
         var newfirstCabin = [];
@@ -197,7 +186,7 @@ flightSchema.methods.unreserveSeats = async requestBody => {
                 newfirstCabin.splice(index, 1);
             }
         }
-        return await Flights.findByIdAndUpdate(requestBody.flight_id,
+        return await Flights.findByIdAndUpdate(requestBody._id,
         {firstCabin:newfirstCabin});}
     else if(requestBody.businessCabin){
         var newBusinessCabin = [];
@@ -208,7 +197,7 @@ flightSchema.methods.unreserveSeats = async requestBody => {
                 newBusinessCabin.splice(index, 1);
             }
         }
-        return await Flights.findByIdAndUpdate(requestBody.flight_id,
+        return await Flights.findByIdAndUpdate(requestBody._id,
             {businessCabin:newBusinessCabin});}
     else if(requestBody.economyCabin){
         var newEconomyCabin = [];
@@ -219,7 +208,7 @@ flightSchema.methods.unreserveSeats = async requestBody => {
                 newEconomyCabin.splice(index, 1);
             }
         }
-        return await Flights.findByIdAndUpdate(requestBody.flight_id,
+        return await Flights.findByIdAndUpdate(requestBody._id,
             {economyCabin:newEconomyCabin});}
 }
 
