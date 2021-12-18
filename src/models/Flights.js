@@ -181,7 +181,7 @@ flightSchema.methods.unreserveSeats = async requestBody => {
                 newfirstCabin.splice(index, 1);
             }
         }
-        return await Flights.findByIdAndUpdate(requestBody.flight_id,
+        return await Flights.findByIdAndUpdate(requestBody._id,
         {firstCabin:newfirstCabin});}
     else if(requestBody.businessCabin){
         var newBusinessCabin = [];
@@ -192,7 +192,7 @@ flightSchema.methods.unreserveSeats = async requestBody => {
                 newBusinessCabin.splice(index, 1);
             }
         }
-        return await Flights.findByIdAndUpdate(requestBody.flight_id,
+        return await Flights.findByIdAndUpdate(requestBody._id,
             {businessCabin:newBusinessCabin});}
     else if(requestBody.economyCabin){
         var newEconomyCabin = [];
@@ -203,7 +203,7 @@ flightSchema.methods.unreserveSeats = async requestBody => {
                 newEconomyCabin.splice(index, 1);
             }
         }
-        return await Flights.findByIdAndUpdate(requestBody.flight_id,
+        return await Flights.findByIdAndUpdate(requestBody._id,
             {economyCabin:newEconomyCabin});}
 }
 

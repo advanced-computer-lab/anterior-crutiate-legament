@@ -12,6 +12,8 @@ import FlightSummary from "../../templates/FlightSummary";
 import { Grid } from "@material-ui/core";
 import { Stack } from "@mui/material";
 
+var seatsDepart, seatsArrival;
+
 export default function RootFunction(props) {
   const history = useHistory();
   const data = useLocation();
@@ -21,19 +23,15 @@ export default function RootFunction(props) {
 class CheckOut extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      departure_id: this.props.data.state.departure_id,
+      arrival_id: this.props.data.state.arrival_id,
+    }
   }
 
   onSubmit = (e) => {
     e.preventDefault();
     // generate seats
-    let seatsDepart = [];
-    for (let i of this.props.data.state.rowsDepart[0]) {
-      if (!i.isReserved && i.isSelected) seatsDepart.push(i.number);
-    }
-    let seatsArrival = [];
-    for (let i of this.props.data.state.rowsArrival[0]) {
-      if (!i.isReserved && i.isSelected) seatsArrival.push(i.number);
-    }
 
     console.log(getUserID());
     console.log(seatsDepart);
@@ -60,6 +58,14 @@ class CheckOut extends React.Component {
   };
 
   render() {
+    seatsDepart = [];
+    for (let i of this.props.data.state.rowsDepart[0]) {
+      if (!i.isReserved && i.isSelected) seatsDepart.push(i.number);
+    }
+    seatsArrival = [];
+    for (let i of this.props.data.state.rowsArrival[0]) {
+      if (!i.isReserved && i.isSelected) seatsArrival.push(i.number);
+    }
     return (
       <Grid container>
         <SideNav />
@@ -72,10 +78,26 @@ class CheckOut extends React.Component {
             {console.log(this.props.data.state)}
           </Stack>
           <h3 className="text-center">Departing Flight</h3>
-          <FlightSummary _id={this.props.data.state.departure_id} />
+          <FlightSummary _id={this.state.departure_id} />
+          <br />
+          <h4>Reserved Seat Numbers:</h4>
+          <br />
+          <ul>
+            {seatsDepart.map((seat) => (
+              <li>{seat}</li>
+            ))}
+          </ul>
           <hr />
           <h3 className="text-center">Returning Flight</h3>
-          <FlightSummary _id={this.props.data.state.arrival_id} />
+          <FlightSummary _id={this.state.arrival_id} />
+          <br />
+          <h4>Reserved Seat Numbers:</h4>
+          <br />
+          <ul>
+            {seatsArrival.map((seat) => (
+              <li>{seat}</li>
+            ))}
+          </ul>
           <br />
           <form onSubmit={this.onSubmit}>
             <button className="btn btn-primary" type="submit">
