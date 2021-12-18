@@ -7,32 +7,59 @@ export default class MyTickets extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            personID:props.personID,
+            personPass:"",
             ticketsList: [],
             name: "",
+            isLoading: true
         }
     }
-    componentDidMount() {
+    async componentDidMount() {
         const data = {
-            _id: "61b38e1f43fb1cc2ab42101b"
+            _id: this.state.personID,
         };
         let encodedId = encodeURIComponent(JSON.stringify(data));
-        axios.get(`http://localhost:8000/api/user/getUserDetails?in=${encodedId}`)
+        await axios.get(`http://localhost:8000/api/user/getUserDetails?in=${encodedId}`)
             .then((res) => {
+
                 this.setState({
-                   ticketsList:res.data[0].reservations,
-                   name:res.data[0].firstName.concat(" ".concat(res.data[0].lastName))
+                    ticketsList: res.data[0].reservations,
+                    name: res.data[0].firstName.concat(" ".concat(res.data[0].lastName)),
+                    personPass: res.data[0].password,
+                    isLoading: false
                 })
+               
             });
     }
+    async componentDidUpdate() {
+        const data = {
+            _id: this.state.personID,
+        };
+        let encodedId = encodeURIComponent(JSON.stringify(data));
+        await axios.get(`http://localhost:8000/api/user/getUserDetails?in=${encodedId}`)
+            .then((res) => {
+
+                this.setState({
+                    ticketsList: res.data[0].reservations,
+                    name: res.data[0].firstName.concat(" ".concat(res.data[0].lastName)),
+                    personPass: res.data[0].password,
+                    isLoading: false
+                })
+               
+            });
+    }
+
     render() {
-        const ticketsList =this.state.ticketsList;
-        console.log(ticketsList);
+        if (this.state.isLoading) {
+            return <div>Loading...</div>
+        }
+        const ticketsList = this.state.ticketsList
+        
         let tickets;
         if (ticketsList) {
-            //ticketsList.map((ticket,k)=> console.log(typeof ticket))
-            
-            tickets=ticketsList.map((ticket,k)=>
-            <Ticket key={ticket.id} info={ticket} name={this.state.name}/>);
+           
+            tickets = ticketsList.map((ticket, k) =>
+                <Ticket key={ticket.id} info={ticket} name={this.state.name} personID={this.state.personID} personPass={this.state.personPass}/>);
             return (
                 <div>
                     <Stack spacing={1}>

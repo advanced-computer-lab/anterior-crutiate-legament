@@ -81,7 +81,7 @@ userSchema.methods.loginUser = async signInInfo => {
     const info = JSON.parse(signInInfo);
     console.log(info);
     if(!info.email || !info.password) {
-        return [] ;
+        return null ;
     }
     else{
         return await Users.findOne({$and:[{email:info.email},{password:info.password}]});

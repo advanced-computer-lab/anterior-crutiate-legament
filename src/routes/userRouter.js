@@ -11,16 +11,15 @@ userRouter.route('/searchFlights')
         const searchFilters = JSON.parse(req.query.searchFilters);
         var results = [];
 
-        console.log(searchFilters) ;
-        if( searchFilters.from &&
+        if( (searchFilters.from &&
             searchFilters.to  &&
             searchFilters.departure_time &&
             searchFilters.flight_class &&
             searchFilters.adults &&
-            searchFilters.childs
+            searchFilters.childs) ||
+            searchFilters._id
         ) {
             results = await Flights.searchFlights(searchFilters) ;
-            results = results.map(({_id, flight_number ,from,to, departure_time, arrival_time}) =>({_id, flight_number ,from,to, departure_time, arrival_time}) ) ;
         }
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(results));
@@ -35,7 +34,6 @@ userRouter.route('/searchFlights')
 
 userRouter.route('/editUserData')
     .put(async (req, res, next) => {
-        console.log(req.body);
         await Users.updateUser(JSON.parse(JSON.stringify(req.body)));
         res.end("User Details Updated");
     })
@@ -144,33 +142,6 @@ userRouter.route('/flightData')
     res.end('operation not supported');
 });
 
-// Search Flight
-userRouter.route('/searchFlights')
-.get(async (req, res, next) => {
-
-    const searchFilters = JSON.parse(req.query.searchFilters);
-    var results = [];
-
-
-    if (searchFilters.from &&
-        searchFilters.to &&
-        searchFilters.departure_time &&
-        searchFilters.flight_class &&
-        searchFilters.adults &&
-        searchFilters.childs
-    ) {
-        results = await Flights.searchFlights(searchFilters);
-        results = results.map(({ _id, flight_number, from, to, departure_time, arrival_time }) => ({ _id, flight_number, from, to, departure_time, arrival_time }));
-
-    }
-    res.setHeader('Content-Type', 'application/json');
-
-    res.end(JSON.stringify(results));
-})
-.all((req, res, next) => {
-    res.statusCode = 403;
-    res.end('operation not supported');
-});
 
 userRouter.route('/getFlightDetails')
 .get(async(req,res,next)=>{

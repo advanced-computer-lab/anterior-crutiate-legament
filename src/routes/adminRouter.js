@@ -39,6 +39,7 @@ adminRouter.route('/adminUpdateFlight')
 //get the all flights having some search filters
 adminRouter.route('/adminSearchFlights')
 .get(async(req,res,next)=>{
+    console.log(req.query)
     let results = await Flights.searchFlights(JSON.parse(req.query.searchFilters)) ;
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify(results));
