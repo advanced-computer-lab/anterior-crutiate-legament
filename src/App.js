@@ -1,5 +1,6 @@
 const express = require('express') ;
 const mongoose = require('mongoose') ;
+const bcryptjs = require('bcryptjs') ; 
 require('dotenv').config()
 const logger = require('morgan');
 const bodyParser = require("body-parser") ;
@@ -19,7 +20,7 @@ app.use(cors({ origin: true, credentials: true }));
 app.use(logger('dev'));
 
 
-mongoose.connect("mongodb+srv://acl:acl@cluster0.0ipj2.mongodb.net/AirflightsSystem?retryWrites=true&w=majority");
+mongoose.connect(uri);
 
 //Routers:
 app.use('/api',API) ;

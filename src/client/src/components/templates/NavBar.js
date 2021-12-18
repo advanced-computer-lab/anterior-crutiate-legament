@@ -15,7 +15,7 @@ function NavBar () {
               </a>
               
               <ul className="nav">
-                <li className="scroll-to-section"><a href="/Home" className="active">Home</a></li>
+                <li className="scroll-to-section"><a href="/" className="active">Home</a></li>
                 <li className="scroll-to-section"><a href="/services">Services</a></li>
                 <li className="scroll-to-section"><a href="/contact">Contact</a></li> 
                 <li className="scroll-to-section"><a href="/SignIn">Sign In</a></li>
