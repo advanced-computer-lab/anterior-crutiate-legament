@@ -121,6 +121,8 @@ flightSchema.methods.updateFlight= async flightData =>{
 
 
 flightSchema.methods.searchFlights = async searchFilters => {
+
+    console.log(searchFilters);
     if(Object.keys(searchFilters).length === 0) {   
         return await Flights.find({}); 
     } 

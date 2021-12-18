@@ -100,7 +100,6 @@ userSchema.methods.getReservedSeats = async requestBody => {
 }
 
 userSchema.methods.cancelReservation = async requestBody => {
-    
     var arr = requestBody.seats;
     const currentUser  = await Users.findById(requestBody.userId);
     var newReservations =[] ;
@@ -121,7 +120,6 @@ userSchema.methods.cancelReservation = async requestBody => {
                 seats : newArr
             }
             retres = newreserv;
-            if(newreserv.seats.length>0)
             newReservations.push(newreserv);
 
         }else{
@@ -206,6 +204,7 @@ userSchema.methods.searchFlights = async searchFilters => {
         return await Flights.find({$and:query});
     }
  }
+ 
 
 var Users = mongoose.model('Users',userSchema);
 
