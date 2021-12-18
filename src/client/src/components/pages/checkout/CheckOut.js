@@ -1,6 +1,8 @@
 import React from "react";
+import axios from "axios";
 import { Link } from "react-router-dom";
 import { useHistory, useLocation } from "react-router-dom";
+import { getUserID } from "../../../handleToken.js";
 
 import SideNav from "../../templates/SideNav";
 import Footer from "../../templates/Footer";
@@ -21,6 +23,42 @@ class CheckOut extends React.Component {
     super(props);
   }
 
+  onSubmit = (e) => {
+    e.preventDefault();
+    console.log(this.props.data.state);
+    // generate seats
+    let seatsDepart = [];
+    for(let i of this.props.data.state.rowsDepart[0]) {
+      if(!i.isReserved && i.isSelected)
+        seatsDepart.push(i.number);
+    }
+    let seatsArrival = [];
+    for(let i of this.props.data.state.rowsArrival[0]) {
+      if(!i.isReserved && i.isSelected)
+      seatsArrival.push(i.number);
+    }
+
+    console.log(seatsDepart);
+    console.log(seatsArrival);
+    
+    let endpoint = `http://localhost:8000/api/user/reserveSeats`;
+    let reserveReq = {
+      userId: getUserID(),
+      flightId: this.props.data.state.departure_id,
+      seats: seatsDepart,
+      cabin: this.props.data.state.flight_class,
+    };
+    axios.put(endpoint, reserveReq);
+    reserveReq = {
+      userId: getUserID(),
+      flightId: this.props.data.state.arrival_id,
+      seats: seatsArrival,
+      cabin: this.props.data.state.flight_class,
+    };
+    axios.put(endpoint, reserveReq);
+    this.props.history.push("/Profile");
+  }
+
   render() {
     return (
       <Grid container>
@@ -39,23 +77,11 @@ class CheckOut extends React.Component {
           <h3 className="text-center">Returning Flight</h3>
           <FlightSummary _id={this.props.data.state.arrival_id} />
           <br />
-          <Link
-            to={{
-              pathname: "/signIn",
-              state: {
-                redirect: "/chooseSeats",
-                redirectProps: {
-                  departure_id: this.props.data.state.departure_id,
-                  arrival_id: this.props.data.state.arrival_id,
-                  flight_class: this.props.data.state.flight_class,
-                  adults: this.props.data.state.adults,
-                  children: this.props.data.state.children,
-                },
-              },
-            }}
-          >
-          <button className="btn btn-primary">Check Out</button>
-          </Link>
+          <form onSubmit={this.onSubmit}>
+            <button className="btn btn-primary" type="submit">
+              Check Out
+            </button>
+          </form>
           <br />
           <Link
             to={{
