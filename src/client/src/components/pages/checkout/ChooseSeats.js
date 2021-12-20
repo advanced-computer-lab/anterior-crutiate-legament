@@ -1,16 +1,25 @@
 import React from "react";
 import {Link} from "react-router-dom";
+import {Redirect} from 'react-router-dom'
 import {useHistory, useLocation} from "react-router-dom";
 
 import SideNav from "../../templates/SideNav";
 import Footer from "../../templates/Footer";
 import PageHeaderSvg from "../../basic components/PageHeaderSvg";
 import SeatPicker from "react-seat-picker";
-
+import Dialog from '@mui/material/Dialog';
+import Slider from '@mui/material/Slider';
 import {Grid} from "@material-ui/core";
 import {Stack} from "@mui/material";
 import axios from "axios";
 import {getAdminToken} from "../../../handleToken";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import TextField from "@mui/material/TextField";
+import DialogActions from "@mui/material/DialogActions";
+import Button from "@mui/material/Button";
+import swal from "sweetalert";
 
 export default function RootFunction(props) {
     const history = useHistory();
@@ -21,7 +30,14 @@ export default function RootFunction(props) {
 class ChooseSeats extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {rowsDepart: null, rowsArrival: null};
+        this.state = {
+            rowsDepart: null,
+            rowsArrival: null,
+            atLeastOneError: false,
+            selectAdultChild: false,
+            childDepart: 0,
+            childArrival: 0
+        };
     }
 
     componentDidMount() {
@@ -145,7 +161,8 @@ class ChooseSeats extends React.Component {
     divideRows(rows) {
         let res = [];
         let cur = [];
-        for(let x of rows[0]) {if(cur.length === 10) {
+        for (let x of rows[0]) {
+            if (cur.length === 10) {
                 res.push(cur);
                 cur = [];
             }
@@ -153,6 +170,38 @@ class ChooseSeats extends React.Component {
         }
         res.push(cur);
         return res;
+    }
+
+    cntSelected = (rows) => {
+        if (rows === null)
+            return 0;
+        let cnt = 0;
+        for (let row of rows) {
+            for (let seat of row) {
+                if (seat.isSelected && !seat.isReserved) {
+                    cnt++;
+                }
+            }
+        }
+        return cnt;
+    }
+    hasOneSelected = (rows) => {
+        console.log(this.cntSelected(rows))
+        return this.cntSelected(rows) >= 1
+    }
+
+    continueOnClick = (e) => {
+        if (!this.hasOneSelected(this.state.rowsDepart) || !this.hasOneSelected(this.state.rowsArrival)) {
+            this.setState({atLeastOneError: true});
+        } else {
+            this.setState({selectAdultChild: true});
+        }
+    }
+    departSlider = (event, val) => {
+        this.state.childDepart = val;
+    }
+    arrivalSlider = (event, val) => {
+        this.state.childArrival = val;
     }
 
     render() {
@@ -193,22 +242,8 @@ class ChooseSeats extends React.Component {
                             ""
                         )}
                         <br/>
-                        <Link
-                            to={{
-                                pathname: "/checkOut",
-                                state: {
-                                    departure_id: this.props.data.state.departure_id,
-                                    arrival_id: this.props.data.state.arrival_id,
-                                    flight_class: this.props.data.state.flight_class,
-                                    rowsDepart: this.state.rowsDepart,
-                                    rowsArrival: this.state.rowsArrival,
-                                    adults: this.props.data.state.adults,
-                                    children: this.props.data.state.children,
-                                },
-                            }}
-                        >
-                            <button className="btn btn-primary">Continue</button>
-                        </Link>
+                        <button className="btn btn-primary" onClick={this.continueOnClick}>Continue</button>
+                        {/*</Link>*/}
                         <br/>
                         <Link to={{pathname: "/home"}}>
                             <button className="btn btn-secondary">Go Back</button>
@@ -222,6 +257,65 @@ class ChooseSeats extends React.Component {
                 >
                     <Footer/>
                 </Grid>
+                <Dialog open={this.state.atLeastOneError} onClose={(e) => this.setState({atLeastOneError: false})}>
+                    <DialogContentText>You must select at least one arrival and at least one departure
+                        seat</DialogContentText>
+                    <DialogActions>
+                        <Button onClick={(e) => this.setState({atLeastOneError: false})} color="info">OK</Button>
+                    </DialogActions>
+                </Dialog>
+                <Dialog open={this.state.selectAdultChild} onClose={(e) => this.setState({selectAdultChild: false})}>
+                    <DialogTitle>Select seats type</DialogTitle>
+                    <DialogContent>You have {this.cntSelected(this.state.rowsDepart)} departure seats
+                        and {this.cntSelected(this.state.rowsArrival)} arrival seats selected</DialogContent>
+                    <DialogContent>Please select the number children seats for departure</DialogContent>
+                    <DialogContent>
+                        <br/>
+                        <Slider
+                            size="small"
+                            defaultValue={0}
+                            valueLabelDisplay="on"
+                            step={1}
+                            marks
+                            min={0}
+                            max={this.cntSelected(this.state.rowsDepart)}
+                            onChangeCommitted={this.departSlider}
+                            onChange={this.departSlider}
+                        />
+                    </DialogContent>
+                    <DialogContent>Please select the number children seats for arrival</DialogContent>
+                    <DialogContent>
+                        <br/>
+                        <Slider
+                            size="small"
+                            defaultValue={0}
+                            valueLabelDisplay="on"
+                            step={1}
+                            marks
+                            min={0}
+                            max={this.cntSelected(this.state.rowsArrival)}
+                            onChange={this.arrivalSlider}
+                            onChangeCommitted={this.arrivalSlider}
+                        />
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={(e) => {
+                            console.log(this.state.childArrival+" "+this.state.childDepart)
+                            this.props.history.push("/checkOut", {
+                                departure_id: this.props.data.state.departure_id,
+                                arrival_id: this.props.data.state.arrival_id,
+                                flight_class: this.props.data.state.flight_class,
+                                rowsDepart: this.state.rowsDepart,
+                                rowsArrival: this.state.rowsArrival,
+                                adults: this.props.data.state.adults,
+                                children: this.props.data.state.children,
+                                childDepart: this.state.childDepart,
+                                childArrival: this.state.childArrival
+                            })
+                        }} color="info">OK</Button>
+                    </DialogActions>
+                </Dialog>
+
             </Grid>
         );
     }
