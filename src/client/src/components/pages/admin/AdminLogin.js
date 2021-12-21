@@ -24,6 +24,7 @@ class AdminLogin extends React.Component {
   }
 
   componentWillMount() {
+    console.log(getAdminToken());
     if (getAdminToken()) this.props.history.push("/admin");
   }
 
@@ -39,8 +40,8 @@ class AdminLogin extends React.Component {
         `http://localhost:8000/api/admin/adminLogin?loginDetails=${encodedLogin}`
       )
       .then((res) => {
-        setAdminToken(res.data[0]._id);
-        setAdminName(res.data[0].firstName + " " + res.data[0].lastName);
+        setAdminToken(res.data.accessToken);
+        //setAdminName(res.data[0].firstName + " " + res.data[0].lastName);
         if (getAdminToken()) this.props.history.push("/admin");
         else console.log("token not found");
       })

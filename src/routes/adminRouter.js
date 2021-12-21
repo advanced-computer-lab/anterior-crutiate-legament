@@ -64,6 +64,7 @@ adminRouter.route('/adminCreateFlight')
 adminRouter.route('/adminLogin')
 .get(async(req,res,next)=>{
     let results = await Admin.loginAdmin(JSON.parse(req.query.loginDetails)) ;
+    console.log(results);
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify(results));
 })

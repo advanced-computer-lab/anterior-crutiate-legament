@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import { getAdminToken } from "../../../handleToken.js";
 import { Link, useHistory } from "react-router-dom";
 import AdminNavbar from "./AdminNavbar.js";
 
@@ -22,7 +23,7 @@ class AddAdmin extends React.Component {
   }
 
   componentWillMount() {
-    // authentication
+    if (!getAdminToken()) this.props.history.push("/adminLogin");
   }
 
   onChange(e) {
