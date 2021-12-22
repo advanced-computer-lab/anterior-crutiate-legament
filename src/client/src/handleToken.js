@@ -1,4 +1,3 @@
-
 function setAdminToken(adminToken) {
   sessionStorage.setItem("adminToken", JSON.stringify(adminToken));
 }

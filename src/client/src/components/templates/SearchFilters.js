@@ -1,4 +1,4 @@
-import React , {useState} from 'react';
+import React , {useState,useEffect} from 'react';
 import PropTypes from 'prop-types';
 import Box from '@material-ui/core/Box';
 import { Link } from "react-router-dom";
@@ -15,6 +15,8 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import KeyboardArrowDownIcon from '@material-ui/icons/ArrowDownward';
 import KeyboardArrowUpIcon from '@material-ui/icons/ArrowUpward';
+import Loading from '../basic components/Loading' ;
+import ErrorSvg from '../basic components/ErrorSvg' ;
 import { format} from 'date-fns'
 import axios from 'axios';
 
@@ -34,6 +36,7 @@ import
 from '@material-ui/core'; 
 
 import SearchIcon from "@material-ui/icons/Search";
+import { set } from 'date-fns/esm';
 
 
 
@@ -53,17 +56,32 @@ export default function SearchResults (props) {
   );
   
   const [searchResults , setSearchResults] = useState ([]);
+
+  const [loading, setLoading] = useState(false);
+  const [searched, setSearched] = useState(false);
+
+
+  useEffect(() => {
+
+  });
   
     const getSearchResults =  (e) => {
-      setSearchResults([]);
+      setLoading (true);
+      setSearched (true);
 
-      let encodedSearchTerms = encodeURIComponent(JSON.stringify(searchFilters));
-
-      axios.get(`http://localhost:8000/api/user/SearchFlights?searchFilters=${encodedSearchTerms}`)
-           .then((r) => {
-              setSearchResults(r.data);
-           }) ;
     };
+
+    useEffect(() => {
+        let encodedSearchTerms = encodeURIComponent(JSON.stringify(searchFilters));
+  
+        axios.get(`http://localhost:8000/api/user/SearchFlights?searchFilters=${encodedSearchTerms}`)
+        .then((r) => {
+          setSearchResults(r.data);
+          setLoading(false) ;
+          console.log(loading) ;
+        }) ;
+  
+    },[loading]);
 
     return (
 
@@ -141,31 +159,31 @@ export default function SearchResults (props) {
             </Paper> 
 
             <hr style = {{marginTop:"20px"}}/>
-
-              <CollapsibleTable return_time={searchFilters.return_time} flight_class = {searchFilters.flight_class} adults={searchFilters.adults} childs = {searchFilters.childs} searchResults = {searchResults}/>
+ 
+          
+              <CollapsibleTable searched = {searched} loading = {loading} return_time={searchFilters.return_time} flight_class = {searchFilters.flight_class} adults={searchFilters.adults} childs = {searchFilters.childs} searchResults = {searchResults}/>
 
             </Grid>
     ) ;
 }
 
 
-
-
-
-
-
-
-
-
-
 function Row(props) {
   const { row } = props;
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
-  const [returnFlights , setReturnFlights] = React.useState([]) ;
+  const [loading, setLoading] = useState(false);
+
+  const [returnFlights , setReturnFlights] = useState([]) ;
 
   const getReturnFlights = (e) => {
-    if (!open){
+    console.log(open ) ;
+      setOpen(!open) ;
+  };
+  
+  useEffect(() => {
+    if(open){
+      setLoading(true);
       let encodedSearchTerms = encodeURIComponent(JSON.stringify(
         {
           from:  row.to,
@@ -176,35 +194,19 @@ function Row(props) {
           childs: props.childs
         }       
       ));
-        /*
-      console.log({
-        from: row.from,
-        to: row.to,
-        departure_time: props.return_time ,
-        flight_class: props.flight_class,
-        adults: props.adults,
-        childs: props.childs
-      }       );
-      */
-      axios.get(`http://localhost:8000/api/user/SearchFlights?searchFilters=${encodedSearchTerms}`)
-           .then((r) => {
-             //console.log(r);
-            setReturnFlights(r.data);
 
-           }) ;
+      axios.get(`http://localhost:8000/api/user/SearchFlights?searchFilters=${encodedSearchTerms}`)
+      .then((r) => {
+          setLoading(false);
+          setReturnFlights(r.data);
+      }) ;
     }
     else{
       setReturnFlights([]);
     }
 
-    setOpen(!open) ;
-  };
- 
-  const redirecrCheckOut = (e) => {
-      // here to handle the redirect to the check out page and pass the two id's of departure and return 
-      console.log(e.t); 
+  },[open]);
 
-  }
   return (
     <React.Fragment>
       <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
@@ -233,6 +235,13 @@ function Row(props) {
               <Typography variant="h6" gutterBottom component="div">
                 Return Flights
               </Typography>
+              {loading?
+                        <>
+                        <Loading variant = "h2"/>
+                        <Loading variant = "h2"/>
+                        <Loading variant = "h4"/>
+                        </>
+                :
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
@@ -245,6 +254,8 @@ function Row(props) {
 
                   </TableRow>
                 </TableHead>
+
+             
                 <TableBody>
                   {returnFlights.map((returnRow) => (
                     <TableRow key={returnRow._id}>
@@ -273,11 +284,15 @@ function Row(props) {
                     </TableRow>
                   ))}
                 </TableBody>
+
               </Table>
+            } 
+
             </Box>
           </Collapse>
         </TableCell>
-      </TableRow>  
+      </TableRow>
+      
     </React.Fragment>
   );
 }
@@ -309,110 +324,58 @@ Row.propTypes = {
 
 
 function CollapsibleTable(props) {
+
   return (
    
-
+          <>
             <TableContainer component={Paper}>
                 <Table aria-label="collapsible table">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell/>
-                      <TableCell align="left">Flight Number</TableCell>
-                      <TableCell align="left">From</TableCell>
-                      <TableCell align="left">To</TableCell>
-                      <TableCell align="left">Departure</TableCell>
-                      <TableCell align="left">Arrival</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {props.searchResults.map((row) => (
-                      <Row id={row._id}
-                      return_time = {props.return_time} flight_class = {props.flight_class} adults={props.adults} childs = {props.childs}
-                      row={row} />
-                    ))}
-                  </TableBody>
+                    <TableHead>
+                        <TableRow>
+                          <TableCell/>
+                          <TableCell align="left">Flight Number</TableCell>
+                          <TableCell align="left">From</TableCell>
+                          <TableCell align="left">To</TableCell>
+                          <TableCell align="left">Departure</TableCell>
+                          <TableCell align="left">Arrival</TableCell>
+                        </TableRow>
+                    </TableHead>
                 </Table>
             </TableContainer>
+
+
+            {props.loading?
+                      <>
+                        <Loading variant = "h1"/>
+                        <Loading variant = "h1"/>
+                        <Loading variant = "h3"/>
+                      </>
+            :props.searched && Object.keys(props.searchResults)==0?
+              <>
+                <Grid container>
+                  <h3 style={{textAlign: 'center',width: '100%',marginTop:"1%"}}>No flights found, please try other filters</h3>
+                </Grid>
+                <ErrorSvg/>
+              </>               
+            :
+              <TableContainer component={Paper}>
+                  <Table aria-label="collapsible table">
+
+                    <TableBody>
+                      {props.searchResults.map((row) => (
+                        <Row id={row._id}
+                        return_time = {props.return_time} flight_class = {props.flight_class} adults={props.adults} childs = {props.childs}
+                        row={row} />
+                      ))}
+                    </TableBody>
+
+                  </Table>
+              </TableContainer>
+              
+            }
+          </>
 
 
   );
 }
 
-
-const res = [{
-  _id : "123412341234123412341234",
-  flight_number: "AEWF55",
-  from: "CAIK",
-  to:"RGREG",
-  arrival_time: new Date(),
-  departure_time: new Date(),
-  economy : 50,
-  business: 20,
-  first: 15
-},
-{
-  _id : "123412341234123412341234",
-  flight_number: "AEWF55",
-  from: "CAIK",
-  to:"RGREG",
-  arrival_time: new Date(),
-  departure_time: new Date(),
-  economy : 50,
-  business: 20,
-  first: 15
-},
-{
-  _id : "123412341234123412341234",
-  flight_number: "AEWF55",
-  from: "CAIK",
-  to:"RGREG",
-  arrival_time: new Date(),
-  departure_time: new Date(),
-  economy : 50,
-  business: 20,
-  first: 15
-},
-{
-  _id : "123412341234123412341234",
-  flight_number: "AEWF55",
-  from: "CAIK",
-  to:"RGREG",
-  arrival_time: new Date(),
-  departure_time: new Date(),
-  economy : 50,
-  business: 20,
-  first: 15
-},
-{
-  _id : "123412341234123412341234",
-  flight_number: "AEWF55",
-  from: "CAIK",
-  to:"RGREG",
-  arrival_time: new Date(),
-  departure_time: new Date(),
-  economy : 50,
-  business: 20,
-  first: 15
-},
-{
-  _id : "123412341234123412341234",
-  flight_number: "AEWF55",
-  from: "CAIK",
-  to:"RGREG",
-  arrival_time: new Date(),
-  departure_time: new Date(),
-  economy : 50,
-  business: 20,
-  first: 15
-},
-{
-  _id : "123412341234123412341234",
-  flight_number: "AEWF55",
-  from: "CAIK",
-  to:"RGREG",
-  arrival_time: new Date(),
-  departure_time: new Date(),
-  economy : 50,
-  business: 20,
-  first: 15
-}];

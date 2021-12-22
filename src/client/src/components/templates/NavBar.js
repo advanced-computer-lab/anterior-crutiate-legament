@@ -1,8 +1,11 @@
 import React from 'react';
 
 import logo from  "../../assets/img/logo-ct-2.png"; 
+import {getUserToken} from "../../handleToken";
+
 
 function NavBar () {
+  console.log(getUserToken()) ;
     return (
 
       <header className="header-area header-sticky wow slideInDown"style={{backgroundColor:"#F3F1F5"}} data-wow-duration="0.75s" data-wow-delay="0s">
@@ -18,8 +21,16 @@ function NavBar () {
                 <li className="scroll-to-section"><a href="/" className="active">Home</a></li>
                 <li className="scroll-to-section"><a href="/services">Services</a></li>
                 <li className="scroll-to-section"><a href="/contact">Contact</a></li> 
-                <li className="scroll-to-section"><a href="/SignIn">Sign In</a></li>
+                {getUserToken()?
+                <li className="scroll-to-section"><a href="/profile">Profile</a></li>:null
+                }
+                {getUserToken()?"":
+                <li className="scroll-to-section"><a href="/signIn">Sign In</a></li>
+                }
+                {getUserToken()?"":
                 <li className="scroll-to-section"><div className="border-first-button"><a href="/register">Register</a></div></li> 
+                }
+               
               </ul>        
               <a className='menu-trigger'>
                   <span>Menu</span>

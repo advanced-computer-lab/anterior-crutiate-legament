@@ -26,7 +26,6 @@ function SignIn(props) {
 
   // ComponentWillMount
   useEffect(() => {
-    deleteUserToken();
     if (getUserToken())
       if (data.state && data.state.redirect)
         history.push(data.state.redirect, data.state.redirectProps);
@@ -34,31 +33,29 @@ function SignIn(props) {
   }, []);
 
   const signin = async (e) => {
+ 
     if (signInfo.email !== "" && signInfo.password !== "") {
-      setSubmitted(true);
-      setError(false);
-      let encodedSearchTerms = encodeURIComponent(JSON.stringify(signInfo));
-      await axios
-        .get(
-          `http://localhost:8000/api/user/userLogin?signInfo=${encodedSearchTerms}`
-        )
-        .then((res) => {
-          console.log("success");
-          console.log(res);
-          if (res.status !== 203) {
-            setSubmitted(true);
-            setError(false);
-            setUserToken(res.data._id);
-            console.log(res.data._id);
-            if (data.state && data.state.redirect)
-              history.push(data.state.redirect, data.state.redirectProps);
-            else history.push("/");
-          } else {
-            setError(true);
-            setSubmitted(false);
-          }
-        });
-    } else {
+        
+          let encodedSearchTerms = encodeURIComponent(JSON.stringify(signInfo));
+          
+          await axios.get(`http://localhost:8000/api/user/userLogin?signInfo=${encodedSearchTerms}`)
+          .then((res) => { 
+              if (res.status == 200) {
+                setSubmitted(true);
+                setError(false);
+                setUserToken(res.data._id); 
+                if (data.state && data.state.redirect)
+                  history.push(data.state.redirect, data.state.redirectProps);
+                else 
+                  history.push("/");
+              } 
+              else {
+                setError(true);
+                setSubmitted(false);
+              }
+          });
+    } 
+    else {
       setSubmitted(false);
       setError(true);
     }
@@ -134,6 +131,7 @@ function SignIn(props) {
                       onChange={(e) =>
                         setSignInfo({ ...signInfo, password: e.target.value })
                       }
+                      type="password"
                       id="outlined-basic"
                       label="Password"
                       margin="normal"

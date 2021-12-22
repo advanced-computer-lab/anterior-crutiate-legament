@@ -1,7 +1,6 @@
 import React from 'react';
 
 import "../../assets/css/components/logo.css"
-import background from "../../assets/img/undraw_adventure_re_ncqp.svg";
 function PageHeaderSvg (props) {
 
      return (
