@@ -19,10 +19,8 @@ export default function Profile(){
 
     const history = useHistory();
     useEffect( () => {
-        if (history.state && history.state.redirect)
-            history.push(history.state.redirect, history.state.redirectProps);
-        else
-         history.push("/");
+        if(!getUserToken())
+          history.push("/");
     }, []);
 
     return (
