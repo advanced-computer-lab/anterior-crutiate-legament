@@ -9,13 +9,14 @@ import login from '../../assets/images/login.png';
 import register from '../../assets/images/register.png';
 import out from '../../assets/images/log-out.png';
 
-import {getUserToken,deleteUserToken} from "../../handleToken";
+import {getUserToken,deleteUserToken, deleteUserID} from "../../handleToken";
 
 
 function SideNavLink (props) {
 
     const logOut = () => {
-        deleteUserToken() ;
+        deleteUserToken();
+        deleteUserID();
     }
 
      return (
