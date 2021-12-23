@@ -32,7 +32,7 @@ function App() {
       <Route exact path="/" component={LandingPage} />
       <Route exact path="/home" component={DashBoard} />
       <Route exact path="/register" component={Register} />
-      <Route exact path="/signIn" component={SignIn} />
+      <Route exact path= {"/signIn"} component={SignIn} />
       <Route exact path='/Profile' component={Profile} />
       <Route exact path='/flightsSummary' component={Summary} />
       <Route exact path='/chooseSeats' component={ChooseSeats} />

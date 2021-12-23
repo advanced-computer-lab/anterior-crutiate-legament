@@ -8,10 +8,8 @@ var nodemailer=require('nodemailer');
 // user search flights
 userRouter.route('/searchFlights')
     .get(async(req,res,next)=>{
-
         const searchFilters = JSON.parse(req.query.searchFilters);
         var results = [];
-
         if( (searchFilters.from &&
             searchFilters.to  &&
             searchFilters.departure_time &&
@@ -61,6 +59,17 @@ userRouter.route('/userRegister')
     .post(async (req, res, next) => {
         await Users.createUser(JSON.parse(JSON.stringify(req.body)));
         res.end('user register');
+    })
+    .all((req, res, next) => {
+        res.statusCode = 403;
+        res.end('operation not supported');
+    });
+
+//check if the user with this email or passport number exist 
+userRouter.route('/userExists')
+    .get(async (req, res, next) => {
+        let user = await Users.userExists(JSON.parse(req.query.user));
+        res.end(JSON.stringify(user?true:false));
     })
     .all((req, res, next) => {
         res.statusCode = 403;

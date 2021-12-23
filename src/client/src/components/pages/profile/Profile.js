@@ -20,7 +20,7 @@ export default function Profile(){
     const history = useHistory();
     useEffect( () => {
         if(!getUserToken())
-            history.push("/");
+          history.push("/");
     }, []);
 
     return (

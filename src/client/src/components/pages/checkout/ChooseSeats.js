@@ -6,13 +6,13 @@ import {useHistory, useLocation} from "react-router-dom";
 import SideNav from "../../templates/SideNav";
 import Footer from "../../templates/Footer";
 import PageHeaderSvg from "../../basic components/PageHeaderSvg";
+import SubmitButton from "../../basic components/SubmitButton";
 import SeatPicker from "react-seat-picker";
 import Dialog from '@mui/material/Dialog';
 import Slider from '@mui/material/Slider';
 import {Grid} from "@material-ui/core";
 import {Stack} from "@mui/material";
 import axios from "axios";
-import {getAdminToken} from "../../../handleToken";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
@@ -242,14 +242,26 @@ class ChooseSeats extends React.Component {
                             ""
                         )}
                         <br/>
-                        <button className="btn btn-primary" onClick={this.continueOnClick}>Continue</button>
-                        {/*</Link>*/}
-                        <br/>
-                        <Link to={{pathname: "/home"}}>
-                            <button className="btn btn-secondary">Go Back</button>
-                        </Link>
+
+                    <Grid container >
+                        <Grid item md = {0.5} sm= {0.5} xs = {0.5} style={{marginLeft:"3%"}} >  
+                            <SubmitButton click={this.continueOnClick} buttonText="Continue"/>
+                        </Grid>
+                        <Grid item md={0.5}>
+                          <>&nbsp; &nbsp;</>      
+                        </Grid>
+                        <Grid item md={0.5} style= {{marginTop:"1%"}}>      
+                            
+                            <Link to={{pathname: "/home"}}>
+                                <button className="btn btn-secondary">Go Back</button>
+                            </Link>
+                        </Grid>
+                    </Grid>        
+
                     </Stack>
                 </Grid>
+               
+
                 <Grid
                     item
                     md={12}
@@ -257,6 +269,8 @@ class ChooseSeats extends React.Component {
                 >
                     <Footer/>
                 </Grid>
+
+
                 <Dialog open={this.state.atLeastOneError} onClose={(e) => this.setState({atLeastOneError: false})}>
                     <DialogContentText>You must select at least one arrival and at least one departure
                         seat</DialogContentText>
@@ -300,7 +314,6 @@ class ChooseSeats extends React.Component {
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={(e) => {
-                            console.log(this.state.childArrival+" "+this.state.childDepart)
                             this.props.history.push("/checkOut", {
                                 departure_id: this.props.data.state.departure_id,
                                 arrival_id: this.props.data.state.arrival_id,
