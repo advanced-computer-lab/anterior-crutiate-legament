@@ -21,12 +21,12 @@ function SideNavLink (props) {
      return (
         <Grid container className="sidenav" style={{marginTop: "15%"}}>    
 
-            <Paper elevation={2} style={{padding:"3%", paddingBottom:"10%", marginLeft:"3%", backgroundColor:"#F5F5F5"}} >
+            <Paper elevation={2} style={{padding:"3%", paddingBottom:"10%", marginLeft:"3%", backgroundColor:"#ecf4fb"}} >
             <Logo />
             <hr style = {{marginTop:"20%"}}/>
 
             <Grid container>
-                <Paper  style={{backgroundColor:"#CFE9D5",paddingBottom:"3%",margin:"1%"}}>
+                <Paper  style={{backgroundColor:"#bad1fa",paddingBottom:"3%",margin:"1%"}}>
                 <Link href = "/" >
                 <Paper elevation={3} elevation={1} style={{backgroundColor:"#F8FFEF",padding:10 ,marginTop:"5%",marginLeft:"15%",marginRight:"10%", width:"20%",float:"left"}}>
                     <img  style={{width:"100%"}} src = {home} />
@@ -39,7 +39,7 @@ function SideNavLink (props) {
             </Grid>
 
             <Grid container>
-            <Paper  style={{backgroundColor:"#CFE9D5",paddingBottom:"3%",margin:"1%"}}>
+            <Paper  style={{backgroundColor:"#bad1fa",paddingBottom:"3%",margin:"1%"}}>
 
                 <Link href = "/Profile" >
                 <Paper elevation={3} elevation={1} style={{backgroundColor:"#F8FFEF",padding:10 ,marginTop:"5%",marginLeft:"15%",marginRight:"10%", width:"20%",float:"left"}}>

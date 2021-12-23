@@ -5,6 +5,7 @@ import Footer from '../../templates/Footer';
 import TextField from '@mui/material/TextField';
 import Form from '@mui/material/FormGroup';
 import SubmitButton from '../../basic components/SubmitButton';
+import Progress from "../../basic components/Progress"; 
 import axios from 'axios';
 import { useHistory } from "react-router-dom";
 import "../../../handleToken";
@@ -26,11 +27,14 @@ function Register (props) {
         }
     );
 
-     
-    const register =  async (e) => {
-        
-        const validateEmail = await isValidEmail(registerInfo.email);
+    const [registering ,serRegistering] = useState(false);
 
+
+    
+    const register =  async (e) => {
+        serRegistering(true);
+        setError(false) ;
+        const validateEmail = await isValidEmail(registerInfo.email);
         console.log(validateEmail) ;
         if( 
             registerInfo.firstName === ""
@@ -65,6 +69,7 @@ function Register (props) {
             axios.post(`http://localhost:8000/api/user/userRegister`,   registerInfo);
             history.push("/");
         }
+        serRegistering(false); 
 
     };
 
@@ -151,7 +156,10 @@ function Register (props) {
                             value={registerInfo.confirmPassword}
                             onChange = {(e) => setRegisterInfo({...registerInfo, confirmPassword: e.target.value})}
                             id="outlined-basic" label="Confirm Password" margin="dense" variant="outlined" />
+                        {registering?
+                        <Progress/>:        
                         <SubmitButton buttonText = {"Register"} click ={register} />
+                        }
                     </Form>
                     <div className="messages">
                         {errorMessage(message)}

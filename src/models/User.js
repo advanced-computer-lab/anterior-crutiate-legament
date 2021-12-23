@@ -87,8 +87,7 @@ userSchema.methods.userExists = async user => {
 
 
 userSchema.methods.loginUser = async signInInfo => {
-    const info = JSON.parse(signInInfo);
-    console.log(info);
+    const info = JSON.parse(signInInfo); 
     if(!info.email || !info.password) {
         return null ;
     }

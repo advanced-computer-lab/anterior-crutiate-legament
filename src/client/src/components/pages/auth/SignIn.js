@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
+
 import {
   setUserToken,
   getUserToken,
-  deleteUserToken,
 } from "../../../handleToken.js";
 
 import NavBar from "../../templates/NavBar";
 import Footer from "../../templates/Footer";
-
+import Progress from "../../basic components/Progress";
 import TextField from "@mui/material/TextField";
 import Form from "@mui/material/FormGroup";
+import Grid from "@mui/material/FormGroup";
 import SubmitButton from "../../basic components/SubmitButton";
 import { useHistory, useLocation } from "react-router-dom";
 import axios from "axios";
@@ -24,6 +25,8 @@ function SignIn(props) {
     password: "",
   });
 
+  const [signing , setSigning] = useState(false);
+  
   // ComponentWillMount
   useEffect(() => {
     if (getUserToken())
@@ -31,9 +34,13 @@ function SignIn(props) {
         history.push(data.state.redirect, data.state.redirectProps);
       else history.push("/");
   }, []);
+  
 
   const signin = async (e) => {
- 
+    
+    setError(false);
+    setSigning(true);
+
     if (signInfo.email !== "" && signInfo.password !== "") {
         
           let encodedSearchTerms = encodeURIComponent(JSON.stringify(signInfo));
@@ -53,6 +60,7 @@ function SignIn(props) {
                 setError(true);
                 setSubmitted(false);
               }
+              setSigning(false) ;
           });
     } 
     else {
@@ -89,7 +97,7 @@ function SignIn(props) {
   };
 
   return (
-    <div>
+    <div >
       <NavBar />
 
       <div
@@ -137,7 +145,10 @@ function SignIn(props) {
                       margin="normal"
                       variant="outlined"
                     />
+                    {signing?
+                    <Progress/>:
                     <SubmitButton buttonText={"Sign In"} click={signin} />
+                    }
                   </Form>
                   <div className="messages">
                     {errorMessage()}

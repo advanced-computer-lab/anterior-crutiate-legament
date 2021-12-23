@@ -1,11 +1,15 @@
 import React from 'react';
 
 import logo from  "../../assets/img/logo-ct-2.png"; 
-import {getUserToken} from "../../handleToken";
+import { Link } from '@material-ui/core';
+import {getUserToken,deleteUserToken} from "../../handleToken";
 
 
 function NavBar () {
-  console.log(getUserToken()) ;
+
+    const logOut = () => {
+      deleteUserToken() ;
+    }
     return (
 
       <header className="header-area header-sticky wow slideInDown"style={{backgroundColor:"#F3F1F5"}} data-wow-duration="0.75s" data-wow-delay="0s">
@@ -30,7 +34,12 @@ function NavBar () {
                 {getUserToken()?"":
                 <li className="scroll-to-section"><div className="border-first-button"><a href="/register">Register</a></div></li> 
                 }
-               
+
+                {getUserToken()?
+                <Link href = "/"  onClick={logOut}>
+                    <li className="scroll-to-section"><div className="border-first-button"><a>Log Out</a></div></li> 
+                </Link>:"" 
+                }
               </ul>        
               <a className='menu-trigger'>
                   <span>Menu</span>
