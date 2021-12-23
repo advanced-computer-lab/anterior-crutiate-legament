@@ -102,13 +102,9 @@ userSchema.methods.loginUser = async (signInInfo) => {
 
 userSchema.methods.verifyPassword = async (signInInfo) => {
     const info = JSON.parse(signInInfo);
-    const user = await Users.findOne({ email: info.email });
+    const user = await Users.findOne({ _id: info._id });
     try {
       const match = await bcrypt.compare(info.password, user.password);
-      const accessToken = jwt.sign(
-        JSON.stringify({email: user.email, password: user.password}),
-        process.env.USER_TOKEN_SECRET
-      );
       if (match) {
        return { result: true, };
       } else {
