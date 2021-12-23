@@ -8,6 +8,8 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import swal from 'sweetalert';
 import axios from 'axios';
+import { getUserToken } from "../../../handleToken.js";
+
 export default class CancelRservation extends React.Component {
   constructor(props) {
     super(props);
@@ -64,7 +66,8 @@ export default class CancelRservation extends React.Component {
                     flightId: this.state.flight_id,
                     seats: this.state.seats,
                     cabin: this.state.cabin,
-                    userId: this.state.personID
+                    userId: this.state.personID,
+                    token: getUserToken(),
                   }
                   console.log(data);
                   await axios.delete('http://localhost:8000/api/user/cancelReservation', { data: data })

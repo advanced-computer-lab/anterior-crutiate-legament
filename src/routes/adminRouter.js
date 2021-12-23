@@ -7,7 +7,6 @@ const Flights = new require("../models/Flights.js")();
 const Admin = new require("../models/Admin.js")();
 
 function verifyAdminToken(jwtToken) {
-  console.log(jwtToken);
   if(!jwtToken) return true;
   jwt.verify(jwtToken, process.env.ADMIN_TOKEN_SECRET, async (err, verifiedJwt) => {
     return err;

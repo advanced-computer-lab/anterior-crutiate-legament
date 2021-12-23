@@ -45,7 +45,7 @@ userSchema.methods.updateUser = async (userData) => {
       firstName: userData.firstName ? userData.firstName : oldUser.firstName,
       lastName: userData.lastName ? userData.lastName : oldUser.lastName,
       email: userData.email ? userData.email : oldUser.email,
-      password: userData.password ? userData.password : oldUser.password,
+      password: userData.password ? await bcrypt.hash(userData.password, 10) : oldUser.password,
       passport: userData.passport ? userData.passport : oldUser.passport,
     },
     { new: true }
@@ -99,6 +99,26 @@ userSchema.methods.loginUser = async (signInInfo) => {
     return undefined;
   }
 };
+
+userSchema.methods.verifyPassword = async (signInInfo) => {
+    const info = JSON.parse(signInInfo);
+    const user = await Users.findOne({ email: info.email });
+    try {
+      const match = await bcrypt.compare(info.password, user.password);
+      const accessToken = jwt.sign(
+        JSON.stringify({email: user.email, password: user.password}),
+        process.env.USER_TOKEN_SECRET
+      );
+      if (match) {
+       return { result: true, };
+      } else {
+        return { result: false, };
+      }
+    } catch (e) {
+      console.log(e);
+      return undefined;
+    }
+  };
 
 userSchema.methods.createUser = async (requestBody) => {
   requestBody.password = await bcrypt.hash(requestBody.password, 10);
