@@ -34,6 +34,10 @@ function deleteAdminToken() {
   sessionStorage.removeItem("adminToken");
 }
 
+function deleteAdminName() {
+  sessionStorage.removeItem("adminName");
+}
+
 function deleteUserToken() {
   sessionStorage.removeItem("userToken");
 }
@@ -48,4 +52,5 @@ export {
   deleteUserToken,
   setAdminName,
   getAdminName,
+  deleteAdminName,
 };

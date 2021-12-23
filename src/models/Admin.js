@@ -48,11 +48,11 @@ adminSchema.methods.loginAdmin = async (loginDetails) => {
   try {
     const match = await bcrypt.compare(loginDetails.password, admin.password);
     const accessToken = jwt.sign(
-      JSON.stringify(admin),
-      process.env.TOKEN_SECRET
+      JSON.stringify({email: admin.email, password: admin.password}),
+      process.env.ADMIN_TOKEN_SECRET
     );
     if (match) {
-     return { accessToken: accessToken };
+     return { accessToken: accessToken, firstName: admin.firstName, lastName: admin.lastName };
     } else {
       return undefined;
     }

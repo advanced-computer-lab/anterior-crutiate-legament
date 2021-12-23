@@ -35,6 +35,7 @@ class AddAdmin extends React.Component {
   onSubmit(e) {
     e.preventDefault();
     const newAdminData = JSON.parse(JSON.stringify(this.state));
+    newAdminData.token = getAdminToken();
     axios
       .post(`http://localhost:8000/api/admin/addAdmin`, newAdminData)
       .then((res) => {

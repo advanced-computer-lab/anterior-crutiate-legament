@@ -66,6 +66,7 @@ class AddFlight extends React.Component {
     if (!dataCorrect) {
       // this.setState({ error: "Error: enter valid data and try again!" });
     } else {
+      flightData.token = getAdminToken();
       axios
         .post("http://localhost:8000/api/admin/adminCreateFlight", flightData)
         .then((res) => {
