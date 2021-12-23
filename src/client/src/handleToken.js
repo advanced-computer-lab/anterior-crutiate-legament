@@ -6,6 +6,10 @@ function setUserToken(userToken) {
   sessionStorage.setItem("userToken", JSON.stringify(userToken));
 }
 
+function setUserID(userToken) {
+  sessionStorage.setItem("userID", JSON.stringify(userToken));
+}
+
 function setAdminName(adminName) {
   sessionStorage.setItem("adminName", JSON.stringify(adminName));
 }
@@ -15,14 +19,14 @@ function getAdminToken() {
   return adminToken;
 }
 
-function getUserID() {
+function getUserToken() {
   const userToken = sessionStorage.getItem("userToken");
   return userToken;
 }
 
-function getUserToken() {
-  const userToken = sessionStorage.getItem("userToken");
-  return userToken;
+function getUserID() {
+  const userToken = sessionStorage.getItem("userID");
+  return JSON.parse(userToken);
 }
 
 function getAdminName() {
@@ -42,8 +46,13 @@ function deleteUserToken() {
   sessionStorage.removeItem("userToken");
 }
 
+function deleteUserID() {
+  sessionStorage.removeItem("userID");
+}
+
 export {
   setAdminToken,
+  setUserID,
   getAdminToken,
   deleteAdminToken,
   setUserToken,
@@ -53,4 +62,5 @@ export {
   setAdminName,
   getAdminName,
   deleteAdminName,
+  deleteUserID,
 };
