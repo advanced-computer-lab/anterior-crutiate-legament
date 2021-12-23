@@ -8,6 +8,14 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 var nodemailer = require("nodemailer");
 
+function verifyUserToken(jwtToken) {
+    console.log(jwtToken);
+    if(!jwtToken) return true;
+    jwt.verify(jwtToken, process.env.USER_TOKEN_SECRET, async (err, verifiedJwt) => {
+      return err;
+    });
+}
+
 // user search flights
 userRouter
   .route("/searchFlights")
@@ -38,8 +46,15 @@ userRouter
 userRouter
   .route("/editUserData")
   .put(async (req, res, next) => {
-    await Users.updateUser(JSON.parse(JSON.stringify(req.body)));
-    res.end("User Details Updated");
+    let verificationError = verifyUserToken(req.body.token);
+    if (verificationError) {
+      res.statusCode = 401;
+      res.end("Unauthorized");
+    } else {
+        delete req.body.token;
+        await Users.updateUser(req.body);
+        res.end("User Details Updated");
+    }
   })
   .all((req, res, next) => {
     res.statusCode = 403;
@@ -50,9 +65,17 @@ userRouter
 userRouter
   .route("/getUserDetails")
   .get(async (req, res, next) => {
-    let results = await Users.searchUser(JSON.parse(req.query.in));
-    res.setHeader("Content-Type", "application/json");
-    res.end(JSON.stringify(results));
+    let verificationError = verifyUserToken(req.query.in ? JSON.parse(req.query.in).token : null);
+    if (verificationError) {
+      res.statusCode = 401;
+      res.end("Unauthorized");
+    } else {
+        req.query.in = JSON.parse(req.query.in);
+        delete req.query.in.token;
+        let results = await Users.searchUser(req.query.in);
+        res.setHeader("Content-Type", "application/json");
+        res.end(JSON.stringify(results));
+    }
   })
   .all((req, res, next) => {
     res.statusCode = 403;
@@ -99,26 +122,54 @@ userRouter
     res.end("operation not supported");
   });
 
+//user login
+userRouter
+  .route("/verifyPassword")
+  .get(async (req, res, next) => {
+    let verificationError = verifyUserToken(req.query.in ? JSON.parse(req.query.in).token : null);
+    if (verificationError) {
+      res.statusCode = 401;
+      res.end("Unauthorized");
+    } else {
+        req.query.in = JSON.parse(req.query.in);
+        delete req.query.in.token;
+        let results = await Users.verifyPassword(req.query.in);
+        if (!results) res.statusCode = 203;
+        res.setHeader("Content-Type", "application/json");
+        res.end(JSON.stringify(results));
+    }
+  })
+  .all((req, res, next) => {
+    res.statusCode = 403;
+    res.end("operation not supported");
+  });
+
 userRouter
   .route("/cancelReservation")
   .delete(async (req, res, next) => {
-    console.log(req.body);
-    var result = await Users.cancelReservation(req.body);
-    let requestBody = { _id: result.flight_id, seats: req.body.seats };
-    if (req.body.cabin === "First") {
-      requestBody.firstCabin = true;
-    } else if (req.body.cabin === "Business") {
-      requestBody.businessCabin = true;
+    let verificationError = verifyUserToken(req.body.token);
+    if (verificationError) {
+      res.statusCode = 401;
+      res.end("Unauthorized");
     } else {
-      requestBody.economyCabin = true;
-    }
-    console.log(requestBody);
-    Flights.unreserveSeats(requestBody);
-    if (result) {
-      sendEmail(result.email);
-      res.send("Reservation cancelled successfully");
-    } else {
-      res.send("There's no such reservation");
+        delete req.body.token;
+        var result = await Users.cancelReservation(req.body);
+        let requestBody = { _id: result.flight_id, seats: req.body.seats };
+        if (req.body.cabin === "First") {
+        requestBody.firstCabin = true;
+        } else if (req.body.cabin === "Business") {
+        requestBody.businessCabin = true;
+        } else {
+        requestBody.economyCabin = true;
+        }
+        console.log(requestBody);
+        Flights.unreserveSeats(requestBody);
+        if (result) {
+        sendEmail(result.email);
+        res.send("Reservation cancelled successfully");
+        } else {
+        res.send("There's no such reservation");
+        }
     }
   })
   .all((req, res, next) => {
@@ -129,20 +180,27 @@ userRouter
 userRouter
   .route("/reserveSeats")
   .put(async (req, res, next) => {
-    var result = await Users.reserveSeats(req.body);
-    let requestBody = { _id: result.flight_id, seats: result.seats };
-    if (req.body.cabin === "First") {
-      requestBody.firstCabin = true;
-    } else if (req.body.cabin === "Business") {
-      requestBody.businessCabin = true;
+    let verificationError = verifyUserToken(req.body.token);
+    if (verificationError) {
+      res.statusCode = 401;
+      res.end("Unauthorized");
     } else {
-      requestBody.economyCabin = true;
-    }
-    Flights.reserveSeats(requestBody);
-    if (result) {
-      res.send("Reservation done successfully");
-    } else {
-      res.send("Error in reservation");
+        delete req.body.token;
+        var result = await Users.reserveSeats(req.body);
+        let requestBody = { _id: result.flight_id, seats: result.seats };
+        if (req.body.cabin === "First") {
+        requestBody.firstCabin = true;
+        } else if (req.body.cabin === "Business") {
+        requestBody.businessCabin = true;
+        } else {
+        requestBody.economyCabin = true;
+        }
+        Flights.reserveSeats(requestBody);
+        if (result) {
+        res.send("Reservation done successfully");
+        } else {
+        res.send("Error in reservation");
+        }
     }
   })
   .all((req, res, next) => {
