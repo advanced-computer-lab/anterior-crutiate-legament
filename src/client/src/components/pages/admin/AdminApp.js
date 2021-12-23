@@ -30,6 +30,7 @@ class AdminApp extends React.Component {
   }
 
   displayFlights(searchTerms) {
+    searchTerms.token = getAdminToken();
     let encodedSearchTerms = encodeURIComponent(JSON.stringify(searchTerms));
     axios
       .get(

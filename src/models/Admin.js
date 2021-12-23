@@ -1,5 +1,8 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 const adminSchema = new Schema(
   {
@@ -41,22 +44,33 @@ adminSchema.methods.updateAdmin = async (adminData) => {
 };
 
 adminSchema.methods.loginAdmin = async (loginDetails) => {
-  if (Object.keys(loginDetails).length === 0) {
+  const admin = await Admin.findOne({ email: loginDetails.email });
+  try {
+    const match = await bcrypt.compare(loginDetails.password, admin.password);
+    const accessToken = jwt.sign(
+      JSON.stringify({email: admin.email, password: admin.password}),
+      process.env.ADMIN_TOKEN_SECRET
+    );
+    if (match) {
+     return { accessToken: accessToken, firstName: admin.firstName, lastName: admin.lastName };
+    } else {
+      return undefined;
+    }
+  } catch (e) {
+    console.log(e);
     return undefined;
-  } else {
-    let query = [];
-    if (loginDetails.email) {
-      query.push({ email: loginDetails.email });
-    }
-    if (loginDetails.password) {
-      query.push({ password: loginDetails.password });
-    }
-    return await Admin.find({ $and: query });
   }
 };
 
 adminSchema.methods.createAdmin = async (requestBody) => {
-  return await Admin.create(requestBody);
+  const hashedPassword = await bcrypt.hash(requestBody.password, 10);
+  const newAdmin = new Admin({
+    firstName: requestBody.firstName,
+    lastName: requestBody.lastName,
+    email: requestBody.email,
+    password: hashedPassword,
+  });
+  return await Admin.create(newAdmin);
 };
 
 var Admin = mongoose.model("Admin", adminSchema);

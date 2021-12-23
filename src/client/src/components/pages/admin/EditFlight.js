@@ -69,14 +69,18 @@ class EditFlight extends React.Component {
       this.setState({ error: "Error: enter valid data and try again!" });
     } else {
       let endpoint = `http://localhost:8000/api/admin/adminUpdateFlight`;
-      await axios.put(endpoint, this.state.flight);
+      let reqTerms = JSON.parse(JSON.stringify(this.state.flight));
+      reqTerms.token = getAdminToken();
+      await axios.put(endpoint, reqTerms);
       this.setState({ error: "Flight Updated" });
     }
   };
   deleteFlight = async (event) => {
     event.preventDefault();
     let endpoint = `http://localhost:8000/api/admin/adminDeleteFlight`;
-    await axios.delete(endpoint, { data: this.state.flight });
+    let reqTerms = JSON.parse(JSON.stringify(this.state.flight));
+    reqTerms.token = getAdminToken();
+    await axios.delete(endpoint, { data: reqTerms, });
     this.hidePopUp();
     this.props.history.push("/admin");
   };
@@ -92,7 +96,7 @@ class EditFlight extends React.Component {
   componentDidMount() {
     let flightId = this.props.data.state.flight_id;
     let encodedSearchTerms = encodeURIComponent(
-      JSON.stringify({ _id: flightId })
+      JSON.stringify({ _id: flightId, token: getAdminToken(), })
     );
     let endpoint = `http://localhost:8000/api/admin/adminSearchFlights?searchFilters=${encodedSearchTerms}`;
     axios.get(endpoint).then((res) => {

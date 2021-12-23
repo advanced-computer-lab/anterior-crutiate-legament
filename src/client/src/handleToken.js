@@ -7,35 +7,50 @@ function setUserToken(userToken) {
 }
 
 function setAdminName(adminName) {
-    sessionStorage.setItem("adminName", JSON.stringify(adminName));
+  sessionStorage.setItem("adminName", JSON.stringify(adminName));
 }
 
 function getAdminToken() {
   const adminToken = sessionStorage.getItem("adminToken");
-  return JSON.parse(adminToken) != null && JSON.parse(adminToken) != undefined;
+  return adminToken;
 }
 
 function getUserID() {
   const userToken = sessionStorage.getItem("userToken");
-  return JSON.parse(userToken);
+  return userToken;
 }
 
 function getUserToken() {
   const userToken = sessionStorage.getItem("userToken");
-  return userToken != null && userToken != undefined; //JSON.parse(userToken) != null && JSON.parse(userToken) != undefined;
+  return userToken;
 }
 
 function getAdminName() {
-    const adminToken = sessionStorage.getItem("adminName");
-    return JSON.parse(adminToken);
+  const adminName = sessionStorage.getItem("adminName");
+  return adminName;
 }
 
 function deleteAdminToken() {
-    sessionStorage.removeItem("adminToken");
+  sessionStorage.removeItem("adminToken");
+}
+
+function deleteAdminName() {
+  sessionStorage.removeItem("adminName");
 }
 
 function deleteUserToken() {
   sessionStorage.removeItem("userToken");
 }
 
-export {setAdminToken, getAdminToken, deleteAdminToken, setUserToken, getUserToken, getUserID, deleteUserToken, setAdminName, getAdminName};
+export {
+  setAdminToken,
+  getAdminToken,
+  deleteAdminToken,
+  setUserToken,
+  getUserToken,
+  getUserID,
+  deleteUserToken,
+  setAdminName,
+  getAdminName,
+  deleteAdminName,
+};
