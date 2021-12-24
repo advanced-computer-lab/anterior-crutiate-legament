@@ -31,13 +31,13 @@ const userSchema = new Schema(
             type: [Schema.Types.Mixed],
             default: [],
         },
+        verificationCode:{
+          type:String,
+          min:10000,
+          max:99999
+        }
     },
-    verificationCode:{
-      type:String,
-      min:10000,
-      max:99999
-    }
-  },
+   
   {
     timestamps: true,
   }
