@@ -101,7 +101,7 @@ userSchema.methods.loginUser = async (signInInfo) => {
 };
 
 userSchema.methods.verifyPassword = async (signInInfo) => {
-    const info = JSON.parse(signInInfo);
+    const info = signInInfo;
     const user = await Users.findOne({_id: info._id});
     try {
         const match = await bcrypt.compare(info.password, user.password);
