@@ -165,6 +165,14 @@ function SignIn(props) {
                   </div>
 
                   <div className="text-center w-100">
+                    <p className="text-muted font-weight-bold">   
+                      <a href="/verifyEmail" className="text-primary ml-2">
+                        Forgot your password?
+                      </a>
+                    </p>
+                  </div>
+
+                  <div className="text-center w-100">
                     <p className="text-muted font-weight-bold">
                       Do not have an account?{" "}
                       <a href="/register" className="text-primary ml-2">

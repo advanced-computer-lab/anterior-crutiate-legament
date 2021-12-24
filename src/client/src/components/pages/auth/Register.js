@@ -35,7 +35,6 @@ function Register (props) {
         serRegistering(true);
         setError(false) ;
         const validateEmail = await isValidEmail(registerInfo.email);
-        console.log(validateEmail) ;
         if( 
             registerInfo.firstName === ""
             || registerInfo.lastName === ""
@@ -183,18 +182,16 @@ function Register (props) {
       
  async function isValidEmail  (email){
 
-        if(! (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))){
-          return 0 ;         
-        }
 
-        let encodedSearchTerms = encodeURIComponent(JSON.stringify({email:email}));        
+        let encodedSearchTerms = encodeURIComponent(JSON.stringify(email));        
         
-        const exists = await axios.get(`http://localhost:8000/api/user/userExists?user=${encodedSearchTerms}`);
-        
-        if(exists.data)
-            return -1 ;
-        else 
-            return 1 ;    
+        try{
+            const exists = await axios.get(`http://localhost:8000/api/user/userExists?email=${encodedSearchTerms}`);
+            return -1 ; 
+        }
+        catch(e){
+            return 1 ; 
+        }    
  
 }
 
