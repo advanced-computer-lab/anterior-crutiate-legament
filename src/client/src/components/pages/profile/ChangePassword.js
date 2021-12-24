@@ -19,24 +19,6 @@ export default class ChangePassword extends React.Component {
             personPass: ""
         };
     }
-    componentDidMount() {
-        const data = {
-            _id: this.state.personID,
-            token: getUserToken(),
-        };
-        let encodedId = encodeURIComponent(JSON.stringify(data));
-
-        axios.get(`http://localhost:8000/api/user/getUserDetails?in=${encodedId}`)
-            .then((res) => {
-                this.setState({
-                    personPass: res.data[0].password,
-                    currentPassword: res.data[0].password
-                })
-            });
-    }
-
-
-
     render() {
         return (
             <div>
