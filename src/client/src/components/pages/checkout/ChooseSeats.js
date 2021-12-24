@@ -2,6 +2,7 @@ import React from "react";
 import {Link} from "react-router-dom";
 import {Redirect} from 'react-router-dom'
 import {useHistory, useLocation} from "react-router-dom";
+import { getUserToken } from "../../../handleToken.js";
 
 import SideNav from "../../templates/SideNav";
 import Footer from "../../templates/Footer";
@@ -38,6 +39,11 @@ class ChooseSeats extends React.Component {
             childDepart: 0,
             childArrival: 0
         };
+    }
+
+    componentWillMount() {
+        if (!getUserToken())
+          this.props.history.push("/");
     }
 
     componentDidMount() {
