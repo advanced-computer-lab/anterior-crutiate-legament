@@ -8,7 +8,7 @@ import SideNav from "../../templates/SideNav";
 import Footer from "../../templates/Footer";
 import PageHeaderSvg from "../../basic components/PageHeaderSvg";
 import FlightSummary from "../../templates/FlightSummary";
-
+import SubmitButton from "../../basic components/SubmitButton" ;
 import { Grid } from "@material-ui/core";
 import { Stack } from "@mui/material";
 
@@ -31,11 +31,7 @@ class CheckOut extends React.Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    // generate seats
-
-    console.log(getUserID());
-    console.log(seatsDepart);
-    console.log(seatsArrival);
+    // generate seats 
 
     let endpoint = `http://localhost:8000/api/user/reserveSeats`;
     let reserveReqDepart = {
@@ -51,7 +47,8 @@ class CheckOut extends React.Component {
         seats: seatsArrival,
         cabin: this.props.data.state.flight_class,
       };
-      axios.put(endpoint, reserveReqArrival).then(() => {
+      axios.put(endpoint, reserveReqArrival)
+      .then(() => {
         this.props.history.push("/Profile");
       });
     });
@@ -99,26 +96,32 @@ class CheckOut extends React.Component {
             ))}
           </ul>
           <br />
-          <form onSubmit={this.onSubmit}>
-            <button className="btn btn-primary" type="submit">
-              Check Out
-            </button>
-          </form>
-          <br />
-          <Link
-            to={{
-              pathname: "/chooseSeats",
-              state: {
-                departure_id: this.props.data.state.departure_id,
-                arrival_id: this.props.data.state.arrival_id,
-                flight_class: this.props.data.state.flight_class,
-                adults: this.props.data.state.adults,
-                children: this.props.data.state.children,
-              },
-            }}
-          >
-            <button className="btn btn-secondary">Go Back</button>
-          </Link>
+          
+          <Grid container >
+              <Grid item md = {0.5} sm= {0.5} xs = {0.5} style={{marginLeft:"3%"}} >  
+                  <SubmitButton click={this.onSubmit} buttonText="Check Out"/>
+              </Grid>
+              <Grid item md={0.5}>
+                <>&nbsp; &nbsp;</>      
+              </Grid>
+              <Grid item md={0.5} style= {{marginTop:"1%"}}>      
+                <Link
+                    to={{
+                      pathname: "/chooseSeats",
+                      state: {
+                        departure_id: this.props.data.state.departure_id,
+                        arrival_id: this.props.data.state.arrival_id,
+                        flight_class: this.props.data.state.flight_class,
+                        adults: this.props.data.state.adults,
+                        children: this.props.data.state.children,
+                      },
+                    }}
+                  >
+                    <button className="btn btn-secondary">Go Back</button>
+                  </Link>
+              </Grid>
+            </Grid>        
+
         </Grid>
         <Grid
           item
