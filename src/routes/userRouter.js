@@ -16,6 +16,35 @@ function verifyUserToken(jwtToken) {
     });
 }
 
+
+// payment
+userRouter
+.route("/payment")
+.post(function (req, res) {
+  console.log(req.body);
+  const stripe = require("stripe")(
+    "sk_test_51K9e8iLXRXUubuQwrppL5IzFaYedXstfDSK8jBOJ9Te0LHCtT8PrN6KNxt3RJR0qAunoRg0VRyik2BowDxcXuv8C00tswPewv1"
+  );
+  const { amount, email, token } = req.body;
+
+  stripe.customers
+    .create({
+      email: email,
+      source: token.id,
+      name: token.card.name,
+    })
+    .then((customer) => {
+      return stripe.charges.create({
+        amount: parseFloat(amount) * 100,
+        description: `Payment for USD ${amount}`,
+        currency: "USD",
+        customer: customer.id,
+      });
+    })
+    .then((charge) => res.status(200).send(charge))
+    .catch((err) => console.log(err));
+})
+
 // user search flights
 userRouter
   .route("/searchFlights")
