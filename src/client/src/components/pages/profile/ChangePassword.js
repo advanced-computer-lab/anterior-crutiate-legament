@@ -12,7 +12,7 @@ export default class ChangePassword extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            personID:props.personID,
+            personID: props.personID,
             currentPassword: "",
             newPassword: "",
             confirmPassword: "",
@@ -34,9 +34,9 @@ export default class ChangePassword extends React.Component {
                 })
             });
     }
-    
-        
-    
+
+
+
     render() {
         return (
             <div>
@@ -84,24 +84,37 @@ export default class ChangePassword extends React.Component {
                         <Button
                             variant="contained" style={{ backgroundColor: '#3B566E' }}
                             onClick={() => {
-                                 let res = comparePassword(this.state.newPassword, this.state.confirmPassword);
+                                let res = comparePassword(this.state.newPassword, this.state.confirmPassword);
                                 if (res) {
                                     swal("Error", res, "error");
-                                }else if(this.state.currentPassword!==this.state.personPass){
-                                    swal("Error", "Check your current password", "error");
-                                }else{
+                                } else {
                                     const data = {
                                         _id: this.state.personID,
-                                        password: this.state.newPassword
+                                        token: JSON.parse(getUserToken()),
+                                        password: this.state.currentPassword
                                     };
                                     let encodedId = encodeURIComponent(JSON.stringify(data));
-                                    data.token = getUserToken();
-                                    axios.put(`http://localhost:8000/api/user/editUserData`,data);
-           
-                                    swal("Done", "Your Password is up to date", "success");
-                                    
+                                    axios.get(`http://localhost:8000/api/user/verifyPassword?in=${encodedId}`)
+                                        .then((res) => {
+                                           // console.log(res.data.result);
+                                            if(res.data.result===true) {
+                                                const data = {
+                                                    _id: this.state.personID,
+                                                    token: JSON.parse(getUserToken()),
+                                                    password: this.state.newPassword
+                                                };
+                                                let encodedId = encodeURIComponent(JSON.stringify(data));
+                                                
+                                                axios.put(`http://localhost:8000/api/user/editUserData`, data);
+            
+                                                swal("Done", "Your Password is up to date", "success");
+                                            }else{
+                                                swal("Error", "Enter a valid current password", "error");
+                                            }
+                                            
+                                        });
                                 }
-                                
+
                             }}
                         >
                             Save Changes</Button>

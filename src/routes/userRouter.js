@@ -17,6 +17,7 @@ function verifyUserToken(jwtToken) {
 }
 
 
+
 // payment
 userRouter
 .route("/payment")
@@ -75,12 +76,14 @@ userRouter
 userRouter
   .route("/editUserData")
   .put(async (req, res, next) => {
+    console.log(req.body);
     let verificationError = verifyUserToken(req.body.token);
     if (verificationError) {
       res.statusCode = 401;
       res.end("Unauthorized");
     } else {
         delete req.body.token;
+        
         await Users.updateUser(req.body);
         res.end("User Details Updated");
     }
@@ -155,13 +158,16 @@ userRouter
 userRouter
   .route("/verifyPassword")
   .get(async (req, res, next) => {
+   
     let verificationError = verifyUserToken(req.query.in ? JSON.parse(req.query.in).token : null);
     if (verificationError) {
       res.statusCode = 401;
       res.end("Unauthorized");
     } else {
         req.query.in = JSON.parse(req.query.in);
+        //console.log(req.query.in);
         delete req.query.in.token;
+        console.log(req.query.in);
         let results = await Users.verifyPassword(req.query.in);
         if (!results) res.statusCode = 203;
         res.setHeader("Content-Type", "application/json");
