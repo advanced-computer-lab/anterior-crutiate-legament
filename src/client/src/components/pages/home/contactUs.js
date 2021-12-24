@@ -42,7 +42,7 @@ function contactUs() {
 
             </Box>
             <br/>
-            <Box sx={{marginLeft:'600px' , marginRight: '600px' , border:'solid', paddingLeft:'50px',paddingTop:'20px', paddingRight:'50px',paddingBottom:'20px' }}>
+            <Box sx={{marginLeft:'30%' , marginRight: '30%' , border:'solid', paddingLeft:'50px',paddingTop:'20px', paddingRight:'50px',paddingBottom:'20px' }}>
                 <h1> Email Us</h1>
                 <ContactForm  />
             </Box>
