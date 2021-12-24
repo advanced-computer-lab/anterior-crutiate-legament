@@ -51,6 +51,7 @@ class EditFlight extends React.Component {
         adultFirstPrice: "",
         childFirstPrice: "",
       },
+      message: "",
       showDeletePopUp: false,
     };
   }
@@ -66,13 +67,13 @@ class EditFlight extends React.Component {
     )
       dataCorrect = false;
     if (!dataCorrect) {
-      this.setState({ error: "Error: enter valid data and try again!" });
+      this.setState({ message : "Error: enter valid dates and try again!" });
     } else {
       let endpoint = `http://localhost:8000/api/admin/adminUpdateFlight`;
       let reqTerms = JSON.parse(JSON.stringify(this.state.flight));
       reqTerms.token = getAdminToken();
       await axios.put(endpoint, reqTerms);
-      this.setState({ error: "Flight Updated" });
+      this.setState({ message: "Flight Updated Successfully!" });
     }
   };
   deleteFlight = async (event) => {
@@ -87,6 +88,7 @@ class EditFlight extends React.Component {
 
   hidePopUp = () => {
     this.setState({ showDeletePopUp: false });
+    this.setState({ message : "" });
   };
 
   componentWillMount() {
@@ -101,8 +103,8 @@ class EditFlight extends React.Component {
     let endpoint = `http://localhost:8000/api/admin/adminSearchFlights?searchFilters=${encodedSearchTerms}`;
     axios.get(endpoint).then((res) => {
       let myFlight = res.data[0];
-      myFlight.arrival_time = myFlight.arrival_time.substring(0, 10);
-      myFlight.departure_time = myFlight.departure_time.substring(0, 10);
+      myFlight.arrival_time = myFlight.arrival_time.substring(0, 16);
+      myFlight.departure_time = myFlight.departure_time.substring(0, 16);
       this.setState({
         flight: myFlight,
       });
@@ -160,7 +162,7 @@ class EditFlight extends React.Component {
               <input
                 type="datetime-local"
                 className="form-control"
-                defaultValue={(new Date(this.state.flight.departure_time))}
+                defaultValue={this.state.flight.departure_time}
                 onChange={this.set("departure_time")}
                 required
               ></input>
@@ -278,7 +280,7 @@ class EditFlight extends React.Component {
             </button>
             <br />
             <br />
-            <h1>{this.state.error}</h1>
+            <h4 className="text-center font-weight-bold">{this.state.message}</h4>
             {this.state.showDeletePopUp ? (
               <DeletePopup
                 deleteFlight={this.deleteFlight}

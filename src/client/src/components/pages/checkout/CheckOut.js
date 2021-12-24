@@ -42,6 +42,7 @@ class CheckOut extends React.Component {
       flightId: this.props.data.state.departure_id,
       seats: seatsDepart,
       cabin: this.props.data.state.flight_class,
+      price: this.props.data.state.priceDepart,
       token: getUserToken(),
     };
     axios.put(endpoint, reserveReqDepart).then(() => {
@@ -50,6 +51,7 @@ class CheckOut extends React.Component {
         flightId: this.props.data.state.arrival_id,
         seats: seatsArrival,
         cabin: this.props.data.state.flight_class,
+        price: this.props.data.state.priceDepart,
         token: getUserToken(),
       };
       axios.put(endpoint, reserveReqArrival)

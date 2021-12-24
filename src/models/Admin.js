@@ -70,7 +70,9 @@ adminSchema.methods.createAdmin = async (requestBody) => {
     email: requestBody.email,
     password: hashedPassword,
   });
-  return await Admin.create(newAdmin);
+  return await Admin.create(newAdmin).catch((err) => {
+    return undefined;
+  });
 };
 
 var Admin = mongoose.model("Admin", adminSchema);
