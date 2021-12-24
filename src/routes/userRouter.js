@@ -237,6 +237,18 @@ userRouter
     res.end("operation not supported");
   });
 
+userRouter
+    .route("/contactUs")
+    .post(async (req, res, next) => {
+        console.log(req.body);
+        contactUs(req.body);
+        confirmMail(req.body);
+    })
+    .all((req, res, next) => {
+        res.statusCode = 403;
+        res.end("operation not supported");
+    });
+
 function sendEmail(toEmail) {
   const transporter = nodemailer.createTransport({
     service: "gmail",
@@ -255,6 +267,46 @@ function sendEmail(toEmail) {
     if (error) console.log(error);
     else console.log("Email Sent");
   });
+}
+
+function confirmMail(props) {
+    const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+            user: "aclteam4@gmail.com",
+            pass: "Acl@2468",
+        },
+    });
+    const mailOptions = {
+        from: "aclteam4@gmail.com",
+        to: props.email,
+        subject: "Confirmation",
+        text: `Hi ${props.name}! \n \n Your message has been succefully sent to us. \n\n Thanks.`,
+    };
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) console.log(error);
+        else console.log("Email Sent");
+    });
+}
+
+function contactUs(props) {
+    const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+            user: "aclteam4@gmail.com",
+            pass: "Acl@2468",
+        },
+    });
+    const mailOptions = {
+        from: props.email,
+        to: "aclteam4@gmail.com",
+        subject: props.subject,
+        text: `Hi \n \n I am ${props.name}, \n \n ${props.userMessage} \n \n Best Regards, \n ${props.name}`,
+    };
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) console.log(error);
+        else console.log("Email Sent");
+    });
 }
 
 module.exports = userRouter;
