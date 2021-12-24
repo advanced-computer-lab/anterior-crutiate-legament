@@ -31,6 +31,11 @@ const userSchema = new Schema(
       type: [Schema.Types.Mixed],
       default: [],
     },
+    verificationCode:{
+      type:String,
+      min:10000,
+      max:99999
+    }
   },
   {
     timestamps: true,
@@ -47,6 +52,7 @@ userSchema.methods.updateUser = async (userData) => {
       email: userData.email ? userData.email : oldUser.email,
       password: userData.password ? await bcrypt.hash(userData.password, 10) : oldUser.password,
       passport: userData.passport ? userData.passport : oldUser.passport,
+      verificationCode: userData.verificationCode? await bcrypt.hash(userData.verificationCode+"", 10) : oldUser.verificationCode
     },
     { new: true }
   );
@@ -76,9 +82,12 @@ userSchema.methods.searchUser = async (searchFilters) => {
   }
 };
 
-userSchema.methods.userExists = async (user) => {
-  return await Users.findOne({ email: user.email });
+
+userSchema.methods.userExists = async (email) => {
+  return await Users.findOne({ email: email });
 };
+
+
 
 userSchema.methods.loginUser = async (signInInfo) => {
   const info = JSON.parse(signInInfo);

@@ -3,9 +3,11 @@ var userRouter = express.Router();
 
 const Flights = new require("../models/Flights.js")();
 const Users = new require("../models/User.js")();
-
 const jwt = require("jsonwebtoken");
+const reserPassword = require ( "./mails/ResetPassword")  ; 
+
 require("dotenv").config();
+
 var nodemailer = require("nodemailer");
 
 function verifyUserToken(jwtToken) {
@@ -98,8 +100,11 @@ userRouter
 userRouter
   .route("/userExists")
   .get(async (req, res, next) => {
-    let user = await Users.userExists(JSON.parse(req.query.user));
-    res.end(JSON.stringify(user ? true : false));
+    let user = await Users.userExists(JSON.parse(req.query.email));
+    console.log(user) ;
+    if(!user)
+        res.statusCode = 406 ;
+    res.end();
   })
   .all((req, res, next) => {
     res.statusCode = 403;
@@ -107,13 +112,16 @@ userRouter
   });
 
 //user login
-userRouter
-  .route("/userLogin")
+userRouter.route("/userLogin")
   .get(async (req, res, next) => {
+   
     let results = await Users.loginUser(
       JSON.parse(JSON.stringify(req.query.signInfo))
     );
-    if (!results) res.statusCode = 203;
+
+    if (!results) 
+        res.statusCode = 203;
+    
     res.setHeader("Content-Type", "application/json");
     res.end(JSON.stringify(results));
   })
@@ -165,7 +173,7 @@ userRouter
         console.log(requestBody);
         Flights.unreserveSeats(requestBody);
         if (result) {
-        sendEmail(result.email);
+        sendEmail(result.email ,"GUC Air Reservation Status", "Your Reservation is canceled successfuly");
         res.send("Reservation cancelled successfully");
         } else {
         res.send("There's no such reservation");
@@ -237,19 +245,44 @@ userRouter
     res.end("operation not supported");
   });
 
-function sendEmail(toEmail) {
+userRouter.route("/sendVerificationCode")
+  .post(async (req, res, next) => {
+      let user = await Users.userExists(req.body.email);
+      if(user){
+
+        let randomCode = Math.floor((Math.random() * 89999) + 10000);
+        
+        const r = await Users.updateUser({_id:user._id , verificationCode:randomCode});
+        sendEmail(req.body.email ,"Reset Your Password", reserPassword(randomCode)) ;
+      }
+      else {
+        res.statusCode = 406;
+      }
+      res.end();
+  })
+  .all((req, res, next) => {
+    res.statusCode = 403;
+    res.end("operation not supported");
+  });
+
+
+
+function sendEmail(toEmail ,subject, mailBody) {
   const transporter = nodemailer.createTransport({
-    service: "gmail",
+    service: "Gmail",
     auth: {
-      user: "aclteam4@gmail.com",
-      pass: "Acl@2468",
-    },
+      user: process.env.NO_REPLY_EMAIL,
+      pass: process.env.EMAIL_PASSWORD,
+    }
   });
   const mailOptions = {
-    from: toEmail,
+    from:{
+      name: "GUC AIR",
+      address: process.env.NO_REPLY_EMAIL
+    },
     to: toEmail,
-    subject: "GUC Air Reservation Status",
-    text: "Your Reservation is canceled successfuly",
+    subject: subject,
+    html: `${mailBody}`,
   };
   transporter.sendMail(mailOptions, function (error, info) {
     if (error) console.log(error);
