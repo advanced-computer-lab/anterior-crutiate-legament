@@ -103,8 +103,8 @@ class EditFlight extends React.Component {
     let endpoint = `http://localhost:8000/api/admin/adminSearchFlights?searchFilters=${encodedSearchTerms}`;
     axios.get(endpoint).then((res) => {
       let myFlight = res.data[0];
-      myFlight.arrival_time = myFlight.arrival_time.substring(0, 10);
-      myFlight.departure_time = myFlight.departure_time.substring(0, 10);
+      myFlight.arrival_time = myFlight.arrival_time.substring(0, 16);
+      myFlight.departure_time = myFlight.departure_time.substring(0, 16);
       this.setState({
         flight: myFlight,
       });
@@ -162,7 +162,7 @@ class EditFlight extends React.Component {
               <input
                 type="datetime-local"
                 className="form-control"
-                defaultValue={(new Date(this.state.flight.departure_time))}
+                defaultValue={this.state.flight.departure_time}
                 onChange={this.set("departure_time")}
                 required
               ></input>

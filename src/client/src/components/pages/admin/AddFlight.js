@@ -87,8 +87,7 @@ class AddFlight extends React.Component {
             adultFirstPrice: 0,
             childFirstPrice: 0,
           });
-          this.props.history.push("/");
-          window.location = "/admin";
+          this.props.history.push("/admin");
         })
         .catch((err) => {
           console.log("Error in adding a flight to the database!");
