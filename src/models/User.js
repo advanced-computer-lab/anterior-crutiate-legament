@@ -89,6 +89,25 @@ userSchema.methods.userExists = async (email) => {
 };
 
 
+userSchema.methods.verifyCode = async (verificationInfo) => {
+  const user = await Users.findOne({ email: verificationInfo.email });
+  const match = await bcrypt.compare(verificationInfo.code, user.verificationCode);
+  console.log(match) ;
+
+  if(match){
+      const accessToken = jwt.sign(
+        JSON.stringify({email: user.email, password: user.password}),
+        process.env.USER_TOKEN_SECRET
+      );
+      return {accessToken: accessToken, _id: user._id};
+  }
+  else{
+    return null;
+  }
+
+
+};
+
 
 userSchema.methods.loginUser = async (signInInfo) => {
     const info = JSON.parse(signInInfo);

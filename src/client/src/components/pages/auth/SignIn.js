@@ -56,7 +56,7 @@ function SignIn(props) {
                 if (data.state && data.state.redirect)
                   history.push(data.state.redirect, data.state.redirectProps);
                 else 
-                  history.push("/profile");
+                  history.push("/");
               } 
               else {
                 setError(true);

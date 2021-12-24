@@ -285,7 +285,7 @@ userRouter.route("/sendVerificationCode")
       let user = await Users.userExists(req.body.email);
       if(user){
 
-        let randomCode = Math.floor((Math.random() * 89999) + 10000);
+        let randomCode = Math.floor((Math.random() * 899999) + 100000);
         
         const r = await Users.updateUser({_id:user._id , verificationCode:randomCode});
         sendEmail(req.body.email ,"Reset Your Password", reserPassword(randomCode)) ;
@@ -294,6 +294,21 @@ userRouter.route("/sendVerificationCode")
         res.statusCode = 406;
       }
       res.end();
+  })
+  .all((req, res, next) => {
+    res.statusCode = 403;
+    res.end("operation not supported");
+  });
+
+  userRouter.route("/verifyCode")
+  .post(async (req, res, next) => {
+      console.log(req.body) ;
+      let token = await Users.verifyCode(req.body);
+      if(!token) {
+        res.statusCode = 401 ;
+      }
+      res.setHeader("Content-Type", "application/json");
+      res.end(JSON.stringify(token));
   })
   .all((req, res, next) => {
     res.statusCode = 403;

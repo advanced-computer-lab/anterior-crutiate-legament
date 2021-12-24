@@ -64,12 +64,18 @@ function VerifyEmail (props) {
 
 
   const verifyCode = async (e) => {
+     setError("");
+     setVerifying(true);
       try{
-        const verify = await axios.post(`http://localhost:8000/api/user/verifyCode` , {code : verificationInfo.code} );
+        const verify = await axios.post(`http://localhost:8000/api/user/verifyCode` , verificationInfo );
+        setUserToken(verify.data.accessToken);
+        setUserID(verify.data._id);
+        history.push("/resetPassword");
       }
       catch(err){
-
+        setError("Please Enter A valid Code");
       }
+      setVerifying(false);
   }
 
 // Showing error message if error is true
@@ -136,7 +142,7 @@ const errorMessage = () => {
                   </svg>   
                 </div>
 
-                <div id="reg-wrapper"  style={{}} className="col-md-4 col-lg-4 ml-auto">
+                <div id="reg-wrapper"  className="col-md-4 col-lg-4 ml-auto">
                 
                   
                   <Form>
@@ -144,7 +150,7 @@ const errorMessage = () => {
                   {codeSent?
                    
                    <div  style={{width: '80%',  margin: "auto", height: 'auto'}} >
-                   <ReactCodeInput type="password" onChange={(e) =>
+                   <ReactCodeInput loading={false} type="password"  onChange={(e) =>
                      setVerificationInfo({ ...verificationInfo, code: e})
                    } />
                    </div>
