@@ -17,6 +17,7 @@ class AddAdmin extends React.Component {
       lastName: "",
       email: "",
       password: "",
+      message: "",
     };
     this.onSubmit = this.onSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -39,10 +40,11 @@ class AddAdmin extends React.Component {
     axios
       .post(`http://localhost:8000/api/admin/addAdmin`, newAdminData)
       .then((res) => {
-        console.log(res.data);
+        this.setState({ message: "Admin Added Successfully" });
       })
       .catch((err) => {
         console.log("Error when contacting admin API.");
+        this.setState({ message: "Email Already Exists" });
       });
     // display a message
   }
@@ -91,7 +93,7 @@ class AddAdmin extends React.Component {
                 <label for="email">Email</label>
                 <input
                   id="email"
-                  type="search"
+                  type="email"
                   placeholder="Enter Email"
                   name="email"
                   className="form-control"
@@ -118,6 +120,8 @@ class AddAdmin extends React.Component {
                 Submit
               </button>
             </form>
+            <br />
+            <h4 className="text-center font-weight-bold">{this.state.message}</h4>
           </div>
           <div className="col-3"></div>
         </div>
