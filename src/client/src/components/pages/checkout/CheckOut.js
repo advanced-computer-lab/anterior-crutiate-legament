@@ -12,6 +12,9 @@ import SubmitButton from "../../basic components/SubmitButton" ;
 import { Grid } from "@material-ui/core";
 import { Stack } from "@mui/material";
 
+import { getUserToken } from "../../../handleToken.js";
+
+
 var seatsDepart, seatsArrival;
 
 export default function RootFunction(props) {
@@ -39,6 +42,7 @@ class CheckOut extends React.Component {
       flightId: this.props.data.state.departure_id,
       seats: seatsDepart,
       cabin: this.props.data.state.flight_class,
+      token: getUserToken(),
     };
     axios.put(endpoint, reserveReqDepart).then(() => {
       let reserveReqArrival = {
@@ -46,6 +50,7 @@ class CheckOut extends React.Component {
         flightId: this.props.data.state.arrival_id,
         seats: seatsArrival,
         cabin: this.props.data.state.flight_class,
+        token: getUserToken(),
       };
       axios.put(endpoint, reserveReqArrival)
       .then(() => {

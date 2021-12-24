@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import {
   setUserToken,
   getUserToken,
+  setUserID,
 } from "../../../handleToken.js";
 
 import NavBar from "../../templates/NavBar";
@@ -32,7 +33,7 @@ function SignIn(props) {
     if (getUserToken())
       if (data.state && data.state.redirect)
         history.push(data.state.redirect, data.state.redirectProps);
-      else history.push("/");
+      else history.push("/profile");
   }, []);
   
 
@@ -50,11 +51,12 @@ function SignIn(props) {
               if (res.status == 200) {
                 setSubmitted(true);
                 setError(false);
-                setUserToken(res.data._id); 
+                setUserToken(res.data.accessToken);
+                setUserID(res.data._id);
                 if (data.state && data.state.redirect)
                   history.push(data.state.redirect, data.state.redirectProps);
                 else 
-                  history.push("/");
+                  history.push("/profile");
               } 
               else {
                 setError(true);

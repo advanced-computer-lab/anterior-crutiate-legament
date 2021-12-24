@@ -2,13 +2,14 @@ import React from 'react';
 
 import logo from  "../../assets/img/logo-ct-2.png"; 
 import { Link } from '@material-ui/core';
-import {getUserToken,deleteUserToken} from "../../handleToken";
+import {getUserToken,deleteUserToken, deleteUserID} from "../../handleToken";
 
 
 function NavBar () {
 
     const logOut = () => {
-      deleteUserToken() ;
+      deleteUserToken();
+      deleteUserID();
     }
     return (
 

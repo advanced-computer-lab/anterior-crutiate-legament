@@ -1,5 +1,5 @@
 import React from "react";
-import { getAdminName, deleteAdminToken } from "../../../handleToken.js";
+import { getAdminName, deleteAdminToken, deleteAdminName } from "../../../handleToken.js";
 import { Link } from "react-router-dom";
 
 class AdminNavbar extends React.Component {
@@ -10,6 +10,7 @@ class AdminNavbar extends React.Component {
 
   logOut(e) {
     deleteAdminToken();
+    deleteAdminName();
   }
 
   render() {

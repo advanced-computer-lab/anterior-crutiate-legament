@@ -6,6 +6,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import swal from 'sweetalert';
 import axios from 'axios';
+import { getUserToken } from "../../../handleToken.js";
 
 export default class ChangePassword extends React.Component {
     constructor(props) {
@@ -20,7 +21,8 @@ export default class ChangePassword extends React.Component {
     }
     componentDidMount() {
         const data = {
-            _id: this.state.personID
+            _id: this.state.personID,
+            token: getUserToken(),
         };
         let encodedId = encodeURIComponent(JSON.stringify(data));
 
@@ -93,8 +95,8 @@ export default class ChangePassword extends React.Component {
                                         password: this.state.newPassword
                                     };
                                     let encodedId = encodeURIComponent(JSON.stringify(data));
-                                    
-                                     axios.put(`http://localhost:8000/api/user/editUserData`,data);
+                                    data.token = getUserToken();
+                                    axios.put(`http://localhost:8000/api/user/editUserData`,data);
            
                                     swal("Done", "Your Password is up to date", "success");
                                     

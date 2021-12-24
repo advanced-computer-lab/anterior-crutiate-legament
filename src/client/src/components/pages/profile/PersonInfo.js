@@ -8,6 +8,7 @@ import Button from '@mui/material/Button';
 import ProfilePic from './profile.png'
 import swal from 'sweetalert';
 import axios from 'axios';
+import { getUserToken } from "../../../handleToken.js";
 
 export default class PersonInfo extends React.Component {
     constructor(props) {
@@ -22,10 +23,11 @@ export default class PersonInfo extends React.Component {
     }
     componentDidMount() {
         const data = {
-            _id: this.state.personID
+            _id: this.state.personID,
+            token: getUserToken(),
         };
         let encodedId = encodeURIComponent(JSON.stringify(data));
-
+        
         axios.get(`http://localhost:8000/api/user/getUserDetails?in=${encodedId}`)
             .then((res) => {
                 this.setState({
@@ -110,7 +112,8 @@ export default class PersonInfo extends React.Component {
                                                         };
                                                         let encodedId = encodeURIComponent(JSON.stringify(data));
                                                         console.log(this.state.passport);
-                                                         axios.put(`http://localhost:8000/api/user/editUserData`,data);
+                                                        data.token = getUserToken();
+                                                        axios.put(`http://localhost:8000/api/user/editUserData`,data);
                                 
                                                         swal("Done", "Your personal info is up to date", "success");
 
