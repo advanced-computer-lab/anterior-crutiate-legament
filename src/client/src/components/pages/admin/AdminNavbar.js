@@ -19,7 +19,7 @@ class AdminNavbar extends React.Component {
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
           <div class="container-fluid">
             <a class="navbar-brand" href="#">
-              Welcome, {getAdminName()}
+              Welcome, {JSON.parse(getAdminName())}
             </a>
             <button
               class="navbar-toggler"
