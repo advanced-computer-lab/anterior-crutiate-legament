@@ -79,29 +79,21 @@ We have two main users in our website:
 
 ### Administrator 
 - Log in using his email and password.
-![admin_login](https://i.ibb.co/ZfGVd5N/admin-login.png)
 - Add another admin.
 - Create flights including all flight details such as flight number, departure and arrival times, dates, number of Economy seats, number of Business class seats, and airport.
-![add_fligjt](https://i.ibb.co/yP7py5J/add-flight.png)
 - Search through all existing flights using search criteria including flight number, departure and arrival times, dates and airport terminals.
 - List of all the available flights without any search criteria.
-![search_flight](https://i.ibb.co/9nL6P7S/search-flight.png)
 - Update any selected flight and its details including flight number, departure and arrival times, number of available Economy seats, number of Business Class seats, dates and airports.
 - Delete any selected flights and all their details upon confirmation.
-![edit_flight](https://i.ibb.co/48Jqvgb/edit-flight.png)
 
 ### User 
 - Sign up and enter their details in a form including first name, last name, home address, country code, telephone number(s), email, passport number and password.
-![sign_up](https://i.ibb.co/DMh8zkx/sign-up.png)
 - Sign in using his email and password.
-![sign_in](https://i.ibb.co/gyt0Rb6/sing-in.png)
 - Edit their information including first name, last name, passport number and email.
-![edit_user](https://i.ibb.co/gryBc1P/edit-info.png)
 - Search for available flights based on number of passengers (children and adults), departure airport and arrival airport terminals, departure and arrival dates and cabin class.
 - Select one of the flights from the list of available flights.
 - See all the details of a particular  flight. The details should include flight number, departure and arrival times, trip duration, cabin class and baggage allowance.
 - View a list of all available return flights based on the search criteria.  The list should include flight number, departure time and arrival time, trip duration and price.
-![search_flight](https://i.ibb.co/6ZhFysw/search-flight-user.png)
 - See a summary of the chosen departure and return flights, including the dates and times of the departure and return flights, the price of each flight, the chosen cabin (Economy/ Business Class), the chosen seat and the total price of the entire ticket.
 - View the available seats in the chosen cabin of the chosen departure flight and select one or more of the available seats in the chosen cabin of the chosen departure flight (based on the the number of passengers the booking is for).
 - Confirm reserving the chosen flight.
@@ -112,14 +104,13 @@ We have two main users in our website:
 -  Edit a reservation by choosing new seats or change the flight.
 -  Emailed with any updates in his reservations.
 -  View our services.
-![services](https://i.ibb.co/nn19nmK/service.png)
 -  Contact us.
 
 ## API References
 Our API is divided into two APIs :
 
 ### Admin Router 
-#### Route : `/adminRouter`
+#### Route : `/admin`
 
 #### Add Admin
 - Route : `/addAdmin`
@@ -237,7 +228,7 @@ GdS5tT0NaRWdTTlU4NEVOT0E4QyJ9.gTAQ3KPYXDjnFd_eN0EQBopVyGZwp5g71r4MnBcMMP4\\""}'
 `
 
 ### User Router
-#### Route : (`/userRouter`)
+#### Route : (`/user`)
 
 #### Register
 - Route : `/userRegister`
@@ -348,6 +339,49 @@ ultBusinessPrice":1200,"adultFirstPrice":1600,"businessCabin":[],"firstCabin":[]
   token: '"eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im9tYXIuZWxhYnNhd3lAc3R1ZGVudC5ndWMuZWR1LmVnIiwicGFzc3dvcmQiOiIkMmIkMTAkaUZRd2ZSSmVFY1FMVXZrNHY5MHgzZUY2YnNHS1k1eWhBNVV
 mRjVuU3YuajZlclhUSWlRdXUifQ.HgNs2Mo18mPpd43Y2CnuZQ8fg6l9DVUuRn_znav8-TE"'
  }
+`
+
+### Pay for reservations 
+- Route : `/payment`
+- Request type : `post`
+- Request Body : 
+ ` 
+  {
+  token: {
+    id: 'tok_1KAfnxLXRXUubuQw0O6PmnzZ',
+    object: 'token',
+    card: {
+      id: 'card_1KAfnxLXRXUubuQwBFCa03t8',
+      object: 'card',
+      address_city: null,
+      address_country: null,
+      address_line1: null,
+      address_line1_check: null,
+      address_line2: null,
+      address_state: null,
+      address_zip: null,
+      address_zip_check: null,
+      brand: 'Visa',
+      country: 'US',
+      cvc_check: 'unchecked',
+      dynamic_last4: null,
+      exp_month: 12,
+      exp_year: 2022,
+      funding: 'credit',
+      last4: '4242',
+      name: 'omar tarek',
+      tokenization_method: null
+    },
+    client_ip: '102.42.254.165',
+    created: 1640460081,
+    livemode: false,
+    type: 'card',
+    used: false
+  },
+  email: 'omar.elabsawy@student.guc.edu.eg',
+  amount: 9252
+}
+
 `
 
 #### View reservations in Flights
