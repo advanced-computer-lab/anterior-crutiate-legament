@@ -10,6 +10,8 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import swal from 'sweetalert';
+import axios from 'axios';
+
 
 import {
   formatCreditCardNumber,
@@ -44,16 +46,16 @@ export default class PaymentForm extends React.Component {
 
     this.setState({ [name]: value });
   }
- 
+
   render() {
     return (
-      <Dialog open={this.state.open} onClose={()=>this.setState({open:false})}>
+      <Dialog open={this.state.open} onClose={() => this.setState({ open: false })}>
         <DialogTitle>Payment Form</DialogTitle>
         <DialogContent>
           <DialogContentText style={{ color: 'black' }}>
             Please add your payment card to complete reservation
           </DialogContentText>
-          <br/>
+          <br />
           <div id="PaymentForm" style={{
             display: 'flex',
             alignItems: 'center',
@@ -134,10 +136,10 @@ export default class PaymentForm extends React.Component {
                     };
                     window.document.body.appendChild(s);
                   }
-                   sleep(300);
+                  sleep(300);
                   try {
-                   
-                    console.log(this.state.number+" "+ this.state.expiry+" "+this.state.cvc+" "+this.state.name);
+
+                    console.log(this.state.number + " " + this.state.expiry + " " + this.state.cvc + " " + this.state.name);
                     window.Stripe.card.createToken(
                       {
                         number: this.state.number,
@@ -150,17 +152,19 @@ export default class PaymentForm extends React.Component {
                         console.log(response)
                         console.log(1)
                         if (status === 200) {
-                          // axios
-                          //   .post("/stripe-payment", {
-                          //     token: response,
-                          //     email: values.email,
-                          //     amount: values.amount,
-                          //   })
-                          //   .then((res) => window.alert(JSON.stringify(res.data, 0, 2)))
-                          //   .catch((err) => console.log(err));
+
+                          const data = {
+                              token: response,
+                              email: "mahmoudjobeel@gmail.com",
+                              amount: 50,
+                          };
+                          // let encodedId = encodeURIComponent(JSON.stringify(data));
+                          // data.token = getUserToken();
+                          axios.post(`http://localhost:8000/api/user/payment`, data);
+
                         } else {
-                          swal("Error",response.error.code , "error");
-                         // console.log(response.error.code);
+                          swal("Error", response.error.code, "error");
+                          // console.log(response.error.code);
                         }
                       }
                     );

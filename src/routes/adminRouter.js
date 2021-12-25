@@ -102,6 +102,10 @@ adminRouter
   .get(async (req, res, next) => {
     let results = await Admin.loginAdmin(JSON.parse(req.query.loginDetails));
     res.setHeader("Content-Type", "application/json");
+    if(!results) {
+      res.statusCode = 401;
+      res.end("wrong username or password");
+    }
     res.end(JSON.stringify(results));
   })
   .all((req, res, next) => {
@@ -117,8 +121,13 @@ adminRouter
       res.statusCode = 401;
       res.end("Unauthorized");
     } else {
-      await Admin.createAdmin(req.body);
-      res.end("New Admin Added");
+      let result = await Admin.createAdmin(req.body);
+      if(!result) {
+        res.statusCode = 401;
+        res.end("Admin Already Exists");
+      } else {
+        res.end("New Admin Added");
+      }
     }
   })
   .all((req, res, next) => {

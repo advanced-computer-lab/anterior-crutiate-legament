@@ -25,7 +25,6 @@ export default class CancelRservation extends React.Component {
 
   }
 
-  compon
 
   render() {
     //console.log(this.state)
@@ -56,23 +55,34 @@ export default class CancelRservation extends React.Component {
             <Button onClick={(e) => this.setState({ open: false })} color="error">Cancel</Button>
             <Button onClick={
               async (e) => {
-                console.log(this.state.confirmPassword)
-                console.log(this.state.personPassword)
-                if (this.state.confirmPassword !== this.state.personPassword) {
-                  swal("Error", "Invalid confirm Password", "error");
-                } else {
-                  this.setState({ open: false })
-                  const data = {
-                    flightId: this.state.flight_id,
-                    seats: this.state.seats,
-                    cabin: this.state.cabin,
-                    userId: this.state.personID,
-                    token: getUserToken(),
-                  }
-                  console.log(data);
-                  await axios.delete('http://localhost:8000/api/user/cancelReservation', { data: data })
-                  swal("Done", "Flight deleted successfully", "success");
-                }
+                // console.log(this.state.confirmPassword)
+                // console.log(this.state.personPassword)
+                const data = {
+                  _id: this.state.personID,
+                  token: JSON.parse(getUserToken()),
+                  password: this.state.confirmPassword
+              };
+              let encodedId = encodeURIComponent(JSON.stringify(data));
+              axios.get(`http://localhost:8000/api/user/verifyPassword?in=${encodedId}`)
+                  .then((res) => {
+                     // console.log(res.data.result);
+                      if(res.data.result===true) {
+                        this.setState({ open: false })
+                        const data = {
+                          flightId: this.state.flight_id,
+                          seats: this.state.seats,
+                          cabin: this.state.cabin,
+                          userId: this.state.personID,
+                          token: getUserToken(),
+                        }
+                        console.log(data);
+                        axios.delete('http://localhost:8000/api/user/cancelReservation', { data: data })
+                        swal("Done", "Flight deleted successfully", "success");
+                      }else{
+                          swal("Error", "Enter a valid current password", "error");
+                      }
+                      
+                  });
               }
             } >Confirm</Button>
           </DialogActions>

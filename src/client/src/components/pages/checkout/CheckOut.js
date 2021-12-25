@@ -8,7 +8,7 @@ import SideNav from "../../templates/SideNav";
 import Footer from "../../templates/Footer";
 import PageHeaderSvg from "../../basic components/PageHeaderSvg";
 import FlightSummary from "../../templates/FlightSummary";
-
+import SubmitButton from "../../basic components/SubmitButton" ;
 import { Grid } from "@material-ui/core";
 import { Stack } from "@mui/material";
 
@@ -37,6 +37,11 @@ class CheckOut extends React.Component {
       arrivalPrice:props.data.state.priceArrival,
     }
   }
+  
+  componentWillMount() {
+    if (!getUserToken())
+      this.props.history.push("/");
+  }  
 
   render() {
   
@@ -56,6 +61,7 @@ class CheckOut extends React.Component {
       flightId: this.props.data.state.departure_id,
       seats: seatsDepart,
       cabin: this.props.data.state.flight_class,
+      price: this.props.data.state.priceDepart,
       token: getUserToken(),
     };
        let reserveReqArrival = {
@@ -63,6 +69,7 @@ class CheckOut extends React.Component {
         flightId: this.props.data.state.arrival_id,
         seats: seatsArrival,
         cabin: this.props.data.state.flight_class,
+        price: this.props.data.state.priceDepart,
         token: getUserToken(),
       };
     return (

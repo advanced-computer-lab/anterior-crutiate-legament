@@ -18,6 +18,7 @@ class AdminLogin extends React.Component {
     this.state = {
       email: "",
       password: "",
+      message: "",
     };
     this.onSubmit = this.onSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -44,11 +45,13 @@ class AdminLogin extends React.Component {
           setAdminToken(res.data.accessToken);
           setAdminName(res.data.firstName + " " + res.data.lastName);
         }
+        this.setState({ message : "" });
         //setAdminName(res.data[0].firstName + " " + res.data[0].lastName);
         if (getAdminToken()) this.props.history.push("/admin");
         else console.log("token not found");
       })
       .catch((err) => {
+        this.setState({ message : "Wrong Email or Password" });
         console.log("Error when contacting login API.");
       });
 
@@ -105,6 +108,8 @@ class AdminLogin extends React.Component {
                   Log In
                 </button>
               </form>
+              <br />
+              <h4 className="text-center font-weight-bold">{this.state.message}</h4>
             </div>
             <div className="col-lg-3"></div>
           </div>

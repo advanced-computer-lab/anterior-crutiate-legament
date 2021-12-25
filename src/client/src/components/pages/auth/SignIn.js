@@ -56,7 +56,7 @@ function SignIn(props) {
                 if (data.state && data.state.redirect)
                   history.push(data.state.redirect, data.state.redirectProps);
                 else 
-                  history.push("/profile");
+                  history.push("/");
               } 
               else {
                 setError(true);
@@ -162,6 +162,14 @@ function SignIn(props) {
                       OR
                     </span>
                     <div className="border-bottom w-100 mr-5"></div>
+                  </div>
+
+                  <div className="text-center w-100">
+                    <p className="text-muted font-weight-bold">   
+                      <a href="/verifyEmail" className="text-primary ml-2">
+                        Forgot your password?
+                      </a>
+                    </p>
                   </div>
 
                   <div className="text-center w-100">

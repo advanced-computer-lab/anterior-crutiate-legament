@@ -10,6 +10,7 @@ import PersonInfo from './PersonInfo';
 import axios from "axios";
 import NoTicketsYet from './NoTicketsYet';
 import Ticket from "./Ticket";
+import PaymentForm from "./PaymentForm.js";
 import MyTickets from "./MyTickets";
 
 
