@@ -95,7 +95,7 @@ class PaymentForm extends React.Component {
             <DialogContentText style={{ color: 'black' }}>
               Please add your payment card to complete reservation
               <h4>Total Amount to be paid: </h4>
-              <h5 style={{ color: 'red' }}> totalPrice:{this.state.totalPrice} </h5>
+              <h5 style={{ color: 'red' }}> Total Price: {this.state.totalPrice} </h5>
               <h8>Departure Price:{this.state.departPrice} ---  Arrival Price:{this.state.arrivalPrice}</h8>
             </DialogContentText>
             <br />
