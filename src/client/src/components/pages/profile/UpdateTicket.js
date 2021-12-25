@@ -14,23 +14,29 @@ import axios from 'axios';
 
 
 
-export default class CancelSeats extends React.Component {
+
+export default class UpdateTicket extends React.Component {
     constructor(props) {
         super(props);
+        
         this.state = {
+            flightID:props.flightID ,
+            cabin:props.cabin,
+            seats:props.seats,
             open: false
         };
+       
     }
-
-
+  
     render() {
         return (
             <div>
                 <Button variant="outlined" onClick={(e) => this.setState({ open: true })} color="error">
-                    Cancel Seats
+                         Update
                 </Button>
                 <Dialog open={this.state.open} onClose={() => this.setState({ open: false })}>
-                    <DialogTitle>Seats Cancelation</DialogTitle>
+
+                    {/* <DialogTitle>Seats Cancelation</DialogTitle>
                     <DialogContent>
                         <DialogContentText style={{ color: 'red' }}>
                             Please Write Seats you want to cancel, seprated with ' - '.
@@ -75,7 +81,7 @@ export default class CancelSeats extends React.Component {
                     <DialogActions>
                         <Button onClick={(e) => this.setState({ open: false })} color="error">Cancel</Button>
                         <Button >Confirm</Button>
-                    </DialogActions>
+                    </DialogActions> */}
                 </Dialog>
             </div>
         );

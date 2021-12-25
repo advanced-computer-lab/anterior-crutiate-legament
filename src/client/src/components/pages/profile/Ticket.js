@@ -7,7 +7,7 @@ import Button from '@mui/material/Button';
 import TicketPic from "./ticket.png"
 import ConfirmCancellation from "./ConfirmCancellation.js";
 import axios from "axios";
-import CancelSeats from "./CancelSeats"
+import UpdateTicket from "./UpdateTicket"
 
 export default class Ticket extends React.Component {
 
@@ -133,7 +133,7 @@ export default class Ticket extends React.Component {
                                 seats={this.state.seats}
                                 personPass={this.state.personPass} />
                             <br/>
-                            <CancelSeats />
+                            <UpdateTicket  flightID={this.state._id} cabin={this.state.cabin} seats={this.state.seats} />
                             <br/>
                             <Button
                              variant="outlined" onClick={(e) => this.setState({ open: true })} color="success"

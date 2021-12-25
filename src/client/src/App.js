@@ -18,7 +18,7 @@ import EditFlight from "./components/pages/admin/EditFlight.js";
 import AdminLogin from "./components/pages/admin/AdminLogin.js";
 import AddAdmin from "./components/pages/admin/AddAdmin.js";
 import Profile from "./components/pages/profile/Profile.js";
-import contactUs from "./components/pages/home/contactUs";
+import contactUs from "./components/pages/home/ContactUs";
 import service from "./components/pages/home/service";
 
 import DateFnsUtils from "@date-io/date-fns";
