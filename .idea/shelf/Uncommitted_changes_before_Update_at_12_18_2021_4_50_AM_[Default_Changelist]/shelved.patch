@@ -1,0 +1,112 @@
+Index: src/client/src/components/pages/checkout/CheckOut.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import React from \"react\";\r\nimport axios from \"axios\";\r\nimport { Link } from \"react-router-dom\";\r\nimport { useHistory, useLocation } from \"react-router-dom\";\r\nimport { getUserID } from \"../../../handleToken.js\";\r\n\r\nimport SideNav from \"../../templates/SideNav\";\r\nimport Footer from \"../../templates/Footer\";\r\nimport PageHeaderSvg from \"../../basic components/PageHeaderSvg\";\r\nimport FlightSummary from \"../../templates/FlightSummary\";\r\n\r\nimport { Grid } from \"@material-ui/core\";\r\nimport { Stack } from \"@mui/material\";\r\n\r\nexport default function RootFunction(props) {\r\n  const history = useHistory();\r\n  const data = useLocation();\r\n  return <CheckOut history={history} data={data} />;\r\n}\r\n\r\nclass CheckOut extends React.Component {\r\n  constructor(props) {\r\n    super(props);\r\n  }\r\n\r\n  onSubmit = (e) => {\r\n    e.preventDefault();\r\n    // generate seats\r\n    let seatsDepart = [];\r\n    for (let i of this.props.data.state.rowsDepart[0]) {\r\n      if (!i.isReserved && i.isSelected) seatsDepart.push(i.number);\r\n    }\r\n    let seatsArrival = [];\r\n    for (let i of this.props.data.state.rowsArrival[0]) {\r\n      if (!i.isReserved && i.isSelected) seatsArrival.push(i.number);\r\n    }\r\n\r\n    console.log(getUserID());\r\n    console.log(seatsDepart);\r\n    console.log(seatsArrival);\r\n\r\n    let endpoint = `http://localhost:8000/api/user/reserveSeats`;\r\n    let reserveReqDepart = {\r\n      userId: getUserID(),\r\n      flightId: this.props.data.state.departure_id,\r\n      seats: seatsDepart,\r\n      cabin: this.props.data.state.flight_class,\r\n    };\r\n    axios.put(endpoint, reserveReqDepart).then(() => {\r\n      let reserveReqArrival = {\r\n        userId: getUserID(),\r\n        flightId: this.props.data.state.arrival_id,\r\n        seats: seatsArrival,\r\n        cabin: this.props.data.state.flight_class,\r\n      };\r\n      axios.put(endpoint, reserveReqArrival).then(() => {\r\n        this.props.history.push(\"/Profile\");\r\n      });\r\n    });\r\n  };\r\n\r\n  render() {\r\n    return (\r\n      <Grid container>\r\n        <SideNav />\r\n        <Grid item md={9} sm={6} xs={6} style={{ marginLeft: \"3%\" }}>\r\n          <Stack>\r\n            <PageHeaderSvg\r\n              headerText=\"Check Out\"\r\n              src=\"https://www.gstatic.com/travel-frontend/animation/hero/flights_3.svg\"\r\n            />\r\n            {console.log(this.props.data.state)}\r\n          </Stack>\r\n          <h3 className=\"text-center\">Departing Flight</h3>\r\n          <FlightSummary _id={this.props.data.state.departure_id} />\r\n          <hr />\r\n          <h3 className=\"text-center\">Returning Flight</h3>\r\n          <FlightSummary _id={this.props.data.state.arrival_id} />\r\n          <br />\r\n          <form onSubmit={this.onSubmit}>\r\n            <button className=\"btn btn-primary\" type=\"submit\">\r\n              Check Out\r\n            </button>\r\n          </form>\r\n          <br />\r\n          <Link\r\n            to={{\r\n              pathname: \"/chooseSeats\",\r\n              state: {\r\n                departure_id: this.props.data.state.departure_id,\r\n                arrival_id: this.props.data.state.arrival_id,\r\n                flight_class: this.props.data.state.flight_class,\r\n                adults: this.props.data.state.adults,\r\n                children: this.props.data.state.children,\r\n              },\r\n            }}\r\n          >\r\n            <button className=\"btn btn-secondary\">Go Back</button>\r\n          </Link>\r\n        </Grid>\r\n        <Grid\r\n          item\r\n          md={12}\r\n          style={{ marginTop: \"15%\", left: \"0\", right: \"0\", bottom: \"0\" }}\r\n        >\r\n          <Footer />\r\n        </Grid>\r\n      </Grid>\r\n    );\r\n  }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/client/src/components/pages/checkout/CheckOut.js b/src/client/src/components/pages/checkout/CheckOut.js
+--- a/src/client/src/components/pages/checkout/CheckOut.js	
++++ b/src/client/src/components/pages/checkout/CheckOut.js	
+@@ -1,21 +1,16 @@
+ import React from "react";
+-import axios from "axios";
+-import { Link } from "react-router-dom";
+-import { useHistory, useLocation } from "react-router-dom";
+-import { getUserID } from "../../../handleToken.js";
++import { useHistory } from "react-router-dom";
+ 
+ import SideNav from "../../templates/SideNav";
+ import Footer from "../../templates/Footer";
+ import PageHeaderSvg from "../../basic components/PageHeaderSvg";
+-import FlightSummary from "../../templates/FlightSummary";
+ 
+ import { Grid } from "@material-ui/core";
+ import { Stack } from "@mui/material";
+ 
+ export default function RootFunction(props) {
+   const history = useHistory();
+-  const data = useLocation();
+-  return <CheckOut history={history} data={data} />;
++  return <CheckOut history={history} />;
+ }
+ 
+ class CheckOut extends React.Component {
+@@ -23,42 +18,6 @@
+     super(props);
+   }
+ 
+-  onSubmit = (e) => {
+-    e.preventDefault();
+-    // generate seats
+-    let seatsDepart = [];
+-    for (let i of this.props.data.state.rowsDepart[0]) {
+-      if (!i.isReserved && i.isSelected) seatsDepart.push(i.number);
+-    }
+-    let seatsArrival = [];
+-    for (let i of this.props.data.state.rowsArrival[0]) {
+-      if (!i.isReserved && i.isSelected) seatsArrival.push(i.number);
+-    }
+-
+-    console.log(getUserID());
+-    console.log(seatsDepart);
+-    console.log(seatsArrival);
+-
+-    let endpoint = `http://localhost:8000/api/user/reserveSeats`;
+-    let reserveReqDepart = {
+-      userId: getUserID(),
+-      flightId: this.props.data.state.departure_id,
+-      seats: seatsDepart,
+-      cabin: this.props.data.state.flight_class,
+-    };
+-    axios.put(endpoint, reserveReqDepart).then(() => {
+-      let reserveReqArrival = {
+-        userId: getUserID(),
+-        flightId: this.props.data.state.arrival_id,
+-        seats: seatsArrival,
+-        cabin: this.props.data.state.flight_class,
+-      };
+-      axios.put(endpoint, reserveReqArrival).then(() => {
+-        this.props.history.push("/Profile");
+-      });
+-    });
+-  };
+-
+   render() {
+     return (
+       <Grid container>
+@@ -69,34 +28,7 @@
+               headerText="Check Out"
+               src="https://www.gstatic.com/travel-frontend/animation/hero/flights_3.svg"
+             />
+-            {console.log(this.props.data.state)}
+           </Stack>
+-          <h3 className="text-center">Departing Flight</h3>
+-          <FlightSummary _id={this.props.data.state.departure_id} />
+-          <hr />
+-          <h3 className="text-center">Returning Flight</h3>
+-          <FlightSummary _id={this.props.data.state.arrival_id} />
+-          <br />
+-          <form onSubmit={this.onSubmit}>
+-            <button className="btn btn-primary" type="submit">
+-              Check Out
+-            </button>
+-          </form>
+-          <br />
+-          <Link
+-            to={{
+-              pathname: "/chooseSeats",
+-              state: {
+-                departure_id: this.props.data.state.departure_id,
+-                arrival_id: this.props.data.state.arrival_id,
+-                flight_class: this.props.data.state.flight_class,
+-                adults: this.props.data.state.adults,
+-                children: this.props.data.state.children,
+-              },
+-            }}
+-          >
+-            <button className="btn btn-secondary">Go Back</button>
+-          </Link>
+         </Grid>
+         <Grid
+           item
