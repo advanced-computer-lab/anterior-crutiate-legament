@@ -49,7 +49,7 @@ class ChooseSeats extends React.Component {
     componentDidMount() {
         var flightDepID = this.props.data.state.departure_id;
         var flightArrID = this.props.data.state.arrival_id;
-        console.log(flightDepID + " " + flightArrID);
+       // console.log(flightDepID + " " + flightArrID);
 
         let encodedSearchTermsDepart = encodeURIComponent(
             JSON.stringify({_id: flightDepID})

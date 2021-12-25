@@ -30,7 +30,7 @@ class Summary extends React.Component {
   }
 
   render() {
-    console.log(this.props.data.state);
+ //   console.log(this.props.data.state);
     return (
       <Grid container>
         <SideNav />

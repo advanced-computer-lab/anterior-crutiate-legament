@@ -5,6 +5,8 @@ import Stack from '@mui/material/Stack';
 import TicketPic from "./ticket.png"
 import ConfirmCancellation from "./ConfirmCancellation.js";
 import axios from "axios";
+import CancelSeats from "./CancelSeats"
+
 export default class Ticket extends React.Component {
 
     constructor(props) {
@@ -115,7 +117,8 @@ export default class Ticket extends React.Component {
                         <div
                             style={{
 
-                                display: 'flex',
+                                 display: 'flex',
+                                 flexDirection: 'column',
                                 alignItems: 'center',
                                 justifyContent: 'center',
 
@@ -127,6 +130,8 @@ export default class Ticket extends React.Component {
                                 cabin={this.state.cabin}
                                 seats={this.state.seats}
                                 personPass={this.state.personPass} />
+                            <br/>
+                            <CancelSeats />
 
                         </div>
 

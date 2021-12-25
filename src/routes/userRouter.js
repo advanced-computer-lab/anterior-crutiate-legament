@@ -5,18 +5,116 @@ const Flights = new require("../models/Flights.js")();
 const Users = new require("../models/User.js")();
 const jwt = require("jsonwebtoken");
 const reserPassword = require ( "./mails/ResetPassword")  ; 
-
 require("dotenv").config();
-
 var nodemailer = require("nodemailer");
+var stripe = require('stripe')('sk_test_51K9e8iLXRXUubuQwrppL5IzFaYedXstfDSK8jBOJ9Te0LHCtT8PrN6KNxt3RJR0qAunoRg0VRyik2BowDxcXuv8C00tswPewv1');
+
 
 function verifyUserToken(jwtToken) {
-    console.log(jwtToken);
-    if(!jwtToken) return true;
-    jwt.verify(jwtToken, process.env.USER_TOKEN_SECRET, async (err, verifiedJwt) => {
-      return err;
-    });
+  console.log(jwtToken);
+  if(!jwtToken) return true;
+  jwt.verify(jwtToken, process.env.USER_TOKEN_SECRET, async (err, verifiedJwt) => {
+    return err;
+  });
 }
+
+async function pay(amount, email, token) {
+    stripe.customers
+        .create({
+            email: email,
+            source: token.id,
+            name: token.card.name,
+        })
+        .then((customer) => {
+            return stripe.charges.create({
+                amount: parseFloat(amount) * 100,
+                description: `Payment for USD ${amount}`,
+                currency: "USD",
+                customer: customer.id,
+            });
+        })
+        .then((charge) => res.status(200).send(charge))
+        .catch((err) => console.log(err));
+}
+
+// user search flights
+userRouter.route('/searchFlights')
+    .get(async (req, res, next) => {
+        const searchFilters = JSON.parse(req.query.searchFilters);
+        var results = [];
+        if ((searchFilters.from &&
+            searchFilters.to &&
+            searchFilters.departure_time &&
+            searchFilters.flight_class &&
+            searchFilters.adults &&
+            searchFilters.childs) ||
+            searchFilters._id
+        ) {
+            results = await Flights.searchFlights(searchFilters);
+        }
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify(results));
+
+    });
+
+// Email User With reservsation Info After Booking 
+
+userRouter.
+route("/emailUserWithReservationInfo")
+.post(function (req, res) {
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: "aclteam4@gmail.com",
+      pass: "Acl@2468",
+    },
+  });
+  let text=req.body.subject+" Price: "+req.body.amount+"\n"+"Seats: "+ req.body.info.seats.join("-");
+  const mailOptions = {
+    from: req.body.email,
+    to: req.body.email,
+    subject: req.body.subject,
+    text: text,
+  };
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) console.log(error);
+    else console.log("Email Sent");
+  });
+})
+.all((req, res, next) => {
+  res.statusCode = 403;
+  res.end("operation not supported");
+});
+
+
+// payment
+userRouter
+.route("/payment")
+.post(function (req, res) {
+  const stripe = require("stripe")(
+    "sk_test_51K9e8iLXRXUubuQwrppL5IzFaYedXstfDSK8jBOJ9Te0LHCtT8PrN6KNxt3RJR0qAunoRg0VRyik2BowDxcXuv8C00tswPewv1"
+  );
+  const { amount, email, token } = req.body;
+//console.log(req.body)
+  stripe.customers
+    .create({
+      email: email,
+      source: token.id,
+      name: token.card.name,
+    })
+    .then((customer) => {
+      return stripe.charges.create({
+        amount: parseFloat(amount) * 100,
+        description: `Payment for USD ${amount}`,
+        currency: "USD",
+        customer: customer.id,
+      });
+    })
+    .all((req, res, next) => {
+        res.statusCode = 403;
+        res.end('operation not supported');
+    });
+})
 
 
 
@@ -78,6 +176,9 @@ userRouter
 userRouter
   .route("/editUserData")
   .put(async (req, res, next) => {
+
+   // console.log(req.body);
+
     let verificationError = verifyUserToken(req.body.token);
     if (verificationError) {
       res.statusCode = 401;
@@ -126,7 +227,8 @@ userRouter
     res.end("operation not supported");
   });
 
-//check if the user with this email 
+
+//check if the user with this email or passport number exist
 userRouter
   .route("/userExists")
   .get(async (req, res, next) => {
@@ -159,6 +261,32 @@ userRouter.route("/userLogin")
     res.statusCode = 403;
     res.end("operation not supported");
   });
+
+//check if the user with this email or passport number exist 
+userRouter.route('/userExists')
+    .get(async (req, res, next) => {
+        let user = await Users.userExists(JSON.parse(req.query.user));
+        res.end(JSON.stringify(user ? true : false));
+    })
+    .all((req, res, next) => {
+        res.statusCode = 403;
+        res.end('operation not supported');
+    });
+
+//user login
+userRouter.route('/userLogin')
+    .get(async (req, res, next) => {
+        let results = await Users.loginUser(JSON.parse(JSON.stringify(req.query.signInfo)));
+        if (results === null)
+            res.statusCode = 203;
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify(results));
+    })
+    .all((req, res, next) => {
+        res.statusCode = 403;
+        res.end('operation not supported');
+    });
+
 
 //user login
 userRouter
@@ -221,6 +349,7 @@ userRouter
 userRouter
   .route("/reserveSeats")
   .put(async (req, res, next) => {
+    console.log(req.body)
     let verificationError = verifyUserToken(req.body.token);
     if (verificationError) {
       res.statusCode = 401;
@@ -248,6 +377,7 @@ userRouter
     res.statusCode = 403;
     res.end("operation not supported");
   });
+
 
 //get Flight info using it's id
 userRouter
@@ -350,6 +480,53 @@ function sendEmail(toEmail ,subject, mailBody) {
     if (error) console.log(error);
     else console.log("Email Sent");
   });
+}
+
+
+
+//get Flight info using it's id
+userRouter.route('/flightData')
+    .get(async (req, res, next) => {
+        let results = await Flights.searchFlights(JSON.parse(req.query.searchFilters));
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify(results));
+    })
+    .all((req, res, next) => {
+        res.statusCode = 403;
+        res.end('operation not supported');
+    });
+
+
+userRouter.route('/getFlightDetails')
+    .get(async (req, res, next) => {
+        let results = await Flights.searchFlights(JSON.parse(req.query.searchFilters));
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify(results));
+    })
+    .all((req, res, next) => {
+        res.statusCode = 403;
+        res.end('operation not supported');
+    });
+
+function sendEmail(toEmail) {
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: "aclteam4@gmail.com",
+            pass: "Acl@2468"
+        }
+    });
+    const mailOptions = {
+        from: toEmail,
+        to: toEmail,
+        subject: 'GUC Air Reservation Status',
+        text: "Your Reservation is canceled successfuly"
+    };
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) console.log(error);
+        else console.log('Email Sent')
+    })
+
 }
 
 
