@@ -232,11 +232,15 @@ class PaymentForm extends React.Component {
                                       axios.post(`http://localhost:8000/api/user/emailUserWithReservationInfo`, data)
 
                                     })
-                                    .then(() => {
-                                      axios.put(`http://localhost:8000/api/user/reserveSeats`, this.state.reserveReqDepart)
+                                    .then(async () => {
+                                       console.log("Depart")
+                                       console.log(this.state.reserveReqDepart)
+                                      await axios.put(`http://localhost:8000/api/user/reserveSeats`, this.state.reserveReqDepart)
                                     })
-                                    .then(() => {
-                                      axios.put(`http://localhost:8000/api/user/reserveSeats`, this.state.reserveReqArrival)
+                                    .then(async () => {
+                                      console.log("Arrival")
+                                      console.log(this.state.reserveReqArrival)
+                                      await axios.put(`http://localhost:8000/api/user/reserveSeats`, this.state.reserveReqArrival)
                                     })
                                     .then(() => {
                                       this.state.history.push("/TransactionStatus")
