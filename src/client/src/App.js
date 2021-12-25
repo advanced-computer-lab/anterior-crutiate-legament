@@ -19,7 +19,9 @@ import EditFlight from "./components/pages/admin/EditFlight.js";
 import AdminLogin from "./components/pages/admin/AdminLogin.js";
 import AddAdmin from "./components/pages/admin/AddAdmin.js";
 import Profile from "./components/pages/profile/Profile.js";
- 
+import contactUs from "./components/pages/home/contactUs";
+import service from "./components/pages/home/service";
+
 import DateFnsUtils from "@date-io/date-fns";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 
@@ -40,6 +42,8 @@ function App() {
       <Route exact path='/verifyEmail' component={VerifyEmail} />
       <Route exact path='/resetPassword' component={ResetPassword} />
 
+        <Route exact path="/contact" component={contactUs} />
+        <Route exact path="/services" component={service} />
 
       <Route exact path="/adminLogin" component={AdminLogin} />
       <Route exact path="/admin" component={AdminApp} />

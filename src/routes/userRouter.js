@@ -126,7 +126,7 @@ userRouter
     res.end("operation not supported");
   });
 
-//check if the user with this email or passport number exist
+//check if the user with this email 
 userRouter
   .route("/userExists")
   .get(async (req, res, next) => {
@@ -278,6 +278,7 @@ userRouter
     res.end("operation not supported");
   });
 
+
 userRouter.route("/sendVerificationCode")
   .post(async (req, res, next) => {
       let user = await Users.userExists(req.body.email);
@@ -336,6 +337,47 @@ function sendEmail(toEmail ,subject, mailBody) {
     if (error) console.log(error);
     else console.log("Email Sent");
   });
+}
+
+
+function confirmMail(props) {
+    const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+            user: "aclteam4@gmail.com",
+            pass: "Acl@2468",
+        },
+    });
+    const mailOptions = {
+        from: "aclteam4@gmail.com",
+        to: props.email,
+        subject: "Confirmation",
+        text: `Hi ${props.name}! \n \n Your message has been succefully sent to us. \n\n Thanks.`,
+    };
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) console.log(error);
+        else console.log("Email Sent");
+    });
+}
+
+function contactUs(props) {
+    const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+            user: "aclteam4@gmail.com",
+            pass: "Acl@2468",
+        },
+    });
+    const mailOptions = {
+        from: props.email,
+        to: "aclteam4@gmail.com",
+        subject: props.subject,
+        text: `Hi \n \n I am ${props.name}, \n \n ${props.userMessage} \n \n Best Regards, \n ${props.name}`,
+    };
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) console.log(error);
+        else console.log("Email Sent");
+    });
 }
 
 module.exports = userRouter;

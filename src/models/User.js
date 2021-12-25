@@ -92,8 +92,6 @@ userSchema.methods.userExists = async (email) => {
 userSchema.methods.verifyCode = async (verificationInfo) => {
   const user = await Users.findOne({ email: verificationInfo.email });
   const match = await bcrypt.compare(verificationInfo.code, user.verificationCode);
-  console.log(match) ;
-
   if(match){
       const accessToken = jwt.sign(
         JSON.stringify({email: user.email, password: user.password}),
@@ -104,8 +102,6 @@ userSchema.methods.verifyCode = async (verificationInfo) => {
   else{
     return null;
   }
-
-
 };
 
 
