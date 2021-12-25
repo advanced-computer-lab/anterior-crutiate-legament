@@ -117,10 +117,10 @@ We have two main users in our website:
 -  Edit a reservation by choosing new seats or change the flight.
 -  Emailed with any updates in his reservations.
 ![tickets](https://i.ibb.co/sPmTkwH/tickets.png)
--  View our services.
-![service](https://i.ibb.co/34d1hWy/service.png)
--  Contact us by sending us an email.
-![contact_us](https://i.ibb.co/Yt966Rr/contact-us.png)
+-  View our services that's will make your flight special using GUC AIR.
+![service](https://i.ibb.co/fqFM0tY/service.png)
+-  Contact us by sending us an email or know more about our software engineers.
+![contact_us](https://i.ibb.co/30XwwrJ/contact-us.png)
 
 ## API References
 Our API is divided into two APIs :
