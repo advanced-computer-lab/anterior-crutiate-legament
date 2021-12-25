@@ -346,7 +346,7 @@ mRjVuU3YuajZlclhUSWlRdXUifQ.HgNs2Mo18mPpd43Y2CnuZQ8fg6l9DVUuRn_znav8-TE"'
 - Request type : `post`
 - Request Body : 
  ` 
-  {
+ {
   token: {
     id: 'tok_1KAfnxLXRXUubuQw0O6PmnzZ',
     object: 'token',
@@ -381,7 +381,6 @@ mRjVuU3YuajZlclhUSWlRdXUifQ.HgNs2Mo18mPpd43Y2CnuZQ8fg6l9DVUuRn_znav8-TE"'
   email: 'omar.elabsawy@student.guc.edu.eg',
   amount: 9252
 }
-
 `
 
 #### View reservations in Flights
