@@ -104,6 +104,7 @@ const errorMessage = () => {
                           }
                           id="outlined-basic"
                           label="New Password"
+                          type = "password"
                           margin="normal"
                           variant="outlined"
                         />  
@@ -114,6 +115,7 @@ const errorMessage = () => {
                           }
                           id="outlined-basic"
                           label="Confirm Password"
+                          type = "password"
                           margin="normal"
                           variant="outlined"
                         /> 

@@ -133,10 +133,10 @@ flightSchema.methods.searchFlights = async searchFilters => {
             query.push({flight_number:searchFilters.flight_number});
         }
         if(searchFilters.from) {
-            query.push({from:searchFilters.from});
+            query.push({from:{'$regex' : searchFilters.from , '$options' : 'i'}});
         }
         if(searchFilters.to) {
-            query.push({to:searchFilters.to}) ;
+            query.push({to:{'$regex' : searchFilters.to , '$options' : 'i'}}) ;
         }
         if(searchFilters.departure_time) {
             query.push({departure_time:{$gte:searchFilters.departure_time}}) ;

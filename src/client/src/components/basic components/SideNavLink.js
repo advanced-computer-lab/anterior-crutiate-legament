@@ -5,6 +5,7 @@ import Logo from './Logo';
 import "../../assets/css/templates/sidenav.css"
 import home from '../../assets/images/home.png';
 import profile from '../../assets/images/profile.png';
+import search from '../../assets/images/search.png';
 import login from '../../assets/images/login.png';
 import register from '../../assets/images/register.png';
 import out from '../../assets/images/log-out.png';
@@ -48,6 +49,21 @@ function SideNavLink (props) {
                 </Paper>
                 <Typography  style={{marginTop:"10%",color:"#3B566E"}}>
                     Profile
+                </Typography>
+                </Link>
+                </Paper>
+            </Grid>
+
+
+            <Grid container>
+            <Paper  style={{backgroundColor:"#bad1fa",paddingBottom:"3%",margin:"1%"}}>
+
+                <Link href = "/home" >
+                <Paper elevation={3} elevation={1} style={{backgroundColor:"#F8FFEF",padding:10 ,marginTop:"5%",marginLeft:"15%",marginRight:"10%", width:"20%",float:"left"}}>
+                     <img  style={{width:"100%"}} src = {search} />
+                </Paper>
+                <Typography  style={{marginTop:"10%",color:"#3B566E"}}>
+                    Search
                 </Typography>
                 </Link>
                 </Paper>

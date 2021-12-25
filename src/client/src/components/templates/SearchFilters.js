@@ -50,8 +50,8 @@ export default function SearchResults (props) {
       departure_time: new Date(),
       return_time: new Date(),
       flight_class: "",
-      adults: 0 ,
-      childs:0
+      adults: "0",
+      childs: "0"
     }
   );
   
@@ -72,7 +72,10 @@ export default function SearchResults (props) {
     };
 
     useEffect(() => {
-        let encodedSearchTerms = encodeURIComponent(JSON.stringify(searchFilters));
+        let encodedSearchTerms = encodeURIComponent(JSON.stringify({...searchFilters,
+          adults: searchFilters.adults==""?"0":searchFilters.adults,
+          childs: searchFilters.childs==""?"0":searchFilters.childs
+          }));
   
         axios.get(`http://localhost:8000/api/user/SearchFlights?searchFilters=${encodedSearchTerms}`)
         .then((r) => {
@@ -141,6 +144,8 @@ export default function SearchResults (props) {
             label="Adults" 
             style={{width:"6%",margin:"0.7%"}} 
             variant="standard"
+            type="number"
+            inputProps={{ inputMode: 'numeric', pattern: '[0-1000]*' }}
             onChange = {(e) => setSearchFilters({...searchFilters, adults: e.target.value})}  
             />
             <TextField 
@@ -149,7 +154,9 @@ export default function SearchResults (props) {
             label="Childs" 
             style={{width:"6%",margin:"0.7%"}} 
             variant="standard" 
-            onChange = {(e) => setSearchFilters({...searchFilters, childs: e.target.value})} 
+            type="number"
+            inputProps={{ inputMode: 'numeric', pattern: '[0-1000]*' }}
+            onChange = {(e) => setSearchFilters({...searchFilters, childs: e.target.value })} 
             />
 
             <IconButton aria-label="delete" size="large"style={{marginTop:"1%"}} onClick={getSearchResults}>
@@ -190,8 +197,8 @@ function Row(props) {
           to: row.from,
           departure_time: row.arrival_time,
           flight_class: props.flight_class,
-          adults: props.adults,
-          childs: props.childs
+          adults: props.adults==""?"0":props.adults,
+          childs: props.childs==""?"0":props.childs
         }       
       ));
 

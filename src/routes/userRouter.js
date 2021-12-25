@@ -507,27 +507,6 @@ userRouter.route('/getFlightDetails')
         res.end('operation not supported');
     });
 
-function sendEmail(toEmail) {
-    const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: "aclteam4@gmail.com",
-            pass: "Acl@2468"
-        }
-    });
-    const mailOptions = {
-        from: toEmail,
-        to: toEmail,
-        subject: 'GUC Air Reservation Status',
-        text: "Your Reservation is canceled successfuly"
-    };
-    transporter.sendMail(mailOptions, function (error, info) {
-        if (error) console.log(error);
-        else console.log('Email Sent')
-    })
-
-}
-
 
 function confirmMail(props) {
     const transporter = nodemailer.createTransport({
