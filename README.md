@@ -94,14 +94,15 @@ We have two main users in our website:
 ### User 
 - Sign up and enter their details in a form including first name, last name, home address, country code, telephone number(s), email, passport number and password.
 ![sign_up](https://i.ibb.co/DMh8zkx/sign-up.png)
-- Edit their information including first name, last name, passport number and email.
-![edit_user](https://i.ibb.co/gryBc1P/edit-info.png)
 - Sign in using his email and password.
 ![sign_in](https://i.ibb.co/gyt0Rb6/sing-in.png)
+- Edit their information including first name, last name, passport number and email.
+![edit_user](https://i.ibb.co/gryBc1P/edit-info.png)
 - Search for available flights based on number of passengers (children and adults), departure airport and arrival airport terminals, departure and arrival dates and cabin class.
 - Select one of the flights from the list of available flights.
 - See all the details of a particular  flight. The details should include flight number, departure and arrival times, trip duration, cabin class and baggage allowance.
 - View a list of all available return flights based on the search criteria.  The list should include flight number, departure time and arrival time, trip duration and price.
+![search_flight](https://i.ibb.co/6ZhFysw/search-flight-user.png)
 - See a summary of the chosen departure and return flights, including the dates and times of the departure and return flights, the price of each flight, the chosen cabin (Economy/ Business Class), the chosen seat and the total price of the entire ticket.
 - View the available seats in the chosen cabin of the chosen departure flight and select one or more of the available seats in the chosen cabin of the chosen departure flight (based on the the number of passengers the booking is for).
 - Confirm reserving the chosen flight.
@@ -111,6 +112,9 @@ We have two main users in our website:
 - Cancel a reservation.
 -  Edit a reservation by choosing new seats or change the flight.
 -  Emailed with any updates in his reservations.
+-  View our services.
+![services](https://i.ibb.co/nn19nmK/service.png)
+-  Contact us.
 
 ## API References
 Our API is divided into two APIs :
@@ -161,15 +165,48 @@ Our API is divided into two APIs :
 #### Register
 - Route : `/userRegister`
 - Request type : `post`
-- Request Body : `body`
-- Respone Body : `body`
+- Request Body : 
+ `{
+  firstName: 'Abdlerhman ',
+  lastName: 'Khater',
+  email: 'abdelrahmankhater@gmail.com',
+  password: '123',
+  confirmPassword: '123',
+  passport: '123456'
+}
+`
+- Respone Body : 
+  ` {
+      firstName: 'Abdlerhman ',
+      lastName: 'Khater',
+      email: 'abdelrahmankhater@gmail.com',
+      password: '123',
+      confirmPassword: '123',
+      passport: '123456'
+    }`
 
 
 #### Log in
 - Route : `/userLogin`
 - Request type : `get`
-- Request Body : `body`
-- Respone Body : `body`
+- Request Query : 
+ `{
+  signInfo: '{"email":"abdelrahmankhater8@gmail.com","password":"123"}'
+  }
+ `
+- Respone Body : `{
+  _id: new ObjectId("61c73b87d1c07f9feae425bd"),
+  firstName: 'Abdlerhman ',
+  lastName: 'Khater',
+  email: 'abdelrahmankhater@gmail.com',
+  password: '$2b$10$bXBWzrm.IU4oblIxF056cecJV/Cqc1f8EcraOMzLmoMRbMWLw8ZAC',
+  passport: '123456',
+  reservations: [],
+  createdAt: 2021-12-25T15:40:55.687Z,
+  updatedAt: 2021-12-25T15:40:55.687Z,
+  __v: 0
+}
+`
 
 #### Edit Information
 - Route : `/editUserData`
