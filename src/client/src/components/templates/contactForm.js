@@ -26,12 +26,12 @@ function ContactForm(props) {
 
 
     const send = async (e) => {
-        console.log(isValidEmail(senderInfo.email))
-        if(await isValidEmail(senderInfo.email)){
-            await axios.post(`http://localhost:8000/api/user/contactUs`,senderInfo);
-            console.log(senderInfo.email.length)
+        if (await isValidEmail(senderInfo.email)) {
             setSubmitted(true);
-            setError(false);}
+            setError(false);
+
+        await axios.post(`http://localhost:8000/api/user/contactUs`, senderInfo);
+        }
         else{
             setSubmitted(false);
             setError(true);

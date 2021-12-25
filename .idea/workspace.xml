@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6373d171-415a-45a3-b4dc-3edf2601cf8e" name="Default Changelist" comment="" />
+    <list default="true" id="6373d171-415a-45a3-b4dc-3edf2601cf8e" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/src/components/templates/contactForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/src/components/templates/contactForm.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -64,6 +67,7 @@
       <workItem from="1640084031497" duration="601000" />
       <workItem from="1640346626655" duration="2893000" />
       <workItem from="1640349603222" duration="18382000" />
+      <workItem from="1640434796637" duration="662000" />
     </task>
     <task id="LOCAL-00001" summary="&quot;sign in and sign up&quot;">
       <created>1639176087632</created>
@@ -107,7 +111,14 @@
       <option name="project" value="LOCAL" />
       <updated>1640379483790</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="contactus and services">
+      <created>1640435030280</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1640435030280</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
