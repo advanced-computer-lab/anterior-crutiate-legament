@@ -14,8 +14,6 @@ import PaymentForm from "./PaymentForm.js";
 import MyTickets from "./MyTickets";
 
 
-import PaymentForm from "./PaymentForm.js";
-
 export default function ProfileNav() {
     const [value, setValue] = React.useState('1');
 

@@ -24,11 +24,6 @@ class Summary extends React.Component {
     super(props);
   }
 
-  componentWillMount() {
-    if (!getUserToken())
-      this.props.history.push("/");
-  }
-
   render() {
  //   console.log(this.props.data.state);
     return (
