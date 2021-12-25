@@ -28,10 +28,12 @@ import "./assets/css/main/main.css";
 function App() {
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
+ 
+ 
       <Route exact path="/" component={LandingPage} />
       <Route exact path="/home" component={DashBoard} />
       <Route exact path="/register" component={Register} />
-      <Route exact path= {"/signIn"} component={SignIn} />
+      <Route exact path= "/signIn" component={SignIn} />
       <Route exact path='/profile' component={Profile} />
       <Route exact path='/flightsSummary' component={Summary} />
       <Route exact path='/chooseSeats' component={ChooseSeats} />
@@ -43,6 +45,7 @@ function App() {
       <Route exact path="/admin/addFlight" component={AddFlight} />
       <Route exact path="/admin/editFlight" component={EditFlight} />
       <Route exact path="/admin/addAdmin" component={AddAdmin} />
+      
     </MuiPickersUtilsProvider>
    );
 }

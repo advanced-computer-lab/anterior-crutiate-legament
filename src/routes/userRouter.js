@@ -56,6 +56,62 @@ userRouter.route('/searchFlights')
         }
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(results));
+
+    });
+}
+
+// Email User With reservsation Info After Booking 
+
+userRouter.
+route("/emailUserWithReservationInfo")
+.post(function (req, res) {
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: "aclteam4@gmail.com",
+      pass: "Acl@2468",
+    },
+  });
+  let text=req.body.subject+" Price: "+req.body.amount+"\n"+"Seats: "+ req.body.info.seats.join("-");
+  const mailOptions = {
+    from: req.body.email,
+    to: req.body.email,
+    subject: req.body.subject,
+    text: text,
+  };
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) console.log(error);
+    else console.log("Email Sent");
+  });
+})
+.all((req, res, next) => {
+  res.statusCode = 403;
+  res.end("operation not supported");
+});
+
+
+// payment
+userRouter
+.route("/payment")
+.post(function (req, res) {
+  const stripe = require("stripe")(
+    "sk_test_51K9e8iLXRXUubuQwrppL5IzFaYedXstfDSK8jBOJ9Te0LHCtT8PrN6KNxt3RJR0qAunoRg0VRyik2BowDxcXuv8C00tswPewv1"
+  );
+  const { amount, email, token } = req.body;
+//console.log(req.body)
+  stripe.customers
+    .create({
+      email: email,
+      source: token.id,
+      name: token.card.name,
+    })
+    .then((customer) => {
+      return stripe.charges.create({
+        amount: parseFloat(amount) * 100,
+        description: `Payment for USD ${amount}`,
+        currency: "USD",
+        customer: customer.id,
+      });
     })
     .all((req, res, next) => {
         res.statusCode = 403;
@@ -93,6 +149,9 @@ userRouter
 userRouter
   .route("/editUserData")
   .put(async (req, res, next) => {
+
+   // console.log(req.body);
+
     let verificationError = verifyUserToken(req.body.token);
     if (verificationError) {
       res.statusCode = 401;
@@ -141,7 +200,7 @@ userRouter
     res.end("operation not supported");
   });
 
-<<<<<<< Updated upstream
+
 //check if the user with this email or passport number exist
 userRouter
   .route("/userExists")
@@ -194,7 +253,7 @@ userRouter.route('/userLogin')
         res.statusCode = 403;
         res.end('operation not supported');
     });
->>>>>>> Stashed changes
+
 
 //user login
 userRouter
@@ -207,6 +266,8 @@ userRouter
     } else {
         req.query.in = JSON.parse(req.query.in);
         delete req.query.in.token;
+
+
         let results = await Users.verifyPassword(req.query.in);
         if (!results) res.statusCode = 203;
         res.setHeader("Content-Type", "application/json");
@@ -331,6 +392,58 @@ function sendEmail(toEmail) {
     if (error) console.log(error);
     else console.log("Email Sent");
   });
+
+    })
+    .all((req, res, next) => {
+        res.statusCode = 403;
+        res.end('operation not supported');
+    });
+
+
+
+//get Flight info using it's id
+userRouter.route('/flightData')
+    .get(async (req, res, next) => {
+        let results = await Flights.searchFlights(JSON.parse(req.query.searchFilters));
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify(results));
+    })
+    .all((req, res, next) => {
+        res.statusCode = 403;
+        res.end('operation not supported');
+    });
+
+
+userRouter.route('/getFlightDetails')
+    .get(async (req, res, next) => {
+        let results = await Flights.searchFlights(JSON.parse(req.query.searchFilters));
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify(results));
+    })
+    .all((req, res, next) => {
+        res.statusCode = 403;
+        res.end('operation not supported');
+    });
+
+function sendEmail(toEmail) {
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: "aclteam4@gmail.com",
+            pass: "Acl@2468"
+        }
+    });
+    const mailOptions = {
+        from: toEmail,
+        to: toEmail,
+        subject: 'GUC Air Reservation Status',
+        text: "Your Reservation is canceled successfuly"
+    };
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) console.log(error);
+        else console.log('Email Sent')
+    })
+
 }
 
 module.exports = userRouter;
