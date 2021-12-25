@@ -136,20 +136,7 @@ export default class Ticket extends React.Component {
                             <br/>
                             <UpdateTicket  flightID={this.state._id} cabin={this.state.cabin} seats={this.state.seats} price={this.state.price} />
                             <br/>
-                            <Button
-                             variant="outlined" onClick={(e) => this.setState({ open: true })} color="success"
-                             onClick={()=>{
-                                    // const data = {
-                                    //     _id: this.state.personID,
-                                    //     token: JSON.parse(getUserToken()),
-                                    //     password: this.state.currentPassword
-                                    // };
-                                    // let encodedId = encodeURIComponent(JSON.stringify(data));
-                                    // axios.post(`http://localhost:8000/api/user/`,data);
-                             }}
-                             >
-                                Email Me
-                            </Button>
+                         
                         </div>
 
                     </Stack>

@@ -123,7 +123,7 @@ const errorMessage = () => {
                     {verifying?
                     <Progress/>
                     :
-                    <SubmitButton buttonText={"Send Verification Code"} click={resetPassword} />
+                    <SubmitButton buttonText={"Create New Password"} click={resetPassword} />
                     }
                   </Form>
 
