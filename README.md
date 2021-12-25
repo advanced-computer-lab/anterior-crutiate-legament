@@ -146,6 +146,9 @@ Our API is divided into two APIs :
     loginDetails: '{"email":"omartarek@gmail.com","password":"123"}' 
   }
   `
+- Response Body :
+ `{"_id":          {"$oid":"61c1cf32abcaed63d42a6aea"},"firstName":"Omar","lastName":"Tarek","email":"1@3","password":"$2b$10$wlhxteUnYt46/1XOd7oQduC5wrHAE/AheUEK1ijp9rl5xOrFq/x16","createdAt":    {"$date":"2021-12-21T12:57:22.511Z"},"updatedAt":{"$date":"2021-12-21T12:57:22.511Z"},"__v":0}
+ `
 
 #### Create Flights
 - Route : `/adminCreateFlight`
@@ -275,6 +278,25 @@ GdS5tT0NaRWdTTlU4NEVOT0E4QyJ9.gTAQ3KPYXDjnFd_eN0EQBopVyGZwp5g71r4MnBcMMP4\\""}'
 }
 `
 
+#### View Information
+- Route : `/getUserDetails`
+- Request type : `get`
+- Request Query : 
+ `
+ {
+  in: '{"_id":"61c64ce111745366dead0768","token":"\\"eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im9tYXIuZWxhYnNhd3lAc3R1ZGVudC5ndWMuZWR1LmVnIiwicGFzc3dvcmQiOiIkMmIkMTAkaUZRd
+2ZSSmVFY1FMVXZrNHY5MHgzZUY2YnNHS1k1eWhBNVVmRjVuU3YuajZlclhUSWlRdXUifQ.HgNs2Mo18mPpd43Y2CnuZQ8fg6l9DVUuRn_znav8-TE\\""}'
+}
+`
+- Response Body:
+`
+  [{"_id":"61c64ce111745366dead0768","firstName":"Omar","lastName":"Tarek","email":"omar.elabsawy@student.guc.edu.eg","password":"$2b$10$iFQwfRJeEcQLUvk4v90x3eF6bsGK
+Y5yhA5UfF5nSv.j6erXTIiQuu","passport":"1234","reservations":[{"flight_id":"61c74aed660d342530d1f5c1","cabin":"Business","seats":[22,23,25],"price":5500},{"flight_i
+d":"61c74b19660d342530d1f5c4","cabin":"Business","seats":[10,13,24],"price":5500}],"createdAt":"2021-12-24T22:42:41.866Z","updatedAt":"2021-12-25T19:21:25.677Z","_
+_v":0,"verificationCode":"$2b$10$MNW2m.qS2a70AXAJShF.V.6M.pnNjmUvbH1Gf40R95tvwToikOjpW"}]
+`
+
+
 #### Edit Information
 - Route : `/editUserData`
 - Request type : `put`
@@ -294,25 +316,79 @@ GdS5tT0NaRWdTTlU4NEVOT0E4QyJ9.gTAQ3KPYXDjnFd_eN0EQBopVyGZwp5g71r4MnBcMMP4\\""}'
 #### Search Flights
 - Route : `/searchFlights`
 - Request type : `get`
-- Request Body : `body`
-- Respone Body : `body`
+- Request Query : 
+`
+ {
+  searchFilters: '{"from":"Cairo","to":"Luxor","departure_time":"2021-12-25T19:10:31.872Z","return_time":"2021-12-25T19:10:31.872Z","flight_class":"Business","adul
+ts":"2","childs":"3"}'
+ }
+`
+- Respone Body : 
+ `
+ [{"_id":"61c74aed660d342530d1f5c1","flight_number":"212113","from":"Cairo","to":"Luxor","departure_time":"2021-12-30T19:45:00.000Z","arrival_time":"2021-12-30T20:4
+5:00.000Z","Economy":100,"Business":50,"First":50,"childEconomyPrice":1000,"childBusinessPrice":1500,"childFirstPrice":1800,"adultEconomyPrice":1200,"adultBusiness
+Price":2000,"adultFirstPrice":2500,"businessCabin":[],"firstCabin":[],"economyCabin":[],"createdAt":"2021-12-25T16:46:37.012Z","updatedAt":"2021-12-25T16:46:37.012
+Z","__v":0},{"_id":"61c76d33d29c95155750e723","flight_number":"1231234","from":"Cairo","to":"Luxor","departure_time":"2021-12-25T19:15:00.000Z","arrival_time":"202
+1-12-25T20:15:00.000Z","Economy":100,"Business":50,"First":50,"childEconomyPrice":800,"childBusinessPrice":1000,"childFirstPrice":1400,"adultEconomyPrice":1000,"ad
+ultBusinessPrice":1200,"adultFirstPrice":1600,"businessCabin":[],"firstCabin":[],"economyCabin":[],"createdAt":"2021-12-25T19:12:51.364Z","updatedAt":"2021-12-25T1
+9:12:51.364Z","__v":0}]
+`
 
 #### Reserve Seats in Flights
 - Route : `/reserveSeats`
 - Request type : `put`
-- Request Body : `body`
-- Respone Body : `body`
+- Request Body : 
+ ` 
+  {
+  userId: '61c64ce111745366dead0768',
+  flightId: '61c74b19660d342530d1f5c4',
+  seats: [ 10, 13, 24 ],
+  cabin: 'Business',
+  price: 5500,
+  token: '"eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im9tYXIuZWxhYnNhd3lAc3R1ZGVudC5ndWMuZWR1LmVnIiwicGFzc3dvcmQiOiIkMmIkMTAkaUZRd2ZSSmVFY1FMVXZrNHY5MHgzZUY2YnNHS1k1eWhBNVV
+mRjVuU3YuajZlclhUSWlRdXUifQ.HgNs2Mo18mPpd43Y2CnuZQ8fg6l9DVUuRn_znav8-TE"'
+ }
+`
+
+#### View reservations in Flights
+- Route : `/flightData`
+- Request type : `get`
+- Request Query : 
+`
+{ searchFilters: '{"_id":"61c74aed660d342530d1f5c1"}' }
+`
+- Respone Body : 
+ `
+ [{"_id":"61c74aed660d342530d1f5c1","flight_number":"212113","from":"Cairo","to":"Luxor","departure_time":"2021-12-30T19:45:00.000Z","arrival_time":"2021-12-30T20:4
+5:00.000Z","Economy":100,"Business":50,"First":50,"childEconomyPrice":1000,"childBusinessPrice":1500,"childFirstPrice":1800,"adultEconomyPrice":1200,"adultBusiness
+Price":2000,"adultFirstPrice":2500,"businessCabin":[22,23,25],"firstCabin":[],"economyCabin":[],"createdAt":"2021-12-25T16:46:37.012Z","updatedAt":"2021-12-25T19:2
+1:25.548Z","__v":0}]
+`
+
 
 #### Cancel reservations in Flights
 - Route : `/cancelReservation`
 - Request type : `delete`
-- Request Body : `body`
-- Respone Body : `body`
+- Request Body : 
+`
+{
+  _id: '61c74aed660d342530d1f5c1',
+  seats: [ 22, 23, 25 ],
+  businessCabin: true
+}
+`
 
 
 #### Contact Us
 - Route : `/contactUs`
 - Request type : `post`
-- Request Body : `body`
-- Respone Body : `body`
+- Request Body : 
+`
+{
+  name: 'Khater',
+  email: 'abdelrahmanselim158@gmail.com',
+  subject: 'Test Contact Us',
+  userMessage: 'HELLO WORLD!'
+}
+`
 
