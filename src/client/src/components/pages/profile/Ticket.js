@@ -8,6 +8,10 @@ import TicketPic from "./ticket.png"
 import ConfirmCancellation from "./ConfirmCancellation.js";
 import axios from "axios";
 import UpdateTicket from "./UpdateTicket"
+import {
+    getUserToken,
+    getUserID,
+  } from "../../../handleToken.js";
 
 export default class Ticket extends React.Component {
 
@@ -44,7 +48,7 @@ export default class Ticket extends React.Component {
                 this.setState({
                     from: res.data[0].from,
                     to: res.data[0].to,
-                    date: (temp.getDate() + " - " + temp.getMonth() + " - " + temp.getFullYear()),
+                    date: (temp.getDate() + " - " + (temp.getMonth()+1) + " - " + temp.getFullYear()),
                     time: (weekday[temp.getDay()] + "  " + temp.getHours() % 12 + ":" + temp.getMinutes() + " " + (temp.getHours() >= 12 ? "PM" : "AM")),
                     flight_number: res.data[0].flight_number,
                     isLoading: false,
@@ -136,7 +140,26 @@ export default class Ticket extends React.Component {
                             <br/>
                             <UpdateTicket  flightID={this.state._id} cabin={this.state.cabin} seats={this.state.seats} price={this.state.price} />
                             <br/>
-                         
+                            <Button
+                             variant="outlined" onClick={(e) => this.setState({ open: true })} color="success"
+                             onClick={()=>{
+                                     const data = {
+                                         userId: this.state.personID,
+                                         flightId: this.state._id,
+                                         token: JSON.parse(getUserToken()),
+                                         cabin: this.state.cabin,
+                                         password: this.state.currentPassword
+                                     };
+                                     try{
+                                        axios.post(`http://localhost:8000/api/user/emailMeFlight`,data);
+                                     }
+                                     catch(e){
+
+                                     }
+                            }}
+                             >
+                                Email Me
+                            </Button>
                         </div>
 
                     </Stack>

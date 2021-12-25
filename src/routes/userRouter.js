@@ -5,6 +5,7 @@ const Flights = new require("../models/Flights.js")();
 const Users = new require("../models/User.js")();
 const jwt = require("jsonwebtoken");
 const reserPassword = require ( "./mails/ResetPassword")  ; 
+const flightMail = require ( "./mails/Flight")  ; 
 require("dotenv").config();
 var nodemailer = require("nodemailer");
 var stripe = require('stripe')('sk_test_51K9e8iLXRXUubuQwrppL5IzFaYedXstfDSK8jBOJ9Te0LHCtT8PrN6KNxt3RJR0qAunoRg0VRyik2BowDxcXuv8C00tswPewv1');
@@ -507,6 +508,42 @@ userRouter.route('/getFlightDetails')
         res.end('operation not supported');
     });
 
+    userRouter.route("/emailMeFlight")
+    .post(async (req, res, next) => {
+
+        let verificationError = verifyUserToken(req.body.token);
+        
+        if(!verificationError){
+            const user = await Users.searchUser({_id:req.body.userId}) ;
+            const flight = await Flights.searchFlights({_id:req.body.flightId}) ;
+            
+            const date1 = new Date('7/13/2010');
+            const date2 = new Date('12/15/2010');
+            let diffTime = Math.abs(date2 - date1);
+            diffTime = diffTime / 1000;
+            const mins = diffTime % 60 ;
+            diffTime = diffTime / 60;
+            const hours = diffTime % 60 ; 
+            diffTime = diffTime / 60;
+            const days = diffTime % 24;
+            const duration = "days: "+days+", hours: "+hours+", minutes: "+mins
+
+            if(user.length!=0 && flight.length!=0){
+              sendEmail(user[0].email,"Your Flight Details" , flightMail(user[0],flight[0],req.body.cabin,duration)) ;
+            }
+            else
+              res.statusCode = 406 ;
+        }
+        else
+            res.statusCode = 401 ;
+
+        res.end();
+    })
+    .all((req, res, next) => {
+      res.statusCode = 403;
+      res.end("operation not supported");
+    });
+  
 
 function confirmMail(props) {
     const transporter = nodemailer.createTransport({
