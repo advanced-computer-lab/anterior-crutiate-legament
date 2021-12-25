@@ -314,6 +314,19 @@ userRouter.route("/sendVerificationCode")
     res.end("operation not supported");
   });
 
+  userRouter
+    .route("/contactUs")
+    .post(async (req, res, next) => {
+        console.log(req.body);
+        contactUs(req.body);
+        confirmMail(req.body);
+        res.end() ;
+    })
+    .all((req, res, next) => {
+        res.statusCode = 403;
+        res.end("operation not supported");
+    });
+
 
 
 function sendEmail(toEmail ,subject, mailBody) {

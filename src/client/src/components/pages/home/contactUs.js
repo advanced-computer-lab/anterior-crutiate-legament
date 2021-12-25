@@ -8,13 +8,11 @@ import ContactForm from "../../templates/contactForm";
 import {Grid} from "@material-ui/core";
 import SideNav from "../../templates/SideNav";
 import Box from "@material-ui/core/Box";
-
-import khater from '../../../assets/images/baby.jpg';
-import omar from '../../../assets/images/baby.jpg';
-import yahia from '../../../assets/images/baby.jpg';
-import jobeel from '../../../assets/images/baby.jpg';
-import shetya from '../../../assets/images/baby.jpg';
-
+import khater from '../../../assets/images/khater.jpg';
+import omar from '../../../assets/images/omar.jpg';
+import yahia from '../../../assets/images/yahia.jpg';
+import jobeel from '../../../assets/images/jobeel.jpg';
+import shetya from '../../../assets/images/shetaya.jpg';
 function contactUs() {
 
     return (

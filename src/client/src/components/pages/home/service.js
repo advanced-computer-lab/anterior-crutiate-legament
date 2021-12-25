@@ -4,16 +4,14 @@ import NavBar from '../../templates/NavBar';
 import Footer from '../../templates/Footer';
 import ServiceCard from '../../templates/serviceCard';
 import ContactForm from "../../templates/contactForm";
-
-import {Grid} from "@material-ui/core";
-import SideNav from "../../templates/SideNav";
+ 
 import Box from "@material-ui/core/Box";
-import ent from '../../../assets/images/baby.jpg'
-import pets from '../../../assets/images/baby.jpg'
-import preg from '../../../assets/images/baby.jpg'
-import kid from '../../../assets/images/baby.jpg'
-import med from '../../../assets/images/baby.jpg'
-import baby from '../../../assets/images/baby.jpg';
+import ent from '../../../assets/images/entertainment.jpg'
+import pets from '../../../assets/images/pets.jpg'
+import preg from '../../../assets/images/pregnant.jpg'
+import kid from '../../../assets/images/kids.jpg'
+import med from '../../../assets/images/medical.jpg'
+import baby from '../../../assets/images/baby.jpg'
 
 
 function service() {
