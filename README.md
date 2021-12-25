@@ -96,6 +96,11 @@ We have two main users in our website:
 ![signup](https://i.ibb.co/yNh3ZDT/register.png)
 - Sign in using his email and password.
 ![signin](https://i.ibb.co/G3csWTw/sing-in.png)
+- Send verfication code in case of forgetting password.
+![forget](https://i.ibb.co/KG7mwtS/forget-password.png)
+![code](https://i.ibb.co/pQcTKSB/verfication-code.png)
+![mail](https://i.ibb.co/Hn0GXs9/send-code.png)
+![newpass](https://i.ibb.co/sCV8X9f/new-pass.png)
 - Edit their information including first name, last name, passport number and email.
 ![edit_info](https://i.ibb.co/JvBx7jY/edit-info.png)
 ![edit_pass](https://i.ibb.co/G05gmcn/edit-pass.png)
@@ -283,6 +288,14 @@ GdS5tT0NaRWdTTlU4NEVOT0E4QyJ9.gTAQ3KPYXDjnFd_eN0EQBopVyGZwp5g71r4MnBcMMP4\\""}'
   updatedAt: 2021-12-25T15:40:55.687Z,
   __v: 0
 }
+`
+
+#### Forgot Password
+- Route : `/sendVerificationCode`
+- Request type : `post`
+- Request Body : 
+ `
+ { email: 'omar.elabsawy@student.guc.edu.eg' }
 `
 
 #### View Information
