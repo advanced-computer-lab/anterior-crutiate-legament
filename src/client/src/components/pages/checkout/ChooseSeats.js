@@ -295,8 +295,8 @@ class ChooseSeats extends React.Component {
 
 
                 <Dialog open={this.state.atLeastOneError} onClose={(e) => this.setState({atLeastOneError: false})}>
-                    <DialogContentText>You must select at least one arrival and at least one departure
-                        seat</DialogContentText>
+                    <DialogTitle>You must select at least one arrival and at least one departure
+                        seat</DialogTitle>
                     <DialogActions>
                         <Button onClick={(e) => this.setState({atLeastOneError: false})} color="info">OK</Button>
                     </DialogActions>

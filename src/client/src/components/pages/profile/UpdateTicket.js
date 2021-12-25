@@ -224,7 +224,7 @@ export default class UpdateTicket extends React.Component {
                     </DialogActions>
 
                     <Dialog open={this.state.atLeastOneError} onClose={(e) => this.setState({ atLeastOneError: false })}>
-                        <DialogContentText>You must select at least one seat</DialogContentText>
+                        <DialogTitle>You must select at least one seat</DialogTitle>
                         <DialogActions>
                             <Button onClick={(e) => this.setState({ atLeastOneError: false })} color="info">OK</Button>
                         </DialogActions>
