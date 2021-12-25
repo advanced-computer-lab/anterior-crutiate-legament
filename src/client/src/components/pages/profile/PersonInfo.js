@@ -5,7 +5,7 @@ import TextField from '@mui/material/TextField'
 import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
-import ProfilePic from './profile.png'
+import defaultPic from './profile.png'
 import swal from 'sweetalert';
 import axios from 'axios';
 import { getUserToken } from "../../../handleToken.js";
@@ -18,7 +18,8 @@ export default class PersonInfo extends React.Component {
             firstName: "",
             lastName: "",
             email: "",
-            passport: ""
+            passport: "",
+            ProfilePic:defaultPic
         };
     }
     componentDidMount() {
@@ -128,12 +129,13 @@ export default class PersonInfo extends React.Component {
                             </Box>
                             <Box
                                 sx={{ display: 'flex', flexWrap: 'wrap', '& > :not(style)': { m: 1, width: 250, }, height: 230, }}>
-                                <Stack >
+                                <Stack spacing={1} >
                                     <Box
                                         sx={{ backgroundColor: "#3B566E", '& > :not(style)': { m: 1, height: 200, } }}>
-                                        <Paper style={{ backgroundImage: `url(${ProfilePic})`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'contain', }}>
+                                        <Paper style={{ backgroundImage: `url(${this.state.ProfilePic})`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'contain', }}>
                                         </Paper>
                                     </Box>
+                                    
                                 </Stack>
                             </Box>
                         </Stack>

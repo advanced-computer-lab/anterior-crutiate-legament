@@ -220,6 +220,8 @@ userSchema.methods.reserveSeats = async (requestBody) => {
   return await retres;
 };
 
+
+
 var Users = mongoose.model("Users", userSchema);
 
 module.exports = Users;

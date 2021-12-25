@@ -13,7 +13,7 @@ import { Grid } from "@material-ui/core";
 import { Stack } from "@mui/material";
 
 import { getUserToken } from "../../../handleToken.js";
-
+import PaymentForm from "./PaymentForm.js"
 
 var seatsDepart, seatsArrival;
 
@@ -24,45 +24,22 @@ export default function RootFunction(props) {
 }
 
 class CheckOut extends React.Component {
+ 
   constructor(props) {
+   
     super(props);
+    console.log("Price")
+    console.log(props.data.state.priceDepart)
     this.state = {
       departure_id: this.props.data.state.departure_id,
       arrival_id: this.props.data.state.arrival_id,
+      departPrice:props.data.state.priceDepart,
+      arrivalPrice:props.data.state.priceArrival,
     }
   }
 
-  onSubmit = (e) => {
-    e.preventDefault();
-    // generate seats
-
-    console.log(getUserID());
-    console.log(seatsDepart);
-    console.log(seatsArrival);
-
-    let endpoint = `http://localhost:8000/api/user/reserveSeats`;
-    let reserveReqDepart = {
-      userId: getUserID(),
-      flightId: this.props.data.state.departure_id,
-      seats: seatsDepart,
-      cabin: this.props.data.state.flight_class,
-      token: getUserToken(),
-    };
-    axios.put(endpoint, reserveReqDepart).then(() => {
-      let reserveReqArrival = {
-        userId: getUserID(),
-        flightId: this.props.data.state.arrival_id,
-        seats: seatsArrival,
-        cabin: this.props.data.state.flight_class,
-        token: getUserToken(),
-      };
-      axios.put(endpoint, reserveReqArrival).then(() => {
-        this.props.history.push("/Profile");
-      });
-    });
-  };
-
   render() {
+  
     seatsDepart = [];
     for (let i of this.props.data.state.rowsDepart[0]) {
       if (!i.isReserved && i.isSelected) seatsDepart.push(i.number);
@@ -71,6 +48,23 @@ class CheckOut extends React.Component {
     for (let i of this.props.data.state.rowsArrival[0]) {
       if (!i.isReserved && i.isSelected) seatsArrival.push(i.number);
     }
+    if(seatsDepart.length===0 || seatsArrival.length===0 || !this.state.departPrice || !this.state.arrivalPrice){
+      return <div>Loading...</div>
+    }
+     let reserveReqDepart = {
+      userId: getUserID(),
+      flightId: this.props.data.state.departure_id,
+      seats: seatsDepart,
+      cabin: this.props.data.state.flight_class,
+      token: getUserToken(),
+    };
+       let reserveReqArrival = {
+        userId: getUserID(),
+        flightId: this.props.data.state.arrival_id,
+        seats: seatsArrival,
+        cabin: this.props.data.state.flight_class,
+        token: getUserToken(),
+      };
     return (
       <Grid container>
         <SideNav />
@@ -80,7 +74,7 @@ class CheckOut extends React.Component {
               headerText="Check Out"
               src="https://www.gstatic.com/travel-frontend/animation/hero/flights_3.svg"
             />
-            {console.log(this.props.data.state)}
+            {/* {console.log(this.props.data.state)} */}
           </Stack>
           <h3 className="text-center">Departing Flight</h3>
           <FlightSummary _id={this.state.departure_id} />
@@ -104,11 +98,17 @@ class CheckOut extends React.Component {
             ))}
           </ul>
           <br />
-          <form onSubmit={this.onSubmit}>
+          {/* <form onSubmit={this.onSubmit}>
             <button className="btn btn-primary" type="submit">
               Check Out
             </button>
-          </form>
+          </form> */}
+          <PaymentForm
+            reserveReqDepart={reserveReqDepart}
+            reserveReqArrival={reserveReqArrival}
+            departPrice={this.state.departPrice}
+            arrivalPrice={this.state.arrivalPrice}
+          />
           <br />
           <Link
             to={{

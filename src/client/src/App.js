@@ -10,6 +10,7 @@ import SignIn from "./components/pages/auth/SignIn.js";
 import Summary from "./components/pages/checkout/Summary.js";
 import ChooseSeats from "./components/pages/checkout/ChooseSeats.js";
 import CheckOut from "./components/pages/checkout/CheckOut.js";
+import TransactionStatus from "./components/pages/checkout/TransactionStatus.js";
 
 import AdminApp from "./components/pages/admin/AdminApp.js";
 import AddFlight from "./components/pages/admin/AddFlight.js";
@@ -35,6 +36,7 @@ function App() {
       <Route exact path='/flightsSummary' component={Summary} />
       <Route exact path='/chooseSeats' component={ChooseSeats} />
       <Route exact path='/checkOut' component={CheckOut} />
+      <Route exact path='/TransactionStatus' component={TransactionStatus} />
 
       <Route exact path="/adminLogin" component={AdminLogin} />
       <Route exact path="/admin" component={AdminApp} />

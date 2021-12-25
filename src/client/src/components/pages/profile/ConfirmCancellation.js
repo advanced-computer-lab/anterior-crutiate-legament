@@ -32,7 +32,7 @@ export default class CancelRservation extends React.Component {
     return (
       <div>
         <Button variant="outlined" onClick={(e) => this.setState({ open: true })} color="error">
-          Cancel
+           Delete
         </Button>
         <Dialog open={this.state.open} onClose={(e) => this.setState({ open: false })}>
           <DialogTitle>Reservation Cancellation</DialogTitle>
