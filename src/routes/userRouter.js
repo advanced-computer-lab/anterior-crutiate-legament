@@ -95,7 +95,7 @@ userRouter
     "sk_test_51K9e8iLXRXUubuQwrppL5IzFaYedXstfDSK8jBOJ9Te0LHCtT8PrN6KNxt3RJR0qAunoRg0VRyik2BowDxcXuv8C00tswPewv1"
   );
   const { amount, email, token } = req.body;
-//console.log(req.body)
+  console.log(req.body)
   stripe.customers
     .create({
       email: email,
@@ -110,11 +110,10 @@ userRouter
         customer: customer.id,
       });
     })
-    .all((req, res, next) => {
-        res.statusCode = 403;
-        res.end('operation not supported');
-    });
+    .then((charge) => res.status(200).send(charge))
+    .catch((err) => console.log(err));
 })
+
 
 
 
