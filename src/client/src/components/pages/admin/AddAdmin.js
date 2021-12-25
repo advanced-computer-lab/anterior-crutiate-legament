@@ -103,7 +103,7 @@ class AddAdmin extends React.Component {
                 />
               </div>
               <div className="form-group">
-                <label for="password">To</label>
+                <label for="password">Password</label>
                 <input
                   id="password"
                   type="password"
