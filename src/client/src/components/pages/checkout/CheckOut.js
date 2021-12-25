@@ -53,7 +53,7 @@ class CheckOut extends React.Component {
     for (let i of this.props.data.state.rowsArrival[0]) {
       if (!i.isReserved && i.isSelected) seatsArrival.push(i.number);
     }
-    if(seatsDepart.length===0 || seatsArrival.length===0 || !this.state.departPrice || !this.state.arrivalPrice){
+    if(!this.state.departPrice || !this.state.arrivalPrice){
       return <div>Loading...</div>
     }
      let reserveReqDepart = {

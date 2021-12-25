@@ -2,6 +2,8 @@ import React from "react";
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
+
 import TicketPic from "./ticket.png"
 import ConfirmCancellation from "./ConfirmCancellation.js";
 import axios from "axios";
@@ -132,7 +134,21 @@ export default class Ticket extends React.Component {
                                 personPass={this.state.personPass} />
                             <br/>
                             <CancelSeats />
-
+                            <br/>
+                            <Button
+                             variant="outlined" onClick={(e) => this.setState({ open: true })} color="success"
+                             onClick={()=>{
+                                    // const data = {
+                                    //     _id: this.state.personID,
+                                    //     token: JSON.parse(getUserToken()),
+                                    //     password: this.state.currentPassword
+                                    // };
+                                    // let encodedId = encodeURIComponent(JSON.stringify(data));
+                                    // axios.post(`http://localhost:8000/api/user/`,data);
+                             }}
+                             >
+                                Email Me
+                            </Button>
                         </div>
 
                     </Stack>
