@@ -10,8 +10,8 @@ import axios from "axios";
 import UpdateTicket from "./UpdateTicket"
 import {
     getUserToken,
-    getUserID,
   } from "../../../handleToken.js";
+import swal from 'sweetalert';
 
 export default class Ticket extends React.Component {
 
@@ -152,9 +152,10 @@ export default class Ticket extends React.Component {
                                      };
                                      try{
                                         axios.post(`http://localhost:8000/api/user/emailMeFlight`,data);
+                                        swal("Done", "An Email was sent with the Flight details", "success");
                                      }
                                      catch(e){
-
+                                        swal("Error", "Email was not sent", "error");
                                      }
                             }}
                              >
