@@ -3,6 +3,9 @@ import NoTicketsYet from './NoTicketsYet';
 import Ticket from './Ticket';
 import Stack from '@mui/material/Stack';
 import axios from 'axios';
+import { getUserToken } from "../../../handleToken.js";
+
+
 export default class MyTickets extends React.Component {
     constructor(props) {
         super(props);
@@ -17,6 +20,7 @@ export default class MyTickets extends React.Component {
     async componentDidMount() {
         const data = {
             _id: this.state.personID,
+            token: getUserToken(),
         };
         let encodedId = encodeURIComponent(JSON.stringify(data));
         await axios.get(`http://localhost:8000/api/user/getUserDetails?in=${encodedId}`)
@@ -26,6 +30,7 @@ export default class MyTickets extends React.Component {
                     ticketsList: res.data[0].reservations,
                     name: res.data[0].firstName.concat(" ".concat(res.data[0].lastName)),
                     personPass: res.data[0].password,
+
                     isLoading: false
                 })
                
@@ -37,7 +42,9 @@ export default class MyTickets extends React.Component {
             return <div>Loading...</div>
         }
         const ticketsList = this.state.ticketsList
-        
+        if(ticketsList.length==0){
+            return <NoTicketsYet/>
+        }
         let tickets;
         if (ticketsList) {
            

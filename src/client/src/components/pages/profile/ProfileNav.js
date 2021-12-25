@@ -10,8 +10,9 @@ import PersonInfo from './PersonInfo';
 import axios from "axios";
 import NoTicketsYet from './NoTicketsYet';
 import Ticket from "./Ticket";
-
+import PaymentForm from "./PaymentForm.js";
 import MyTickets from "./MyTickets";
+
 
 export default function ProfileNav() {
     const [value, setValue] = React.useState('1');
@@ -33,11 +34,13 @@ export default function ProfileNav() {
                     <Tab value="1" label="Personal Info" />
                     <Tab value="2" label="My Tickets" />
                     <Tab value="3" label="Password" />
+                    <Tab value="4" label="PayMent" />
 
                 </Tabs>
                 <TabPanel value="1"><PersonInfo key={"1"} personID={getUserID()} /></TabPanel>
                 <TabPanel value="2"><MyTickets personID={getUserID()}/></TabPanel>
                 <TabPanel value="3"><ChangePassword personID={getUserID()}/></TabPanel>
+                <TabPanel value="4"><PaymentForm/></TabPanel>
             </TabContext>
         </Box>
     );

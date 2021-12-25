@@ -27,6 +27,7 @@ class AddFlight extends React.Component {
       childBusinessPrice: 0,
       adultFirstPrice: 0,
       childFirstPrice: 0,
+      message: "",
     };
     this.onSubmit = this.onSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -64,8 +65,9 @@ class AddFlight extends React.Component {
     )
       dataCorrect = false;
     if (!dataCorrect) {
-      // this.setState({ error: "Error: enter valid data and try again!" });
+      this.setState({ message: "Error: enter valid dates and try again!" });
     } else {
+      flightData.token = getAdminToken();
       axios
         .post("http://localhost:8000/api/admin/adminCreateFlight", flightData)
         .then((res) => {
@@ -85,8 +87,7 @@ class AddFlight extends React.Component {
             adultFirstPrice: 0,
             childFirstPrice: 0,
           });
-          this.props.history.push("/");
-          window.location = "/admin";
+          this.props.history.push("/admin");
         })
         .catch((err) => {
           console.log("Error in adding a flight to the database!");
@@ -259,9 +260,11 @@ class AddFlight extends React.Component {
               <br />
             </form>
           </div>
+          <br />
+          <h4 className="text-center font-weight-bold">{this.state.message}</h4>
+          <br />
           <div className="col-3"></div>
         </div>
-        <h1>{this.state.error}</h1>
       </div>
     );
   }

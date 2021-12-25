@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import { getAdminToken } from "../../../handleToken.js";
 import { Link, useHistory } from "react-router-dom";
 import AdminNavbar from "./AdminNavbar.js";
 
@@ -16,13 +17,14 @@ class AddAdmin extends React.Component {
       lastName: "",
       email: "",
       password: "",
+      message: "",
     };
     this.onSubmit = this.onSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
   }
 
   componentWillMount() {
-    // authentication
+    if (!getAdminToken()) this.props.history.push("/adminLogin");
   }
 
   onChange(e) {
@@ -34,13 +36,15 @@ class AddAdmin extends React.Component {
   onSubmit(e) {
     e.preventDefault();
     const newAdminData = JSON.parse(JSON.stringify(this.state));
+    newAdminData.token = getAdminToken();
     axios
       .post(`http://localhost:8000/api/admin/addAdmin`, newAdminData)
       .then((res) => {
-        console.log(res.data);
+        this.setState({ message: "Admin Added Successfully" });
       })
       .catch((err) => {
         console.log("Error when contacting admin API.");
+        this.setState({ message: "Email Already Exists" });
       });
     // display a message
   }
@@ -89,7 +93,7 @@ class AddAdmin extends React.Component {
                 <label for="email">Email</label>
                 <input
                   id="email"
-                  type="search"
+                  type="email"
                   placeholder="Enter Email"
                   name="email"
                   className="form-control"
@@ -99,7 +103,7 @@ class AddAdmin extends React.Component {
                 />
               </div>
               <div className="form-group">
-                <label for="password">To</label>
+                <label for="password">Password</label>
                 <input
                   id="password"
                   type="password"
@@ -116,6 +120,8 @@ class AddAdmin extends React.Component {
                 Submit
               </button>
             </form>
+            <br />
+            <h4 className="text-center font-weight-bold">{this.state.message}</h4>
           </div>
           <div className="col-3"></div>
         </div>

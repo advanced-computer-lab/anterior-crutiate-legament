@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
+
 import {
   setUserToken,
   getUserToken,
-  deleteUserToken,
+  setUserID,
 } from "../../../handleToken.js";
 
 import NavBar from "../../templates/NavBar";
 import Footer from "../../templates/Footer";
-
+import Progress from "../../basic components/Progress";
 import TextField from "@mui/material/TextField";
 import Form from "@mui/material/FormGroup";
+import Grid from "@mui/material/FormGroup";
 import SubmitButton from "../../basic components/SubmitButton";
 import { useHistory, useLocation } from "react-router-dom";
 import axios from "axios";
@@ -24,41 +26,46 @@ function SignIn(props) {
     password: "",
   });
 
+  const [signing , setSigning] = useState(false);
+  
   // ComponentWillMount
   useEffect(() => {
-    deleteUserToken();
     if (getUserToken())
       if (data.state && data.state.redirect)
         history.push(data.state.redirect, data.state.redirectProps);
-      else history.push("/");
+      else history.push("/profile");
   }, []);
+  
 
   const signin = async (e) => {
+    
+    setError(false);
+    setSigning(true);
+
     if (signInfo.email !== "" && signInfo.password !== "") {
-      setSubmitted(true);
-      setError(false);
-      let encodedSearchTerms = encodeURIComponent(JSON.stringify(signInfo));
-      await axios
-        .get(
-          `http://localhost:8000/api/user/userLogin?signInfo=${encodedSearchTerms}`
-        )
-        .then((res) => {
-          console.log("success");
-          console.log(res);
-          if (res.status !== 203) {
-            setSubmitted(true);
-            setError(false);
-            setUserToken(res.data._id);
-            console.log(res.data._id);
-            if (data.state && data.state.redirect)
-              history.push(data.state.redirect, data.state.redirectProps);
-            else history.push("/");
-          } else {
-            setError(true);
-            setSubmitted(false);
-          }
-        });
-    } else {
+        
+          let encodedSearchTerms = encodeURIComponent(JSON.stringify(signInfo));
+          
+          await axios.get(`http://localhost:8000/api/user/userLogin?signInfo=${encodedSearchTerms}`)
+          .then((res) => { 
+              if (res.status == 200) {
+                setSubmitted(true);
+                setError(false);
+                setUserToken(res.data.accessToken);
+                setUserID(res.data._id);
+                if (data.state && data.state.redirect)
+                  history.push(data.state.redirect, data.state.redirectProps);
+                else 
+                  history.push("/");
+              } 
+              else {
+                setError(true);
+                setSubmitted(false);
+              }
+              setSigning(false) ;
+          });
+    } 
+    else {
       setSubmitted(false);
       setError(true);
     }
@@ -92,7 +99,7 @@ function SignIn(props) {
   };
 
   return (
-    <div>
+    <div >
       <NavBar />
 
       <div
@@ -134,12 +141,16 @@ function SignIn(props) {
                       onChange={(e) =>
                         setSignInfo({ ...signInfo, password: e.target.value })
                       }
+                      type="password"
                       id="outlined-basic"
                       label="Password"
                       margin="normal"
                       variant="outlined"
                     />
+                    {signing?
+                    <Progress/>:
                     <SubmitButton buttonText={"Sign In"} click={signin} />
+                    }
                   </Form>
                   <div className="messages">
                     {errorMessage()}
@@ -151,6 +162,14 @@ function SignIn(props) {
                       OR
                     </span>
                     <div className="border-bottom w-100 mr-5"></div>
+                  </div>
+
+                  <div className="text-center w-100">
+                    <p className="text-muted font-weight-bold">   
+                      <a href="/verifyEmail" className="text-primary ml-2">
+                        Forgot your password?
+                      </a>
+                    </p>
                   </div>
 
                   <div className="text-center w-100">

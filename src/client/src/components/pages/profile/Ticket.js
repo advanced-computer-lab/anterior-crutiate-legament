@@ -2,9 +2,13 @@ import React from "react";
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
+
 import TicketPic from "./ticket.png"
 import ConfirmCancellation from "./ConfirmCancellation.js";
 import axios from "axios";
+import UpdateTicket from "./UpdateTicket"
+
 export default class Ticket extends React.Component {
 
     constructor(props) {
@@ -21,6 +25,7 @@ export default class Ticket extends React.Component {
             to: "",
             time: "",
             flight_number: "",
+            price:props.info.price,
             isLoading: true
         }
 
@@ -39,7 +44,7 @@ export default class Ticket extends React.Component {
                 this.setState({
                     from: res.data[0].from,
                     to: res.data[0].to,
-                    date: (temp.getDate() + " - " + temp.getMonth() + " - " + temp.getFullYear()),
+                    date: (temp.getDate() + " - " + (temp.getMonth()+1) + " - " + temp.getFullYear()),
                     time: (weekday[temp.getDay()] + "  " + temp.getHours() % 12 + ":" + temp.getMinutes() + " " + (temp.getHours() >= 12 ? "PM" : "AM")),
                     flight_number: res.data[0].flight_number,
                     isLoading: false,
@@ -115,7 +120,8 @@ export default class Ticket extends React.Component {
                         <div
                             style={{
 
-                                display: 'flex',
+                                 display: 'flex',
+                                 flexDirection: 'column',
                                 alignItems: 'center',
                                 justifyContent: 'center',
 
@@ -127,7 +133,10 @@ export default class Ticket extends React.Component {
                                 cabin={this.state.cabin}
                                 seats={this.state.seats}
                                 personPass={this.state.personPass} />
-
+                            <br/>
+                            <UpdateTicket  flightID={this.state._id} cabin={this.state.cabin} seats={this.state.seats} price={this.state.price} />
+                            <br/>
+                           
                         </div>
 
                     </Stack>

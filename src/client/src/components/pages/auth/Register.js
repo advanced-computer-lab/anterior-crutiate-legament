@@ -2,23 +2,20 @@ import React, {useState} from 'react';
 
 import NavBar from '../../templates/NavBar';
 import Footer from '../../templates/Footer';
-
-
 import TextField from '@mui/material/TextField';
 import Form from '@mui/material/FormGroup';
-
 import SubmitButton from '../../basic components/SubmitButton';
-
+import Progress from "../../basic components/Progress"; 
 import axios from 'axios';
-
 import { useHistory } from "react-router-dom";
-
-
+import "../../../handleToken";
  
 function Register (props) {
     const history = useHistory();
     const [submitted, setSubmitted] = useState(false);
     const [error, setError] = useState(false);
+    const [message, setMessage] = useState("");
+
     const [registerInfo , setRegisterInfo] = useState(
         {
             firstName : "",
@@ -30,33 +27,52 @@ function Register (props) {
         }
     );
 
+    const [registering ,serRegistering] = useState(false);
 
-    const register =  (e) => {
-        console.log("Hello world!");
-        if(registerInfo.firstName !==""
-        && registerInfo.lastName!==""
-        && registerInfo.email!==""
-        && registerInfo.passport!==""
-        && !isNaN(registerInfo.passport)
-        && registerInfo.password!==""
-        && registerInfo.password===registerInfo.confirmPassword){
-            setSubmitted(true);
-            setError(false);
-            axios.post(`http://localhost:8000/api/user/userRegister`,   registerInfo)
-            .then((res) => {
-                console.log(res);
-            });
-            history.push("/");
+
+    
+    const register =  async (e) => {
+        serRegistering(true);
+        setError(false) ;
+        const validateEmail = await isValidEmail(registerInfo.email);
+        if( 
+            registerInfo.firstName === ""
+            || registerInfo.lastName === ""
+            || registerInfo.email === ""
+            || registerInfo.passport === ""
+            || registerInfo.password === ""){
+
+            setSubmitted(false);
+            setMessage("Please Enter All Fields correctly");
+            setError(true);
+            
+        }
+        else if(validateEmail == 0){
+            setSubmitted(false);
+            setMessage("Please Enter A Valid Email");
+            setError(true);
+        }
+        else if(validateEmail == -1){
+            setSubmitted(false);
+            setMessage("This Email Already Exists");
+            setError(true);
+        }
+        else if(registerInfo.password!==registerInfo.confirmPassword){
+            setSubmitted(false);
+            setMessage("Passwords do not Match");
+            setError(true);
         }
         else{
-            setSubmitted(false);
-            setError(true);
-
+            setSubmitted(true);
+            setError(false);
+            axios.post(`http://localhost:8000/api/user/userRegister`,   registerInfo);
+            history.push("/");
         }
-
+        serRegistering(false); 
 
     };
 
+  
     const successMessage = () => {
         return (
             <div
@@ -70,14 +86,14 @@ function Register (props) {
     };
 
     // Showing error message if error is true
-    const errorMessage = () => {
+    const errorMessage = (message) => {
         return (
             <div
                 className="error"
-                style={{
+                style = {{
                     display: error ? '' : 'none',
                 }}>
-                <h6>Please enter all the fields correctly</h6>
+                <h6>{message}</h6>
             </div>
         );
     };
@@ -130,17 +146,22 @@ function Register (props) {
                             onChange = {(e) => setRegisterInfo({...registerInfo, email: e.target.value})}
                             id="outlined-basic" label="Email" margin="dense" variant="outlined" />
                         <TextField
+                            type="password"
                             value={registerInfo.password}
                             onChange = {(e) => setRegisterInfo({...registerInfo, password: e.target.value})}
                             id="outlined-basic" label="Password" margin="dense" variant="outlined" />
                         <TextField
+                            type="password"
                             value={registerInfo.confirmPassword}
                             onChange = {(e) => setRegisterInfo({...registerInfo, confirmPassword: e.target.value})}
                             id="outlined-basic" label="Confirm Password" margin="dense" variant="outlined" />
+                        {registering?
+                        <Progress/>:        
                         <SubmitButton buttonText = {"Register"} click ={register} />
+                        }
                     </Form>
                     <div className="messages">
-                        {errorMessage()}
+                        {errorMessage(message)}
                         {successMessage()}
                     </div>
 
@@ -159,4 +180,20 @@ function Register (props) {
             );
       }
       
+ async function isValidEmail  (email){
+
+
+        let encodedSearchTerms = encodeURIComponent(JSON.stringify(email));        
+        
+        try{
+            const exists = await axios.get(`http://localhost:8000/api/user/userExists?email=${encodedSearchTerms}`);
+            return -1 ; 
+        }
+        catch(e){
+            return 1 ; 
+        }    
+ 
+}
+
+
   export default Register ;  

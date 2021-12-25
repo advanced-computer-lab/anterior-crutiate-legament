@@ -13,10 +13,14 @@ class DeletePopup extends React.Component {
           irrevirsable
         </h3>
         <br />
-        <button className="btn btn-danger"  onClick={this.props.deleteFlight}>Delete</button>
+        <button className="btn btn-danger" onClick={this.props.deleteFlight}>
+          Delete
+        </button>
         <br />
         <br />
-        <button className="btn btn-secondary"  onClick={this.props.hidePopUp}>Cancel</button>
+        <button className="btn btn-secondary" onClick={this.props.hidePopUp}>
+          Cancel
+        </button>
         <br />
         <br />
       </div>
@@ -51,6 +55,7 @@ class EditFlight extends React.Component {
         adultFirstPrice: "",
         childFirstPrice: "",
       },
+      message: "",
       showDeletePopUp: false,
     };
   }
@@ -60,29 +65,30 @@ class EditFlight extends React.Component {
     let dataCorrect = true;
     const departure_time = new Date(this.state.flight.departure_time);
     const arrival_time = new Date(this.state.flight.arrival_time);
-    if (
-      departure_time.getTime() < new Date().getTime() ||
-      departure_time.getTime() > arrival_time.getTime()
-    )
-      dataCorrect = false;
+    if (departure_time.getTime() > arrival_time.getTime()) dataCorrect = false;
     if (!dataCorrect) {
-      this.setState({ error: "Error: enter valid data and try again!" });
+      this.setState({ message: "Error: enter valid dates and try again!" });
     } else {
       let endpoint = `http://localhost:8000/api/admin/adminUpdateFlight`;
-      await axios.put(endpoint, this.state.flight);
-      this.setState({ error: "Flight Updated" });
+      let reqTerms = JSON.parse(JSON.stringify(this.state.flight));
+      reqTerms.token = getAdminToken();
+      await axios.put(endpoint, reqTerms);
+      this.setState({ message: "Flight Updated Successfully!" });
     }
   };
   deleteFlight = async (event) => {
     event.preventDefault();
     let endpoint = `http://localhost:8000/api/admin/adminDeleteFlight`;
-    await axios.delete(endpoint, { data: this.state.flight });
+    let reqTerms = JSON.parse(JSON.stringify(this.state.flight));
+    reqTerms.token = getAdminToken();
+    await axios.delete(endpoint, { data: reqTerms });
     this.hidePopUp();
     this.props.history.push("/admin");
   };
 
   hidePopUp = () => {
     this.setState({ showDeletePopUp: false });
+    this.setState({ message: "" });
   };
 
   componentWillMount() {
@@ -92,13 +98,13 @@ class EditFlight extends React.Component {
   componentDidMount() {
     let flightId = this.props.data.state.flight_id;
     let encodedSearchTerms = encodeURIComponent(
-      JSON.stringify({ _id: flightId })
+      JSON.stringify({ _id: flightId, token: getAdminToken() })
     );
     let endpoint = `http://localhost:8000/api/admin/adminSearchFlights?searchFilters=${encodedSearchTerms}`;
     axios.get(endpoint).then((res) => {
       let myFlight = res.data[0];
-      myFlight.arrival_time = myFlight.arrival_time.substring(0, 10);
-      myFlight.departure_time = myFlight.departure_time.substring(0, 10);
+      myFlight.arrival_time = myFlight.arrival_time.substring(0, 16);
+      myFlight.departure_time = myFlight.departure_time.substring(0, 16);
       this.setState({
         flight: myFlight,
       });
@@ -156,7 +162,7 @@ class EditFlight extends React.Component {
               <input
                 type="datetime-local"
                 className="form-control"
-                defaultValue={(new Date(this.state.flight.departure_time))}
+                defaultValue={this.state.flight.departure_time}
                 onChange={this.set("departure_time")}
                 required
               ></input>
@@ -262,10 +268,15 @@ class EditFlight extends React.Component {
               ></input>
               <br></br>
 
-              <input className="btn btn-primary" type="submit" value="Save"></input>
+              <input
+                className="btn btn-primary"
+                type="submit"
+                value="Save"
+              ></input>
             </form>
             <br />
-            <button className="btn btn-danger" 
+            <button
+              className="btn btn-danger"
               onClick={() => {
                 this.setState({ showDeletePopUp: true });
               }}
@@ -274,7 +285,9 @@ class EditFlight extends React.Component {
             </button>
             <br />
             <br />
-            <h1>{this.state.error}</h1>
+            <h4 className="text-center font-weight-bold">
+              {this.state.message}
+            </h4>
             {this.state.showDeletePopUp ? (
               <DeletePopup
                 deleteFlight={this.deleteFlight}
