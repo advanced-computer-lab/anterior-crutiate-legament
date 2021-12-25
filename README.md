@@ -175,7 +175,7 @@ OT0E4QyJ9.gTAQ3KPYXDjnFd_eN0EQBopVyGZwp5g71r4MnBcMMP4"'
 #### Search Flights
 - Route : `/adminSearchFlights`
 - Request type : `get`
-- Request Body : 
+- Request Query : 
  `
  {
   searchFilters: '{"from":"Cairo","to":"Luxor","token":"\\"eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im9tYXJ0YXJla0BnbWFpbC5jb20iLCJwYXNzd29yZCI6IiQyYiQxMCRETWhoUk9ZYWI3NGt
