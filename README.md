@@ -93,15 +93,18 @@ We have two main users in our website:
 
 ### User 
 - Sign up and enter their details in a form including first name, last name, home address, country code, telephone number(s), email, passport number and password.
+![sign_up](https://i.ibb.co/DMh8zkx/sign-up.png)
 - Edit their information including first name, last name, passport number and email.
+![edit_user](https://i.ibb.co/gryBc1P/edit-info.png)
 - Sign in using his email and password.
+![sign_in](https://i.ibb.co/gyt0Rb6/sing-in.png)
 - Search for available flights based on number of passengers (children and adults), departure airport and arrival airport terminals, departure and arrival dates and cabin class.
-- Select one of the flights from the list of available departure flights.
+- Select one of the flights from the list of available flights.
 - See all the details of a particular  flight. The details should include flight number, departure and arrival times, trip duration, cabin class and baggage allowance.
 - View a list of all available return flights based on the search criteria.  The list should include flight number, departure time and arrival time, trip duration and price.
 - See a summary of the chosen departure and return flights, including the dates and times of the departure and return flights, the price of each flight, the chosen cabin (Economy/ Business Class), the chosen seat and the total price of the entire ticket.
-- Confirm reserving the chosen flight.
 - View the available seats in the chosen cabin of the chosen departure flight and select one or more of the available seats in the chosen cabin of the chosen departure flight (based on the the number of passengers the booking is for).
+- Confirm reserving the chosen flight.
 - Pay for the reservation using MasterCard or Visa (using Stripe's API).
 - View itinerary (a summary of the chosen departure and return flights, including the dates and times of the departure and return flights, the chosen cabin (Economy/ Business Class), the chosen seat and the total price paid for the entire ticket along with a confirmation/ booking number).
 - View all their current reserved flights.
