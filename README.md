@@ -79,12 +79,17 @@ We have two main users in our website:
 
 ### Administrator 
 - Log in using his email and password.
+![admin_login](https://i.ibb.co/ZfGVd5N/admin-login.png)
 - Add another admin.
+![add_admin](https://i.ibb.co/5crPV07/add-admin.png)
 - Create flights including all flight details such as flight number, departure and arrival times, dates, number of Economy seats, number of Business class seats, and airport.
+![add_flight](https://i.ibb.co/1mb69c1/add-flight.png)
 - Search through all existing flights using search criteria including flight number, departure and arrival times, dates and airport terminals.
 - List of all the available flights without any search criteria.
+![search_flight](https://i.ibb.co/D5DFV18/search-flight-admin.png)
 - Update any selected flight and its details including flight number, departure and arrival times, number of available Economy seats, number of Business Class seats, dates and airports.
 - Delete any selected flights and all their details upon confirmation.
+![edit_flight](https://i.ibb.co/17g35zP/edit-flight.png)
 
 ### User 
 - Sign up and enter their details in a form including first name, last name, home address, country code, telephone number(s), email, passport number and password.
