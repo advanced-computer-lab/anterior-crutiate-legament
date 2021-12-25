@@ -80,8 +80,8 @@ We have two main users in our website:
 ### Administrator 
 - Log in using his email and password.
 ![admin_login](https://i.ibb.co/ZfGVd5N/admin-login.png)
-- Add another admin.
-![add_admin](https://i.ibb.co/5crPV07/add-admin.png)
+- Add another admin to the airline system .
+![add_admin](https://i.ibb.co/3hpnH3J/add-admin.png)
 - Create flights including all flight details such as flight number, departure and arrival times, dates, number of Economy seats, number of Business class seats, and airport.
 ![add_flight](https://i.ibb.co/1mb69c1/add-flight.png)
 - Search through all existing flights using search criteria including flight number, departure and arrival times, dates and airport terminals.
@@ -93,23 +93,34 @@ We have two main users in our website:
 
 ### User 
 - Sign up and enter their details in a form including first name, last name, home address, country code, telephone number(s), email, passport number and password.
+![signup](https://i.ibb.co/yNh3ZDT/register.png)
 - Sign in using his email and password.
+![signin](https://i.ibb.co/G3csWTw/sing-in.png)
 - Edit their information including first name, last name, passport number and email.
+![edit_info](https://i.ibb.co/JvBx7jY/edit-info.png)
+![edit_pass](https://i.ibb.co/G05gmcn/edit-pass.png)
 - Search for available flights based on number of passengers (children and adults), departure airport and arrival airport terminals, departure and arrival dates and cabin class.
 - Select one of the flights from the list of available flights.
 - See all the details of a particular  flight. The details should include flight number, departure and arrival times, trip duration, cabin class and baggage allowance.
 - View a list of all available return flights based on the search criteria.  The list should include flight number, departure time and arrival time, trip duration and price.
+![search_flights](https://i.ibb.co/HKDfQX0/search-flight-user.png)
 - See a summary of the chosen departure and return flights, including the dates and times of the departure and return flights, the price of each flight, the chosen cabin (Economy/ Business Class), the chosen seat and the total price of the entire ticket.
 - View the available seats in the chosen cabin of the chosen departure flight and select one or more of the available seats in the chosen cabin of the chosen departure flight (based on the the number of passengers the booking is for).
 - Confirm reserving the chosen flight.
+![reserve_seats](https://i.ibb.co/441MVq3/reserve-seats.png)
+![child_adult](https://i.ibb.co/zhw7D9b/child-adult.jpg)
 - Pay for the reservation using MasterCard or Visa (using Stripe's API).
+![payment](https://i.ibb.co/9WGHhvR/payment.png)
 - View itinerary (a summary of the chosen departure and return flights, including the dates and times of the departure and return flights, the chosen cabin (Economy/ Business Class), the chosen seat and the total price paid for the entire ticket along with a confirmation/ booking number).
 - View all their current reserved flights.
 - Cancel a reservation.
 -  Edit a reservation by choosing new seats or change the flight.
 -  Emailed with any updates in his reservations.
+![tickets](https://i.ibb.co/sPmTkwH/tickets.png)
 -  View our services.
--  Contact us.
+![service](https://i.ibb.co/34d1hWy/service.png)
+-  Contact us by sending us an email.
+![contact_us](https://i.ibb.co/Yt966Rr/contact-us.png)
 
 ## API References
 Our API is divided into two APIs :
