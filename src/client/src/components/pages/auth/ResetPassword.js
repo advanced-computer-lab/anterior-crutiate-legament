@@ -38,8 +38,6 @@ const resetPassword = async () => {
         setVerifying(true);
        
         try{
-            console.log(getUserID()) ;
-            console.log(JSON.parse(getUserToken()));
             const x = await axios.put(`http://localhost:8000/api/user/editUserData`,{
                 _id: getUserID(),
                 token: JSON.parse(getUserToken()),

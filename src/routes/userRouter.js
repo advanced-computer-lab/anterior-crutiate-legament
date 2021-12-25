@@ -78,15 +78,13 @@ userRouter
 userRouter
   .route("/editUserData")
   .put(async (req, res, next) => {
-    console.log(req.body);
     let verificationError = verifyUserToken(req.body.token);
     if (verificationError) {
       res.statusCode = 401;
       res.end("Unauthorized");
     } else {
         delete req.body.token;
-        
-        await Users.updateUser(req.body);
+        await Users.updateUser(req.body)  ;
         res.end("User Details Updated");
     }
   })
