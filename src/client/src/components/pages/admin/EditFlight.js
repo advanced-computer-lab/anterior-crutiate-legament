@@ -13,10 +13,14 @@ class DeletePopup extends React.Component {
           irrevirsable
         </h3>
         <br />
-        <button className="btn btn-danger"  onClick={this.props.deleteFlight}>Delete</button>
+        <button className="btn btn-danger" onClick={this.props.deleteFlight}>
+          Delete
+        </button>
         <br />
         <br />
-        <button className="btn btn-secondary"  onClick={this.props.hidePopUp}>Cancel</button>
+        <button className="btn btn-secondary" onClick={this.props.hidePopUp}>
+          Cancel
+        </button>
         <br />
         <br />
       </div>
@@ -61,13 +65,9 @@ class EditFlight extends React.Component {
     let dataCorrect = true;
     const departure_time = new Date(this.state.flight.departure_time);
     const arrival_time = new Date(this.state.flight.arrival_time);
-    if (
-      departure_time.getTime() < new Date().getTime() ||
-      departure_time.getTime() > arrival_time.getTime()
-    )
-      dataCorrect = false;
+    if (departure_time.getTime() > arrival_time.getTime()) dataCorrect = false;
     if (!dataCorrect) {
-      this.setState({ message : "Error: enter valid dates and try again!" });
+      this.setState({ message: "Error: enter valid dates and try again!" });
     } else {
       let endpoint = `http://localhost:8000/api/admin/adminUpdateFlight`;
       let reqTerms = JSON.parse(JSON.stringify(this.state.flight));
@@ -81,14 +81,14 @@ class EditFlight extends React.Component {
     let endpoint = `http://localhost:8000/api/admin/adminDeleteFlight`;
     let reqTerms = JSON.parse(JSON.stringify(this.state.flight));
     reqTerms.token = getAdminToken();
-    await axios.delete(endpoint, { data: reqTerms, });
+    await axios.delete(endpoint, { data: reqTerms });
     this.hidePopUp();
     this.props.history.push("/admin");
   };
 
   hidePopUp = () => {
     this.setState({ showDeletePopUp: false });
-    this.setState({ message : "" });
+    this.setState({ message: "" });
   };
 
   componentWillMount() {
@@ -98,7 +98,7 @@ class EditFlight extends React.Component {
   componentDidMount() {
     let flightId = this.props.data.state.flight_id;
     let encodedSearchTerms = encodeURIComponent(
-      JSON.stringify({ _id: flightId, token: getAdminToken(), })
+      JSON.stringify({ _id: flightId, token: getAdminToken() })
     );
     let endpoint = `http://localhost:8000/api/admin/adminSearchFlights?searchFilters=${encodedSearchTerms}`;
     axios.get(endpoint).then((res) => {
@@ -268,10 +268,15 @@ class EditFlight extends React.Component {
               ></input>
               <br></br>
 
-              <input className="btn btn-primary" type="submit" value="Save"></input>
+              <input
+                className="btn btn-primary"
+                type="submit"
+                value="Save"
+              ></input>
             </form>
             <br />
-            <button className="btn btn-danger" 
+            <button
+              className="btn btn-danger"
               onClick={() => {
                 this.setState({ showDeletePopUp: true });
               }}
@@ -280,7 +285,9 @@ class EditFlight extends React.Component {
             </button>
             <br />
             <br />
-            <h4 className="text-center font-weight-bold">{this.state.message}</h4>
+            <h4 className="text-center font-weight-bold">
+              {this.state.message}
+            </h4>
             {this.state.showDeletePopUp ? (
               <DeletePopup
                 deleteFlight={this.deleteFlight}

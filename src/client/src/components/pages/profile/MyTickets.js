@@ -41,7 +41,9 @@ export default class MyTickets extends React.Component {
             return <div>Loading...</div>
         }
         const ticketsList = this.state.ticketsList
-        
+        if(ticketsList.length==0){
+            return <NoTicketsYet/>
+        }
         let tickets;
         if (ticketsList) {
            
