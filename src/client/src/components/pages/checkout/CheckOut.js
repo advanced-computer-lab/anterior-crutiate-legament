@@ -14,7 +14,6 @@ import { Stack } from "@mui/material";
 
 import { getUserToken } from "../../../handleToken.js";
 
-
 var seatsDepart, seatsArrival;
 
 export default function RootFunction(props) {
@@ -31,6 +30,11 @@ class CheckOut extends React.Component {
       arrival_id: this.props.data.state.arrival_id,
     }
   }
+  
+  componentWillMount() {
+    if (!getUserToken())
+      this.props.history.push("/");
+  }  
 
   onSubmit = (e) => {
     e.preventDefault();
