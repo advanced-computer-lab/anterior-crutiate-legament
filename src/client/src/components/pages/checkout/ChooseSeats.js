@@ -2,7 +2,6 @@ import React from "react";
 import {Link} from "react-router-dom";
 import {Redirect} from 'react-router-dom'
 import {useHistory, useLocation} from "react-router-dom";
-import { getUserToken } from "../../../handleToken.js";
 
 import SideNav from "../../templates/SideNav";
 import Footer from "../../templates/Footer";
@@ -41,11 +40,6 @@ class ChooseSeats extends React.Component {
         };
     }
 
-    componentWillMount() {
-        if (!getUserToken())
-          this.props.history.push("/");
-    }
-
     componentDidMount() {
         var flightDepID = this.props.data.state.departure_id;
         var flightArrID = this.props.data.state.arrival_id;
@@ -67,7 +61,7 @@ class ChooseSeats extends React.Component {
                 this.setState({
                     DepartFlightsDetails: res.data[0],
                 });
-                console.log(this.state.DepartFlightsDetails)
+              //  console.log(this.state.DepartFlightsDetails)
             })
             .catch((err) => {
                 console.log("Error from getting flights details.");
@@ -211,22 +205,6 @@ class ChooseSeats extends React.Component {
         this.state.childArrival = val;
     }
 
-    calculatePrice = (cabinType, flightsDetails, numChild, total) => {
-        let childPrice =
-            cabinType === "Economy"
-                ? flightsDetails.childEconomyPrice
-                : cabinType === "Business"
-                ? flightsDetails.childBusinessPrice
-                : flightsDetails.childFirstPrice;
-        let adultPrice =
-            cabinType === "Economy"
-                ? flightsDetails.adultEconomyPrice
-                : cabinType === "Business"
-                ? flightsDetails.adultBusinessPrice
-                : flightsDetails.adultFirstPrice;
-        return adultPrice * (total - numChild) + childPrice * numChild;
-    }
-
     render() {
         return (
             <Grid container>
@@ -266,24 +244,24 @@ class ChooseSeats extends React.Component {
                         )}
                         <br/>
 
-                        <Grid container>
-                            <Grid item md={0.5} sm={0.5} xs={0.5} style={{marginLeft: "3%"}}>
-                                <SubmitButton click={this.continueOnClick} buttonText="Continue"/>
-                            </Grid>
-                            <Grid item md={0.5}>
-                                <>&nbsp; &nbsp;</>
-                            </Grid>
-                            <Grid item md={0.5} style={{marginTop: "1%"}}>
-
-                                <Link to={{pathname: "/home"}}>
-                                    <button className="btn btn-secondary">Go Back</button>
-                                </Link>
-                            </Grid>
+                    <Grid container >
+                        <Grid item md = {0.5} sm= {0.5} xs = {0.5} style={{marginLeft:"3%"}} >  
+                            <SubmitButton click={this.continueOnClick} buttonText="Continue"/>
                         </Grid>
+                        <Grid item md={0.5}>
+                          <>&nbsp; &nbsp;</>      
+                        </Grid>
+                        <Grid item md={0.5} style= {{marginTop:"1%"}}>      
+                            
+                            <Link to={{pathname: "/home"}}>
+                                <button className="btn btn-secondary">Go Back</button>
+                            </Link>
+                        </Grid>
+                    </Grid>        
 
                     </Stack>
                 </Grid>
-
+               
 
                 <Grid
                     item
@@ -346,11 +324,7 @@ class ChooseSeats extends React.Component {
                                 adults: this.props.data.state.adults,
                                 children: this.props.data.state.children,
                                 childDepart: this.state.childDepart,
-                                childArrival: this.state.childArrival,
-                                priceDepart: this.calculatePrice(this.props.data.state.flight_class,
-                                    this.state.DepartFlightsDetails, this.state.childDepart, this.cntSelected(this.state.rowsDepart)),
-                                priceArrival: this.calculatePrice(this.props.data.state.flight_class,
-                                    this.state.ArrivalFlightsDetails, this.state.childArrival, this.cntSelected(this.state.rowsArrival)),
+                                childArrival: this.state.childArrival
                             })
                         }} color="info">OK</Button>
                     </DialogActions>
