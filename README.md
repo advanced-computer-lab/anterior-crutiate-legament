@@ -81,7 +81,6 @@ We have two main users in our website:
 - Log in using his email and password.
 ![admin_login](https://i.ibb.co/ZfGVd5N/admin-login.png)
 - Add another admin.
-![add_admin](https://i.ibb.co/vJCqHxH/add-admin.png)
 - Create flights including all flight details such as flight number, departure and arrival times, dates, number of Economy seats, number of Business class seats, and airport.
 ![add_fligjt](https://i.ibb.co/yP7py5J/add-flight.png)
 - Search through all existing flights using search criteria including flight number, departure and arrival times, dates and airport terminals.
@@ -125,39 +124,114 @@ Our API is divided into two APIs :
 #### Add Admin
 - Route : `/addAdmin`
 - Request type : `post`
-- Request Body : `body`
-- Respone Body : `body`
+- Request Body : 
+ `
+  {
+  firstName: 'Omar',
+  lastName: 'Tarek',
+  email: 'omartarek@gmail.com',
+  password: '123',
+  message: '',
+  token: '"eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6IjFAMyIsInBhc3N3b3JkIjoiJDJiJDEwJHdsaHh0ZVVuWXQ0Ni8xWE9kN29RZHVDNXdySEFFL0FoZVVFSzFpanA5cmw1eE9yRnEveDE2In0.9mVIk0b4Qv9
+5ajUyRXKNGohy8mJBphb1m4c42WKu5jQ"'
+ }
+`
 
 #### Log In 
 - Route : `/adminLogin`
 - Request type : `get`
-- Request Body : `body`
-- Respone Body : `body`
+- Request Query : 
+ `
+  { 
+    loginDetails: '{"email":"omartarek@gmail.com","password":"123"}' 
+  }
+  `
 
 #### Create Flights
 - Route : `/adminCreateFlight`
 - Request type : `post`
-- Request Body : `body`
-- Respone Body : `body`
+- Request Body :
+ `
+  {
+  flight_number: '1234',
+  from: 'Cairo',
+  to: 'Luxor',
+  departure_time: '2021-12-25T18:15',
+  arrival_time: '2021-12-25T19:15',
+  Economy: '50',
+  Business: '50',
+  First: '50',
+  adultEconomyPrice: '1000',
+  childEconomyPrice: '800',
+  adultBusinessPrice: '1200',
+  childBusinessPrice: '1000',
+  adultFirstPrice: '1500',
+  childFirstPrice: '1300',
+  token: '"eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im9tYXJ0YXJla0BnbWFpbC5jb20iLCJwYXNzd29yZCI6IiQyYiQxMCRETWhoUk9ZYWI3NGtRV3JoTFovOHcuTUNkdTE5L1ZMdE1GdS5tT0NaRWdTTlU4NEV
+OT0E4QyJ9.gTAQ3KPYXDjnFd_eN0EQBopVyGZwp5g71r4MnBcMMP4"'
+ }
+`
 
 #### Search Flights
 - Route : `/adminSearchFlights`
 - Request type : `get`
-- Request Body : `body`
-- Respone Body : `body`
+- Request Body : 
+ `
+ {
+  searchFilters: '{"from":"Cairo","to":"Luxor","token":"\\"eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im9tYXJ0YXJla0BnbWFpbC5jb20iLCJwYXNzd29yZCI6IiQyYiQxMCRETWhoUk9ZYWI3NGt
+RV3JoTFovOHcuTUNkdTE5L1ZMdE1GdS5tT0NaRWdTTlU4NEVOT0E4QyJ9.gTAQ3KPYXDjnFd_eN0EQBopVyGZwp5g71r4MnBcMMP4\\""}'
+ }
+`
+- Respone Body : 
+ ` 
+  [{"_id":"61c7437cd6bff3c8fcdedd58","flight_number":"1234","from":"Cairo","to":"Luxor","departure_time":"2021-12-25T16:15:00.000Z","arrival_time":"2021-12-25T17:15:
+00.000Z","Economy":50,"Business":50,"First":50,"childEconomyPrice":800,"childBusinessPrice":1000,"childFirstPrice":1300,"adultEconomyPrice":1000,"adultBusinessPric
+e":1200,"adultFirstPrice":1500,"businessCabin":[],"firstCabin":[],"economyCabin":[],"createdAt":"2021-12-25T16:14:52.431Z","updatedAt":"2021-12-25T16:14:52.431Z","
+__v":0}]
+ `
 
 #### Edit Flights
 - Route : `/adminUpdateFlight`
 - Request type : `put`
-- Request Body : `body`
-- Respone Body : `body`
+- Request Body : 
+`
+  {
+  _id: '61c7437cd6bff3c8fcdedd58',
+  flight_number: '123456',
+  from: 'Cairo',
+  to: 'Luxor',
+  departure_time: '2021-12-27T18:17',
+  arrival_time: '2021-12-27T21:17',
+  Economy: 50,
+  Business: 50,
+  First: 50,
+  childEconomyPrice: 800,
+  childBusinessPrice: 1000,
+  childFirstPrice: 1300,
+  adultEconomyPrice: 1000,
+  adultBusinessPrice: 1200,
+  adultFirstPrice: 1500,
+  businessCabin: [],
+  firstCabin: [],
+  economyCabin: [],
+  createdAt: '2021-12-25T16:14:52.431Z',
+  updatedAt: '2021-12-25T16:14:52.431Z',
+  __v: 0,
+  token: '"eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im9tYXJ0YXJla0BnbWFpbC5jb20iLCJwYXNzd29yZCI6IiQyYiQxMCRETWhoUk9ZYWI3NGtRV3JoTFovOHcuTUNkdTE5L1ZMdE1GdS5tT0NaRWdTTlU4NEV
+OT0E4QyJ9.gTAQ3KPYXDjnFd_eN0EQBopVyGZwp5g71r4MnBcMMP4"'
+ }
+`
 
 #### Delete Flights
 - Route : `/adminDeleteFlight`
 - Request type : `delete`
-- Request Body : `body`
-- Respone Body : `body`
-
+- Request Body : 
+` 
+ {
+  searchFilters: '{"token":"\\"eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im9tYXJ0YXJla0BnbWFpbC5jb20iLCJwYXNzd29yZCI6IiQyYiQxMCRETWhoUk9ZYWI3NGtRV3JoTFovOHcuTUNkdTE5L1ZMdE1
+GdS5tT0NaRWdTTlU4NEVOT0E4QyJ9.gTAQ3KPYXDjnFd_eN0EQBopVyGZwp5g71r4MnBcMMP4\\""}'
+ }
+`
 
 ### User Router
 #### Route : (`/userRouter`)
@@ -175,26 +249,19 @@ Our API is divided into two APIs :
   passport: '123456'
 }
 `
-- Respone Body : 
-  ` {
-      firstName: 'Abdlerhman ',
-      lastName: 'Khater',
-      email: 'abdelrahmankhater@gmail.com',
-      password: '123',
-      confirmPassword: '123',
-      passport: '123456'
-    }`
-
 
 #### Log in
 - Route : `/userLogin`
 - Request type : `get`
 - Request Query : 
- `{
+ `
+ {
   signInfo: '{"email":"abdelrahmankhater8@gmail.com","password":"123"}'
   }
  `
-- Respone Body : `{
+- Respone Body : 
+`
+ {
   _id: new ObjectId("61c73b87d1c07f9feae425bd"),
   firstName: 'Abdlerhman ',
   lastName: 'Khater',
@@ -211,8 +278,18 @@ Our API is divided into two APIs :
 #### Edit Information
 - Route : `/editUserData`
 - Request type : `put`
-- Request Body : `body`
-- Respone Body : `body`
+- Request Body : 
+ `
+  {
+  _id: '61c73b87d1c07f9feae425bd',
+  firstName: 'Abdlerhman ',
+  lastName: 'Khater',
+  email: 'abdelrahmankhater@gmail.com',
+  passport: '123456789',
+  token: '"eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImFiZGVscmFobWFuc2VsaW0xNThAZ21haWwuY29tIiwicGFzc3dvcmQiOiIkMmIkMTAkYlhCV3pybS5JVTRvYmxJeEYwNTZjZWNKVi9DcWMxZjhFY3JhT01
+6TG1vTVJiTVdMdzhaQUMifQ.8CTklsSIBJv-5kOkawDtGE_dUcGdzfcLfEVfj-rWcgQ"'
+ }
+`
 
 #### Search Flights
 - Route : `/searchFlights`
