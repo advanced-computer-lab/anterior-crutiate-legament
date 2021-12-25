@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import Cards from 'react-credit-cards';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField'
@@ -14,7 +14,10 @@ import axios from 'axios';
 import SeatPicker from "react-seat-picker";
 import Slider from "@mui/material/Slider";
 import SubmitButton from "../../basic components/SubmitButton";
+import { getUserToken ,getUserID} from "../../../handleToken.js";
+import { parse } from 'path';
 
+import PaymentForm from "./PaymentForm";
 
 export default class UpdateTicket extends React.Component {
     constructor(props) {
@@ -24,20 +27,29 @@ export default class UpdateTicket extends React.Component {
             flightID: props.flightID,
             cabin: props.cabin,
             seats: props.seats,
+            confirmPassword: "",
             open: false,
-            selectAdultChild:false,
+            selectAdultChild: false,
             atLeastOneError: false,
+            refundTap: false,
+            payTap: false,
             rows: null,
+            updateInfo: "",
+            newSeats: "",
+            newPrice: 0,
+            oldPrice:props.price,
+            refundAmount:0,
+            amountToPay:0,
             child: 0
         };
-        console.log(props);
+        //console.log(props);
     }
 
     componentDidMount() {
         var flightID = this.state.flightID;
 
         let encodedSearchTerms = encodeURIComponent(
-            JSON.stringify({_id: flightID})
+            JSON.stringify({ _id: flightID })
         );
 
         let promise = axios
@@ -72,14 +84,14 @@ export default class UpdateTicket extends React.Component {
             cabinType === "Economy"
                 ? flightsDetails.economyCabin
                 : cabinType === "Business"
-                ? flightsDetails.businessCabin
-                : flightsDetails.firstCabin;
+                    ? flightsDetails.businessCabin
+                    : flightsDetails.firstCabin;
         let mySize =
             cabinType === "Economy"
                 ? flightsDetails.Economy
                 : cabinType === "Business"
-                ? flightsDetails.Business
-                : flightsDetails.First;
+                    ? flightsDetails.Business
+                    : flightsDetails.First;
         let reserved = Array(mySize).fill(0);
         for (let x of reservedArr) {
             reserved[x] = 1;
@@ -116,12 +128,12 @@ export default class UpdateTicket extends React.Component {
         return [rows];
     }
 
-    addSeat = ({row, number, id}, add) => {
+    addSeat = ({ row, number, id }, add) => {
         add(row, number, id);
         this.state.rows[0][number].isSelected = true;
     };
 
-    removeSeat = ({row, number, id}, remove) => {
+    removeSeat = ({ row, number, id }, remove) => {
         remove(row, number);
         this.state.rows[0][number].isSelected = false;
     };
@@ -139,7 +151,7 @@ export default class UpdateTicket extends React.Component {
         return res;
     }
     cntSelected = (rows) => {
-        console.log(rows)
+        // console.log(rows)
         if (rows === null)
             return 0;
         let cnt = 0;
@@ -157,21 +169,41 @@ export default class UpdateTicket extends React.Component {
     }
     continueOnClick = (e) => {
         if (!this.hasOneSelected(this.state.rows)) {
-            this.setState({atLeastOneError: true});
+            this.setState({ atLeastOneError: true });
         } else {
-            this.setState({selectAdultChild: true});
+            this.setState({ selectAdultChild: true });
         }
     }
     slider = (event, val) => {
         this.state.child = val;
     }
+    calculatePrice = (cabinType, flightsDetails, numChild, total) => {
+
+        let childPrice =
+            cabinType === "Economy"
+                ? flightsDetails.childEconomyPrice
+                : cabinType === "Business"
+                    ? flightsDetails.childBusinessPrice
+                    : flightsDetails.childFirstPrice;
+        let adultPrice =
+            cabinType === "Economy"
+                ? flightsDetails.adultEconomyPrice
+                : cabinType === "Business"
+                    ? flightsDetails.adultBusinessPrice
+                    : flightsDetails.adultFirstPrice;
+        let ans = adultPrice * (total - numChild) + childPrice * numChild;
+        console.log("cost " + ans);
+        return ans;
+    }
     render() {
+        // console.log("test 2")
+        // console.log(this.state.rows)
         return (
             <div>
-                <Button variant="outlined" onClick={(e) => this.setState({open: true})} color="error">
+                <Button variant="outlined" onClick={(e) => this.setState({ open: true })} color="error">
                     Update
                 </Button>
-                <Dialog open={this.state.open} onClose={() => this.setState({open: false})}>
+                <Dialog open={this.state.open} onClose={() => this.setState({ open: false })}>
                     <DialogTitle>Seats Edit</DialogTitle>
                     <DialogContent>
                         {this.state.rows ? (
@@ -188,21 +220,21 @@ export default class UpdateTicket extends React.Component {
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={(e) => this.setState({ open: false })} color="error">Cancel</Button>
-                        <SubmitButton click={this.continueOnClick} buttonText="Continue"/>
+                        <SubmitButton click={this.continueOnClick} buttonText="Continue" />
                     </DialogActions>
 
-                    <Dialog open={this.state.atLeastOneError} onClose={(e) => this.setState({atLeastOneError: false})}>
+                    <Dialog open={this.state.atLeastOneError} onClose={(e) => this.setState({ atLeastOneError: false })}>
                         <DialogContentText>You must select at least one seat</DialogContentText>
                         <DialogActions>
-                            <Button onClick={(e) => this.setState({atLeastOneError: false})} color="info">OK</Button>
+                            <Button onClick={(e) => this.setState({ atLeastOneError: false })} color="info">OK</Button>
                         </DialogActions>
                     </Dialog>
-                    <Dialog open={this.state.selectAdultChild} onClose={(e) => this.setState({selectAdultChild: false})}>
+                    <Dialog open={this.state.selectAdultChild} onClose={(e) => this.setState({ selectAdultChild: false })}>
                         <DialogTitle>Select seats type</DialogTitle>
                         <DialogContent>You have {this.cntSelected(this.state.rows)} seats selected</DialogContent>
                         <DialogContent>Please select the number children seats</DialogContent>
                         <DialogContent>
-                            <br/>
+                            <br />
                             <Slider
                                 size="small"
                                 defaultValue={0}
@@ -216,56 +248,164 @@ export default class UpdateTicket extends React.Component {
                             />
                         </DialogContent>
                         <DialogActions>
-                            <Button onClick={(e) => {}} color="info">OK</Button>
+                            <Button
+                                onClick={async (e) => {
+                                    let updateInfo = {}
+
+                                    let newPrice = this.calculatePrice(this.state.cabin, this.state.FlightsDetails, this.state.child, this.cntSelected(this.state.rows))
+                                    let newSeats = [];
+                                    
+                                    for (let i of this.state.rows[0]) {
+                                        if (!i.isReserved && i.isSelected) newSeats.push(i.number);
+                                    }
+                                    await this.setState({ selectAdultChild: false, newPrice: newPrice ,newSeats: newSeats});
+                                    if(parseInt(this.state.oldPrice)>parseInt(this.state.newPrice)){
+                                        await this.setState({refundTap: true,refundAmount:parseInt(this.state.oldPrice)-parseInt(this.state.newPrice)})
+                                    }else{
+                                        await this.setState({payTap: true,amountToPay:-parseInt(this.state.oldPrice)+parseInt(this.state.newPrice)})
+                                    }
+                                     console.log(this.state)
+                                }}
+                                color="info">OK</Button>
                         </DialogActions>
                     </Dialog>
-                    {/*
-                    <DialogContent>
-                        <DialogContentText style={{ color: 'red' }}>
-                            Please Write Seats you want to cancel, seprated with ' - '.
-                            <br />
-                            <p style={{ color: 'red' }} >for example: 10-20-21</p>
-                            <br />
-                            <h4 style={{ color: 'black' }} > Your Seats </h4>
-                            <p>10-20-30-40 </p>
 
-                        </DialogContentText>
-                        <br />
-                        <div
-                        // id="CancelSeats" style={{
-                        //     display: 'flex',
-                        //     alignItems: 'center',
-                        //     justifyContent: 'center',
-                        // }}
-                        >
+                    {/* Open Dialog With Refund Amount */}
 
-                            <Stack spacing={1}>
-                                <TextField
-                                    autoFocus
-                                    margin="dense"
-                                    id="seats"
-                                    label="Select Canceld Seats"
-                                    type="text"
-                                    fullWidth
-                                    variant="standard"
-                                />
-                                <TextField
-                                    autoFocus
-                                    margin="dense"
-                                    id="password"
-                                    label="Confirm Password"
-                                    type="password"
-                                    fullWidth
-                                    variant="standard"
-                                />
-                            </Stack>
-                        </div>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={(e) => this.setState({ open: false })} color="error">Cancel</Button>
-                        <Button >Confirm</Button>
-                    </DialogActions> */}
+                    <Dialog open={this.state.refundTap} onClose={(e) => this.setState({ selectAdultChild: false })}>
+                        <DialogTitle>Refund Amount</DialogTitle>
+
+                        <DialogContent>You will be refund with amount {this.state.refundAmount}</DialogContent>
+                        <DialogContent>Enter Your Password To Confirm Operation</DialogContent>
+                        <DialogContent>
+                            <TextField
+                                autoFocus
+                                margin="dense"
+                                id="name"
+                                label="Password"
+                                type="password"
+                                fullWidth
+                                variant="standard"
+                                value={this.state.confirmPassword}
+                                onChange={(e) => this.setState({ confirmPassword: e.target.value })}
+                            />
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={(e) => this.setState({ open: false })} color="error">Cancel</Button>
+                            <Button onClick={
+                                async (e) => {
+                                    
+                                    const data = {
+                                        _id: getUserID(),
+                                        token: JSON.parse(getUserToken()),
+                                        password: this.state.confirmPassword
+                                    };
+                                    // console.log(data)
+                                    let encodedId = encodeURIComponent(JSON.stringify(data));
+                                    axios.get(`http://localhost:8000/api/user/verifyPassword?in=${encodedId}`)
+                                        .then(async (res) => {
+                                            // console.log(res.data.result);
+                                            if (res.data.result === true) {
+                                                this.setState({ open: false })
+                                                let data = {
+                                                    flightId: this.state.flightID,
+                                                    seats: this.state.seats,
+                                                    cabin: this.state.cabin,
+                                                    userId: getUserID(),
+                                                    token: getUserToken(),
+                                                }
+            
+                                                await axios.delete('http://localhost:8000/api/user/cancelReservation', { data: data })
+
+                                                data = {
+                                                    userId: getUserID(),
+                                                    flightId: this.state.flightID,
+                                                    seats: this.state.newSeats,
+                                                    cabin: this.state.cabin,
+                                                    price: this.state.newPrice,
+                                                    token: getUserToken(),
+                                                }
+                                                // console.log(data)
+                                                 await axios.put('http://localhost:8000/api/user/reserveSeats', data)
+                                                 await this.setState({refundTap:false,open:false })
+                                                swal("Done", "Flight Updated successfully", "success");
+                                            } else {
+                                                swal("Error", "Enter a valid current password", "error");
+                                            }
+
+                                        });
+                                }
+                            } >Confirm</Button>
+                        </DialogActions>
+                    </Dialog>
+                    <Dialog open={this.state.payTap} onClose={(e) => this.setState({ selectAdultChild: false })}>
+                        <DialogTitle>Amount to Pay</DialogTitle>
+
+                        <DialogContent>You Need To pay the difference {this.state.amountToPay}</DialogContent>
+                        <DialogContent>Enter Your Password To Confirm Operation</DialogContent>
+                        <DialogContent>
+                            <TextField
+                                autoFocus
+                                margin="dense"
+                                id="name"
+                                label="Password"
+                                type="password"
+                                fullWidth
+                                variant="standard"
+                                value={this.state.confirmPassword}
+                                onChange={(e) => this.setState({ confirmPassword: e.target.value })}
+                            />
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={(e) => this.setState({ open: false })} color="error">Cancel</Button>
+                            <Button onClick={
+                                async (e) => {
+                                    
+                                    const data = {
+                                        _id: getUserID(),
+                                        token: JSON.parse(getUserToken()),
+                                        password: this.state.confirmPassword
+                                    };
+                                    // console.log(data)
+                                    let encodedId = encodeURIComponent(JSON.stringify(data));
+                                    axios.get(`http://localhost:8000/api/user/verifyPassword?in=${encodedId}`)
+                                        .then(async (res) => {
+                                            // console.log(res.data.result);
+                                            if (res.data.result === true) {
+                                                this.setState({ open: false })
+                                                let data = {
+                                                    flightId: this.state.flightID,
+                                                    seats: this.state.seats,
+                                                    cabin: this.state.cabin,
+                                                    userId: getUserID(),
+                                                    token: getUserToken(),
+                                                }
+            
+                                                await axios.delete('http://localhost:8000/api/user/cancelReservation', { data: data })
+
+                                                data = {
+                                                    userId: getUserID(),
+                                                    flightId: this.state.flightID,
+                                                    seats: this.state.newSeats,
+                                                    cabin: this.state.cabin,
+                                                    price: this.state.newPrice,
+                                                    token: getUserToken(),
+                                                }
+                                                // console.log(data)
+                                                 await axios.put('http://localhost:8000/api/user/reserveSeats', data)
+                                                 await this.setState({refundTap:false,open:false })
+                                                swal("Done", "Flight Updated successfully", "success");
+                                            } else {
+                                                swal("Error", "Enter a valid current password", "error");
+                                            }
+
+                                        });
+                                }
+                            } >Confirm</Button>
+                        </DialogActions>
+                    </Dialog>
                 </Dialog>
+                
             </div>
         );
     }

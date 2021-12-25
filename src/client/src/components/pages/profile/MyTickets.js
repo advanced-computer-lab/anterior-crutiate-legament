@@ -30,6 +30,7 @@ export default class MyTickets extends React.Component {
                     ticketsList: res.data[0].reservations,
                     name: res.data[0].firstName.concat(" ".concat(res.data[0].lastName)),
                     personPass: res.data[0].password,
+
                     isLoading: false
                 })
                

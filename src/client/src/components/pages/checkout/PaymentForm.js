@@ -233,13 +233,13 @@ class PaymentForm extends React.Component {
 
                                     })
                                     .then(async () => {
-                                       console.log("Depart")
-                                       console.log(this.state.reserveReqDepart)
+                                      //  console.log("Depart")
+                                      //  console.log(this.state.reserveReqDepart)
                                       await axios.put(`http://localhost:8000/api/user/reserveSeats`, this.state.reserveReqDepart)
                                     })
                                     .then(async () => {
-                                      console.log("Arrival")
-                                      console.log(this.state.reserveReqArrival)
+                                      // console.log("Arrival")
+                                      // console.log(this.state.reserveReqArrival)
                                       await axios.put(`http://localhost:8000/api/user/reserveSeats`, this.state.reserveReqArrival)
                                     })
                                     .then(() => {

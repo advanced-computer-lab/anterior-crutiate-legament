@@ -25,6 +25,7 @@ export default class Ticket extends React.Component {
             to: "",
             time: "",
             flight_number: "",
+            price:props.info.price,
             isLoading: true
         }
 
@@ -133,7 +134,7 @@ export default class Ticket extends React.Component {
                                 seats={this.state.seats}
                                 personPass={this.state.personPass} />
                             <br/>
-                            <UpdateTicket  flightID={this.state._id} cabin={this.state.cabin} seats={this.state.seats} />
+                            <UpdateTicket  flightID={this.state._id} cabin={this.state.cabin} seats={this.state.seats} price={this.state.price} />
                             <br/>
                             <Button
                              variant="outlined" onClick={(e) => this.setState({ open: true })} color="success"
