@@ -44,7 +44,7 @@ export default class Ticket extends React.Component {
                 this.setState({
                     from: res.data[0].from,
                     to: res.data[0].to,
-                    date: (temp.getDate() + " - " + temp.getMonth() + " - " + temp.getFullYear()),
+                    date: (temp.getDate() + " - " + (temp.getMonth()+1) + " - " + temp.getFullYear()),
                     time: (weekday[temp.getDay()] + "  " + temp.getHours() % 12 + ":" + temp.getMinutes() + " " + (temp.getHours() >= 12 ? "PM" : "AM")),
                     flight_number: res.data[0].flight_number,
                     isLoading: false,
