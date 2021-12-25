@@ -9,10 +9,13 @@ import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-
+import { useHistory, useLocation } from "react-router-dom";
 import FlightImg from './ticket-alt.png';
 
 export default function NoTicketsYet(){
+  const history = useHistory();
+  const data = useLocation();
+
     const bull = (
         <Box
           component="span"
@@ -33,7 +36,12 @@ export default function NoTicketsYet(){
                 </CardContent>
                 <CardActions>
                     <Grid xs={5}>
-                        <Button variant="contained" color="success">Book Now</Button>
+                        <Button 
+                        variant="contained" style={{backgroundColor:'rgb(59, 86, 110)'}}
+                        onClick={()=>{
+                          history.push("/home")
+                        }}
+                        >Book Now</Button>
                     </Grid>
                 </CardActions>
                 </Paper>
