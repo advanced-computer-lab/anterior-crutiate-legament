@@ -71,18 +71,19 @@ export default function SearchResults (props) {
 
     };
 
-    useEffect(() => {
+    useEffect(async () => {
         let encodedSearchTerms = encodeURIComponent(JSON.stringify({...searchFilters,
           adults: searchFilters.adults==""?"0":searchFilters.adults,
           childs: searchFilters.childs==""?"0":searchFilters.childs
           }));
   
-        axios.get(`http://localhost:8000/api/user/SearchFlights?searchFilters=${encodedSearchTerms}`)
+        await axios.get(`http://localhost:8000/api/user/SearchFlights?searchFilters=${encodedSearchTerms}`)
         .then((r) => {
           setSearchResults(r.data);
-          setLoading(false) ;
-          console.log(loading) ;
         }) ;
+
+        setLoading(false) ;
+
   
     },[loading]);
 
@@ -357,7 +358,7 @@ function CollapsibleTable(props) {
                         <Loading variant = "h1"/>
                         <Loading variant = "h3"/>
                       </>
-            :props.searched && Object.keys(props.searchResults)==0?
+            :props.searched && props.searchResults.length ==0 ?
               <>
                 <Grid container>
                   <h3 style={{textAlign: 'center',width: '100%',marginTop:"1%"}}>No flights found, please try other filters</h3>
