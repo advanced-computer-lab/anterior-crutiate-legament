@@ -148,10 +148,16 @@ flightSchema.methods.searchFlights = async searchFilters => {
             query.push({Economy:{$gte:parseInt(searchFilters.adults)+parseInt(searchFilters.childs)}}) ;
         }
         else if(searchFilters.flight_class == 'Business') {
-            query.push({Business:{$gte:parseInt(searchFilters.adults)+parseInt(searchFilters.childs)}}) ;
+            const num = parseInt(searchFilters.adults)+parseInt(searchFilters.childs) ;
+            if(num<=0)
+                return [];
+            query.push({Business:{$gte:num}}) ;
         }
         else if(searchFilters.flight_class == 'First') {
-            query.push({First:{$gte:parseInt(searchFilters.adults)+parseInt(searchFilters.childs)}}) ;
+            const num = parseInt(searchFilters.adults)+parseInt(searchFilters.childs) ;
+            if(num<=0)
+                return [];
+            query.push({First:{$gte:num}}) ;
         }
         return await Flights.find({$and:query});
     }

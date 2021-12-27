@@ -10,26 +10,34 @@ import axios from "axios";
 import UpdateTicket from "./UpdateTicket"
 import {
     getUserToken,
+    getUserID,
   } from "../../../handleToken.js";
-import swal from 'sweetalert';
 
-export default class Ticket extends React.Component {
+import { useHistory, useLocation } from "react-router-dom";
+
+export default function RootFunction(props) {
+    const history = useHistory();
+    const data = useLocation();
+    return <Ticket history={history} data={props} />;
+}
+class Ticket extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            personID: props.personID,
-            _id: props.info.flight_id,
-            cabin: props.info.cabin,
-            seats: props.info.seats,
-            name: props.name,
-            personPass: props.personPass,
+            personID: props.data.personID,
+            _id: props.data.info.flight_id,
+            cabin: props.data.info.cabin,
+            seats: props.data.info.seats,
+            name: props.data.name,
+            personPass: props.data.personPass,
             date: "",
             from: "",
             to: "",
             time: "",
             flight_number: "",
-            price:props.info.price,
+            price:props.data.info.price,
+            history:props.history,
             isLoading: true
         }
 
@@ -138,7 +146,24 @@ export default class Ticket extends React.Component {
                                 seats={this.state.seats}
                                 personPass={this.state.personPass} />
                             <br/>
-                            <UpdateTicket  flightID={this.state._id} cabin={this.state.cabin} seats={this.state.seats} price={this.state.price} />
+                            {/* <UpdateTicket  flightID={this.state._id} cabin={this.state.cabin} seats={this.state.seats} price={this.state.price} /> */}
+                            <Button variant="outlined" 
+                                onClick={
+                                    (e) => {
+                                        let oldFlight={
+                                            flightID:this.state._id, 
+                                            cabin:this.state.cabin,
+                                            seats:this.state.seats,
+                                            price:this.state.price
+                                        }
+                                        console.log(oldFlight);
+                                         this.state.history.push("/EditFlightDestination",{
+                                             oldFlight: oldFlight
+                                         });
+                                    }} 
+                                    color="error">
+                                Update
+                            </Button>
                             <br/>
                             <Button
                              variant="outlined" onClick={(e) => this.setState({ open: true })} color="success"
@@ -152,10 +177,9 @@ export default class Ticket extends React.Component {
                                      };
                                      try{
                                         axios.post(`http://localhost:8000/api/user/emailMeFlight`,data);
-                                        swal("Done", "An Email was sent with the Flight details", "success");
                                      }
                                      catch(e){
-                                        swal("Error", "Email was not sent", "error");
+
                                      }
                             }}
                              >

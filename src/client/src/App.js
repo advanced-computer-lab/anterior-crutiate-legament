@@ -11,6 +11,9 @@ import CheckOut from "./components/pages/checkout/CheckOut.js";
 import TransactionStatus from "./components/pages/checkout/TransactionStatus.js";
 import VerifyEmail from "./components/pages/auth/VerifyEmail";
 import ResetPassword from "./components/pages/auth/ResetPassword";
+import EditFlightDestination from "./components/pages/editFlight/EditFlightDestination" ;
+import EditFlightSummary from "./components/pages/editFlight/EditFlightSummary" ;
+import ChooseNewSeats from "./components/pages/editFlight/ChooseNewSeats" ;
 
 import AdminApp from "./components/pages/admin/AdminApp.js";
 import AddFlight from "./components/pages/admin/AddFlight.js";
@@ -41,6 +44,9 @@ function App() {
       <Route exact path="/TransactionStatus" component={TransactionStatus} />
       <Route exact path="/verifyEmail" component={VerifyEmail} />
       <Route exact path="/resetPassword" component={ResetPassword} />
+      <Route exact path="/editFlightDestination" component={EditFlightDestination} />
+      <Route exact path="/editFlightsSummary" component={EditFlightSummary} />
+      <Route exact path="/chooseNewSeats" component={ChooseNewSeats} />
 
       <Route exact path="/contact" component={contactUs} />
       <Route exact path="/services" component={service} />

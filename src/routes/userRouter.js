@@ -517,18 +517,22 @@ userRouter.route('/getFlightDetails')
             const user = await Users.searchUser({_id:req.body.userId}) ;
             const flight = await Flights.searchFlights({_id:req.body.flightId}) ;
             
-            const date1 = new Date('7/13/2010');
-            const date2 = new Date('12/15/2010');
-            let diffTime = Math.abs(date2 - date1);
-            diffTime = diffTime / 1000;
-            const mins = diffTime % 60 ;
-            diffTime = diffTime / 60;
-            const hours = diffTime % 60 ; 
-            diffTime = diffTime / 60;
-            const days = diffTime % 24;
-            const duration = "days: "+days+", hours: "+hours+", minutes: "+mins
-
             if(user.length!=0 && flight.length!=0){
+
+              
+              const date1 = new Date(flight[0].arrival_time) ;
+              const date2 = new Date(flight[0].departure_time);
+              let diffTime = Math.abs(date2 - date1);
+              diffTime = (diffTime / (1000*60))|0;
+
+              const mins = diffTime % 60 ;
+              diffTime = (diffTime / 60)|0;
+              const hours = diffTime % 60 ; 
+              diffTime = (diffTime / 60)|0;
+              const days = diffTime % 24;
+              const duration = "days: "+days+", hours: "+hours+", minutes: "+mins
+
+
               sendEmail(user[0].email,"Your Flight Details" , flightMail(user[0],flight[0],req.body.cabin,duration)) ;
             }
             else

@@ -40,6 +40,7 @@ function SideNavLink (props) {
                 </Paper>
             </Grid>
 
+            { getUserToken()?
             <Grid container>
             <Paper  style={{backgroundColor:"#bad1fa",paddingBottom:"3%",margin:"1%"}}>
 
@@ -53,6 +54,8 @@ function SideNavLink (props) {
                 </Link>
                 </Paper>
             </Grid>
+            :null
+            }
 
 
             <Grid container>

@@ -15,8 +15,8 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import KeyboardArrowDownIcon from '@material-ui/icons/ArrowDownward';
 import KeyboardArrowUpIcon from '@material-ui/icons/ArrowUpward';
-import Loading from '../basic components/Loading' ;
-import ErrorSvg from '../basic components/ErrorSvg' ;
+import Loading from '../../basic components/Loading' ;
+import ErrorSvg from '../../basic components/ErrorSvg' ;
 import { format} from 'date-fns'
 import axios from 'axios';
 
@@ -36,13 +36,12 @@ import
 from '@material-ui/core'; 
 
 import SearchIcon from "@material-ui/icons/Search";
-import { set } from 'date-fns/esm';
-
+ 
 
 
 export default function SearchResults (props) {
     
-  
+    
   const [searchFilters , setSearchFilters] = useState(
     {
       from : "",
@@ -73,7 +72,6 @@ export default function SearchResults (props) {
     const r = await axios.get(`http://localhost:8000/api/user/SearchFlights?searchFilters=${encodedSearchTerms}`);
     
     setSearchResults(r.data);
-
     setLoading(false) ;
 
   };
@@ -205,28 +203,36 @@ function Row(props) {
 
   },[open]);
 
+
   return (
     <React.Fragment>
       <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
-        <TableCell>
-          <IconButton
-            aria-label="expand row"
-            size="small"
-            onClick={getReturnFlights}
-          >
-            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-          </IconButton>
-        </TableCell>
+         
         <TableCell align="left" component="th" scope="row">
           {row.flight_number}
         </TableCell>
-        <TableCell align="left">{row.from}</TableCell>
-        <TableCell align="left">{row.to}</TableCell>
-        <TableCell align="left">{format(Date.parse(row.departure_time),"PPPPp")}</TableCell>
-        <TableCell align="left">{format(Date.parse(row.arrival_time),"PPPPp")}</TableCell>
+        <TableCell align="right">{row.from}</TableCell>
+        <TableCell align="right">{row.to}</TableCell>
+        <TableCell align="right">{format(Date.parse(row.departure_time),"PPPPp")}</TableCell>
+        <TableCell align="right">{format(Date.parse(row.arrival_time),"PPPPp")}</TableCell>
+        <TableCell align="right">
+        <Link
+            to={{
+            pathname: "/editFlightsSummary",
+            state: {departure_id: row._id,
+                flight_class: props.flight_class,
+                adults: props.adults,
+                children: props.childs,
+                oldFlight:props.oldFlight
+        }
+            }}
+        >
+            <button className="btn btn-secondary">Continue</button>
+        </Link>
+        </TableCell>
       </TableRow>
 
-      <TableRow>
+      {/*<TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1, marginTop:"5px" }}>
@@ -291,6 +297,8 @@ function Row(props) {
         </TableCell>
       </TableRow>
       
+      */}
+
     </React.Fragment>
   );
 }
@@ -330,12 +338,14 @@ function CollapsibleTable(props) {
                 <Table aria-label="collapsible table">
                     <TableHead>
                         <TableRow>
-                          <TableCell/>
-                          <TableCell align="left">Flight Number</TableCell>
+                           <TableCell align="left" component="th" scope="row">
+                            Flight Number 
+                          </TableCell>
                           <TableCell align="left">From</TableCell>
                           <TableCell align="left">To</TableCell>
                           <TableCell align="left">Departure</TableCell>
                           <TableCell align="left">Arrival</TableCell>
+                          <TableCell align="right"/>
                         </TableRow>
                     </TableHead>
                 </Table>
