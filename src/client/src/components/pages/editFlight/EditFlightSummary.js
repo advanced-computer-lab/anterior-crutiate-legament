@@ -22,6 +22,7 @@ export default function RootFunction(props) {
 class Summary extends React.Component {
   constructor(props) {
     super(props);
+    console.log(props)
   }
 
   render() {
@@ -50,12 +51,11 @@ class Summary extends React.Component {
                       state: {
                         redirect: "/chooseNewSeats",
                         redirectProps: {
-                          departure_id: this.props.data.state.departure_id,
-                          arrival_id: this.props.data.state.arrival_id,
+                            flightID: this.props.data.state.departure_id,
                           flight_class: this.props.data.state.flight_class,
                           adults: this.props.data.state.adults,
                           children: this.props.data.state.children,
-                          oldFlight: this.props.oldFlight,
+                          oldFlight: this.props.data.state.oldFlight,
                         },
                       },
                     }}

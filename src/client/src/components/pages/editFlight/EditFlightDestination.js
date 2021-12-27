@@ -16,14 +16,14 @@ import { Stack } from '@mui/material';
 
 export default function EditFlightDestination (props) {
 
-
+console.log(props)
   return (
       <Grid container >
            <SideNav/>
            <Grid item md = {9} sm= {6} xs = {6} style={{marginLeft:"3%"}} >
               <Stack>
                 <PageHeaderSvg headerText = "Find Your Flight Now" src = "https://www.gstatic.com/travel-frontend/animation/hero/flights_3.svg"/>
-              <SearchFilters oldFlight = {props.location.state.oldFlight}/>
+              <SearchFilters props = {props}/>
               </Stack>
            </Grid>
            <Grid item md={12} style={{marginTop:"15%", left:"0" , right:"0", bottom:"0"}}>

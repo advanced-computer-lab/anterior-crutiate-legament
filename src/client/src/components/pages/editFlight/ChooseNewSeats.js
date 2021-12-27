@@ -31,29 +31,16 @@ export default function RootFunction(props) {
 class ChooseNewSeats extends React.Component {
     constructor(props) {
         super(props);
-
+        console.log(props)
         this.state = {
-            flightID: props.flightID,
-            cabin: props.cabin,
-            seats: props.seats,
-            confirmPassword: "",
-            open: false,
+            flightID: props.data.state.flightID,
+            cabin: props.data.state.flight_class,
             selectAdultChild: false,
             atLeastOneError: false,
-            refundTap: false,
-            payTap: false,
             rows: null,
-            updateInfo: "",
-            newSeats: "",
-            newPrice: 0,
-            oldPrice:props.price,
-            refundAmount:0,
-            amountToPay:0,
             child: 0
         };
-        //console.log(props);
     }
-
 
     componentWillMount() {
         if (!getUserToken())
@@ -94,7 +81,7 @@ class ChooseNewSeats extends React.Component {
         });
     }
 
-    setCabinArray(cabinType, flightsDetails, seats) {
+    setCabinArray(cabinType, flightsDetails) {
         let reservedArr =
             cabinType === "Economy"
                 ? flightsDetails.economyCabin
@@ -111,19 +98,9 @@ class ChooseNewSeats extends React.Component {
         for (let x of reservedArr) {
             reserved[x] = 1;
         }
-        for (let x of seats) {
-            reserved[x] = 2;
-        }
         let rows = Array(mySize);
         for (let i = 0; i < mySize; i++) {
-            if (reserved[i] === 2) {
-                rows[i] = {
-                    id: i + 1,
-                    number: i,
-                    isSelected: true,
-                    isReserved: false,
-                };
-            } else if (reserved[i] === 1) {
+            if (reserved[i] === 1) {
                 rows[i] = {
                     id: i + 1,
                     number: i,
@@ -221,33 +198,18 @@ class ChooseNewSeats extends React.Component {
                             src="https://www.gstatic.com/travel-frontend/animation/hero/flights_3.svg"
                         />
 
-                        <h3 className="text-center">Departing Flight</h3>
+                        <h3 className="text-center">Your Flight</h3>
                         <br/>
-                        {this.state.rowsDepart ? (
+                        {this.state.rows ? (
                             <SeatPicker
-                                rows={this.divideRows(this.state.rowsDepart)}
+                                rows={this.divideRows(this.state.rows)}
                                 maxReservableSeats={100}
-                                addSeatCallback={this.addSeatDepart}
-                                removeSeatCallback={this.removeSeatDepart}
+                                addSeatCallback={this.addSeat}
+                                removeSeatCallback={this.removeSeat}
                             />
                         ) : (
                             ""
                         )}
-
-                        <hr/>
-                        <h3 className="text-center">Arriving Flight</h3>
-                        <br/>
-                        {this.state.rowsArrival ? (
-                            <SeatPicker
-                                rows={this.divideRows(this.state.rowsArrival)}
-                                maxReservableSeats={100}
-                                addSeatCallback={this.addSeatArrival}
-                                removeSeatCallback={this.removeSeatArrival}
-                            />
-                        ) : (
-                            ""
-                        )}
-                        <br/>
 
                         <Grid container>
                             <Grid item md={0.5} sm={0.5} xs={0.5} style={{marginLeft: "3%"}}>
@@ -278,17 +240,15 @@ class ChooseNewSeats extends React.Component {
 
 
                 <Dialog open={this.state.atLeastOneError} onClose={(e) => this.setState({atLeastOneError: false})}>
-                    <DialogTitle>You must select at least one arrival and at least one departure
-                        seat</DialogTitle>
+                    <DialogTitle>You must select at least one seat</DialogTitle>
                     <DialogActions>
                         <Button onClick={(e) => this.setState({atLeastOneError: false})} color="info">OK</Button>
                     </DialogActions>
                 </Dialog>
                 <Dialog open={this.state.selectAdultChild} onClose={(e) => this.setState({selectAdultChild: false})}>
                     <DialogTitle>Select seats type</DialogTitle>
-                    <DialogContent>You have {this.cntSelected(this.state.rowsDepart)} departure seats
-                        and {this.cntSelected(this.state.rowsArrival)} arrival seats selected</DialogContent>
-                    <DialogContent>Please select the number children seats for departure</DialogContent>
+                    <DialogContent>You have {this.cntSelected(this.state.rows)} seats selected</DialogContent>
+                    <DialogContent>Please select the number children seats</DialogContent>
                     <DialogContent>
                         <br/>
                         <Slider
@@ -298,44 +258,26 @@ class ChooseNewSeats extends React.Component {
                             step={1}
                             marks
                             min={0}
-                            max={this.cntSelected(this.state.rowsDepart)}
-                            onChangeCommitted={this.departSlider}
-                            onChange={this.departSlider}
+                            max={this.cntSelected(this.state.rows)}
+                            onChangeCommitted={this.slider}
+                            onChange={this.slider}
                         />
                     </DialogContent>
-                    <DialogContent>Please select the number children seats for arrival</DialogContent>
-                    <DialogContent>
-                        <br/>
-                        <Slider
-                            size="small"
-                            defaultValue={0}
-                            valueLabelDisplay="on"
-                            step={1}
-                            marks
-                            min={0}
-                            max={this.cntSelected(this.state.rowsArrival)}
-                            onChange={this.arrivalSlider}
-                            onChangeCommitted={this.arrivalSlider}
-                        />
-                    </DialogContent>
+
                     <DialogActions>
                         <Button onClick={(e) => {
                             this.props.history.push("/checkOut", {
-                                departure_id: this.props.data.state.departure_id,
-                                arrival_id: this.props.data.state.arrival_id,
-                                flight_class: this.props.data.state.flight_class,
-                                rowsDepart: this.state.rowsDepart,
-                                rowsArrival: this.state.rowsArrival,
+                                flightID: this.state.flightID,
+                                flight_class: this.state.cabin,
+                                rows: this.state.rows,
                                 adults: this.props.data.state.adults,
                                 children: this.props.data.state.children,
-                                childDepart: this.state.childDepart,
-                                childArrival: this.state.childArrival,
-                                priceDepart: this.calculatePrice(this.props.data.state.flight_class,
-                                    this.state.DepartFlightsDetails, this.state.childDepart, this.cntSelected(this.state.rowsDepart)),
-                                priceArrival: this.calculatePrice(this.props.data.state.flight_class,
-                                    this.state.ArrivalFlightsDetails, this.state.childArrival, this.cntSelected(this.state.rowsArrival)),
+                                child: this.state.child,
+                                price: this.calculatePrice(this.state.cabin,
+                                    this.state.FlightsDetails, this.state.child, this.cntSelected(this.state.rows)),
                             })
-                        }} color="info">OK</Button>
+                        }
+                        } color="info">OK</Button>
                     </DialogActions>
                 </Dialog>
 

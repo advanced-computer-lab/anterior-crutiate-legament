@@ -41,7 +41,7 @@ import SearchIcon from "@material-ui/icons/Search";
 
 export default function SearchResults (props) {
     
-    
+    console.log(props)
   const [searchFilters , setSearchFilters] = useState(
     {
       from : "",
@@ -124,10 +124,6 @@ export default function SearchResults (props) {
                 <MenuItem value={"Economy"}>Economy</MenuItem>
               </Select>
             </FormControl>
-
-
-
-
             <TextField 
             id="filled-basic" 
             value={searchFilters.adults} 
@@ -156,9 +152,8 @@ export default function SearchResults (props) {
             </Paper> 
 
             <hr style = {{marginTop:"20px"}}/>
- 
-          
-              <CollapsibleTable searched = {searched} loading = {loading} return_time={searchFilters.return_time} flight_class = {searchFilters.flight_class} adults={searchFilters.adults} childs = {searchFilters.childs} searchResults = {searchResults}/>
+                {console.log(props)}
+              <CollapsibleTable oldFlight = {props.props.location.state.oldFlight} searched = {searched} loading = {loading} return_time={searchFilters.return_time} flight_class = {searchFilters.flight_class} adults={searchFilters.adults} childs = {searchFilters.childs} searchResults = {searchResults}/>
 
             </Grid>
     ) ;
@@ -203,7 +198,7 @@ function Row(props) {
 
   },[open]);
 
-
+    console.log(props)
   return (
     <React.Fragment>
       <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
@@ -216,6 +211,7 @@ function Row(props) {
         <TableCell align="right">{format(Date.parse(row.departure_time),"PPPPp")}</TableCell>
         <TableCell align="right">{format(Date.parse(row.arrival_time),"PPPPp")}</TableCell>
         <TableCell align="right">
+            {console.log(props)}
         <Link
             to={{
             pathname: "/editFlightsSummary",
@@ -330,7 +326,7 @@ Row.propTypes = {
 
 
 function CollapsibleTable(props) {
-
+console.log(props)
   return (
    
           <>
@@ -373,6 +369,7 @@ function CollapsibleTable(props) {
                       {props.searchResults.map((row) => (
                         <Row id={row._id}
                         return_time = {props.return_time} flight_class = {props.flight_class} adults={props.adults} childs = {props.childs}
+                             oldFlight = {props.oldFlight}
                         row={row} />
                       ))}
                     </TableBody>
