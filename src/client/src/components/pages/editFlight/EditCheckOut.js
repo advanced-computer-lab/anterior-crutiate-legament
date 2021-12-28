@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { useHistory, useLocation } from "react-router-dom";
@@ -20,6 +20,9 @@ var seatsDepart, seatsArrival;
 export default function RootFunction(props) {
   const history = useHistory();
   const data = useLocation();
+  useEffect(() => {
+    if (!getUserToken()) history.push("/");
+  }, []);
   return <EditCheckOut history={history} data={data} />;
 }
 
@@ -28,20 +31,17 @@ class EditCheckOut extends React.Component {
   constructor(props) {
    
     super(props);
-    
+    if(!this.props.data.state) 
+      return;
     this.state = {
       oldFlight:props.data.state.oldFlight,
       newFlight:props.data.state.newFlight,
     }
   }
   
-  componentWillMount() {
-    if (!getUserToken())
-      this.props.history.push("/");
-  }  
-
   render() {
-  
+    if(!this.props.data.state) 
+      return null;
     let newSeats = [];
     for (let i of this.state.newFlight.rows[0]) {
       if (!i.isReserved && i.isSelected) newSeats.push(i.number);

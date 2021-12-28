@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {Link} from "react-router-dom";
 import {Redirect} from 'react-router-dom'
 import {useHistory, useLocation} from "react-router-dom";
@@ -27,11 +27,16 @@ import PaymentForm from './PaymentForm'
 export default function RootFunction(props) {
     const history = useHistory();
     const data = useLocation();
+    useEffect(() => {
+        if (!getUserToken()) history.push("/");
+    }, []);
     return <ChooseNewSeats history={history} data={data}/>;
 }
 
 class ChooseNewSeats extends React.Component {
     constructor(props) {
+        if(!this.props.data.state) 
+            return;
         super(props);
         console.log(props)
         this.state = {
@@ -45,12 +50,9 @@ class ChooseNewSeats extends React.Component {
         };
     }
 
-    componentWillMount() {
-        if (!getUserToken())
-          this.props.history.push("/");
-    }
-
     componentDidMount() {
+        if(!this.props.data.state) 
+            return;
         var flightID = this.state.flightID;
 
         let encodedSearchTerms = encodeURIComponent(
@@ -202,6 +204,8 @@ class ChooseNewSeats extends React.Component {
         return ans;
     }
     render() {
+        if(!this.props.data.state) 
+            return null;
         return (
             <Grid container>
                 <SideNav/>
