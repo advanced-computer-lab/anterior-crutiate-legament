@@ -84,7 +84,8 @@ class ChooseNewSeats extends React.Component {
         });
     }
 
-    setCabinArray(cabinType, flightsDetails,seats) {
+    setCabinArray(cabinType, flightsDetails) {
+
         let reservedArr =
             cabinType === "Economy"
                 ? flightsDetails.economyCabin
@@ -101,10 +102,14 @@ class ChooseNewSeats extends React.Component {
         for (let x of reservedArr) {
             reserved[x] = 1;
         }
+        if(this.state.oldFlight.flightID === this.state.flightID && this.state.oldFlight.cabin === this.state.cabin) {
+            for(let x of this.state.oldFlight.seats) {
+                reserved[x] = 0;
+            }
+        }
         let rows = Array(mySize);
         for (let i = 0; i < mySize; i++) {
             if (reserved[i] === 1) {
-                
                 rows[i] = {
                     id: i + 1,
                     number: i,
