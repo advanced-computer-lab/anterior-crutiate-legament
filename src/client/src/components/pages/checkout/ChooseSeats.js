@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {Link} from "react-router-dom";
 import {Redirect} from 'react-router-dom'
 import {useHistory, useLocation} from "react-router-dom";
@@ -25,6 +25,9 @@ import swal from "sweetalert";
 export default function RootFunction(props) {
     const history = useHistory();
     const data = useLocation();
+    useEffect(() => {
+        if (!getUserToken()) history.push("/");
+      }, []);
     return <ChooseSeats history={history} data={data}/>;
 }
 
@@ -41,12 +44,9 @@ class ChooseSeats extends React.Component {
         };
     }
 
-    componentWillMount() {
-        if (!getUserToken())
-          this.props.history.push("/");
-    }
-
     componentDidMount() {
+        if(!this.props.data.state) 
+            return;
         var flightDepID = this.props.data.state.departure_id;
         var flightArrID = this.props.data.state.arrival_id;
        // console.log(flightDepID + " " + flightArrID);
@@ -228,6 +228,8 @@ class ChooseSeats extends React.Component {
     }
 
     render() {
+        if(!this.props.data.state) 
+            return null;
         return (
             <Grid container>
                 <SideNav/>

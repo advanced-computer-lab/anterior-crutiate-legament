@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { getUserToken } from "../../../handleToken.js";
@@ -16,6 +16,9 @@ import SubmitButton from "../../basic components/SubmitButton" ;
 export default function RootFunction(props) {
   const history = useHistory();
   const data = useLocation();
+  useEffect(() => {
+    if (!getUserToken()) history.push("/");
+  }, []);
   return <Summary history={history} data={data} />;
 }
 
@@ -26,6 +29,8 @@ class Summary extends React.Component {
   }
 
   render() {
+    if(!this.props.data.state) 
+      return null;
  //   console.log(this.props.data.state);
     return (
       <Grid container>

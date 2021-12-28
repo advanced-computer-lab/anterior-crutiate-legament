@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { useHistory, useLocation } from "react-router-dom";
@@ -20,16 +20,18 @@ var seatsDepart, seatsArrival;
 export default function RootFunction(props) {
   const history = useHistory();
   const data = useLocation();
+  useEffect(() => {
+    if (!getUserToken()) history.push("/");
+  }, []);
   return <CheckOut history={history} data={data} />;
 }
 
 class CheckOut extends React.Component {
  
   constructor(props) {
-   
+    if(!this.props.data.state) 
+      return;
     super(props);
-    console.log("Price")
-    console.log(props.data.state.priceDepart)
     this.state = {
       departure_id: this.props.data.state.departure_id,
       arrival_id: this.props.data.state.arrival_id,
@@ -38,13 +40,9 @@ class CheckOut extends React.Component {
     }
   }
   
-  componentWillMount() {
-    if (!getUserToken())
-      this.props.history.push("/");
-  }  
-
   render() {
-  
+    if(!this.props.data.state)
+      return null;
     seatsDepart = [];
     for (let i of this.props.data.state.rowsDepart[0]) {
       if (!i.isReserved && i.isSelected) seatsDepart.push(i.number);
