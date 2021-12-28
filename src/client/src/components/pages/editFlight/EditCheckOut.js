@@ -31,7 +31,7 @@ class EditCheckOut extends React.Component {
   constructor(props) {
    
     super(props);
-    if(!this.props.data.state) 
+    if(!props.data.state)
       return;
     this.state = {
       oldFlight:props.data.state.oldFlight,

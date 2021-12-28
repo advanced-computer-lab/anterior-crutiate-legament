@@ -29,7 +29,7 @@ export default function RootFunction(props) {
 class CheckOut extends React.Component {
  
   constructor(props) {
-    if(!this.props.data.state) 
+    if(!props.data.state)
       return;
     super(props);
     this.state = {
