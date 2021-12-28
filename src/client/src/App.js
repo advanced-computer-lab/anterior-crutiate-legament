@@ -14,6 +14,7 @@ import ResetPassword from "./components/pages/auth/ResetPassword";
 import EditFlightDestination from "./components/pages/editFlight/EditFlightDestination" ;
 import EditFlightSummary from "./components/pages/editFlight/EditFlightSummary" ;
 import ChooseNewSeats from "./components/pages/editFlight/ChooseNewSeats" ;
+import EditCheckOut from "./components/pages/editFlight/EditCheckOut" ;
 
 import AdminApp from "./components/pages/admin/AdminApp.js";
 import AddFlight from "./components/pages/admin/AddFlight.js";
@@ -47,6 +48,7 @@ function App() {
       <Route exact path="/editFlightDestination" component={EditFlightDestination} />
       <Route exact path="/editFlightsSummary" component={EditFlightSummary} />
       <Route exact path="/chooseNewSeats" component={ChooseNewSeats} />
+      <Route exact path="/editCheckOut" component={EditCheckOut} />
 
       <Route exact path="/contact" component={contactUs} />
       <Route exact path="/services" component={service} />

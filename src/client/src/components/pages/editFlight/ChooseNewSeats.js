@@ -22,6 +22,8 @@ import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import swal from "sweetalert";
 
+import PaymentForm from './PaymentForm'
+
 export default function RootFunction(props) {
     const history = useHistory();
     const data = useLocation();
@@ -33,6 +35,7 @@ class ChooseNewSeats extends React.Component {
         super(props);
         console.log(props)
         this.state = {
+            oldFlight:props.data.state.oldFlight,
             flightID: props.data.state.flightID,
             cabin: props.data.state.flight_class,
             selectAdultChild: false,
@@ -81,7 +84,7 @@ class ChooseNewSeats extends React.Component {
         });
     }
 
-    setCabinArray(cabinType, flightsDetails) {
+    setCabinArray(cabinType, flightsDetails,seats) {
         let reservedArr =
             cabinType === "Economy"
                 ? flightsDetails.economyCabin
@@ -94,20 +97,31 @@ class ChooseNewSeats extends React.Component {
                 : cabinType === "Business"
                     ? flightsDetails.Business
                     : flightsDetails.First;
-        let reserved = Array(mySize).fill(0);
+        var reserved = Array(mySize).fill(0);
         for (let x of reservedArr) {
             reserved[x] = 1;
         }
         let rows = Array(mySize);
         for (let i = 0; i < mySize; i++) {
             if (reserved[i] === 1) {
+                
                 rows[i] = {
                     id: i + 1,
                     number: i,
                     isSelected: true,
                     isReserved: true,
                 };
-            } else {
+            }
+            else if(reserved[i] === 2) {
+                console.log(i)
+                rows[i] = {
+                    id: i + 1,
+                    number: i,
+                    isSelected: true,
+                    isReserved: false,
+                };
+            
+            } else  {
                 rows[i] = {
                     id: i + 1,
                     number: i,
@@ -115,8 +129,8 @@ class ChooseNewSeats extends React.Component {
                     isReserved: false,
                 };
             }
-            //console.log(rows);
         }
+       
         return [rows];
     }
 
@@ -266,18 +280,35 @@ class ChooseNewSeats extends React.Component {
 
                     <DialogActions>
                         <Button onClick={(e) => {
-                            this.props.history.push("/checkOut", {
-                                flightID: this.state.flightID,
-                                flight_class: this.state.cabin,
-                                rows: this.state.rows,
-                                adults: this.props.data.state.adults,
-                                children: this.props.data.state.children,
-                                child: this.state.child,
-                                price: this.calculatePrice(this.state.cabin,
-                                    this.state.FlightsDetails, this.state.child, this.cntSelected(this.state.rows)),
+                            this.props.history.push("/editCheckOut", {
+                                oldFlight: this.state.oldFlight,
+                                newFlight: {
+                                    flightID: this.state.flightID,
+                                    flight_class: this.state.cabin,
+                                    rows: this.state.rows,
+                                    adults: this.props.data.state.adults,
+                                    children: this.props.data.state.children,
+                                    child: this.state.child,
+                                    seats:[],
+                                    price: this.calculatePrice(this.state.cabin,
+                                        this.state.FlightsDetails, this.state.child, this.cntSelected(this.state.rows)),
+
+                                }
                             })
                         }
                         } color="info">OK</Button>
+                        {/* <PaymentForm
+                            flightID={this.state.flightID}
+                            flight_class={this.state.cabin}
+                            rows={this.state.rows}
+                            adults={this.props.data.state.adults}
+                            children={this.props.data.state.children}
+                            child={this.state.child}
+                            // price={this.calculatePrice(this.state.cabin,
+                            //     this.state.FlightsDetails, this.state.child, this.cntSelected(this.state.rows))}
+
+                             oldFlight={this.state.oldFlight}
+                        /> */}
                     </DialogActions>
                 </Dialog>
 
