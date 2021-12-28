@@ -334,7 +334,9 @@ userRouter
         console.log(requestBody);
         Flights.unreserveSeats(requestBody);
         if (result) {
-        sendEmail(result.email ,"GUC Air Reservation Status", "Your Reservation is canceled successfuly");
+          if(!req.body.updated){
+               sendEmail(result.email ,"GUC Air Reservation Status", "Your Reservation is canceled successfuly");
+          }
         res.send("Reservation cancelled successfully");
         } else {
         res.send("There's no such reservation");

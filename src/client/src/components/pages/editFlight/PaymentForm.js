@@ -256,6 +256,7 @@ class PaymentForm extends React.Component {
                                           cabin: this.state.oldFlight.cabin,
                                           userId: getUserID(),
                                           token: getUserToken(),
+                                          updated:true
                                       }
                                           await axios.delete('http://localhost:8000/api/user/cancelReservation', { data: data })
                                       })
@@ -318,7 +319,7 @@ class PaymentForm extends React.Component {
 
           </DialogContent>
           <DialogActions>
-            <Button onClick={(e) => this.setState({ open: false })} color="error">Cancel</Button>
+            <Button onClick={(e) => this.setState({ openRefund: false })} color="error">Cancel</Button>
             <Button onClick={
               async (e) => {
 
@@ -340,6 +341,7 @@ class PaymentForm extends React.Component {
                         cabin: this.state.oldFlight.cabin,
                         userId: getUserID(),
                         token: getUserToken(),
+                        updated:true
                       }
 
                       await axios.delete('http://localhost:8000/api/user/cancelReservation', { data: data })

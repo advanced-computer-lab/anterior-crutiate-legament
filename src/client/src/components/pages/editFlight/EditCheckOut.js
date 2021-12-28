@@ -53,6 +53,7 @@ class EditCheckOut extends React.Component {
     let newFlight=this.state.newFlight;
     let oldFlight=this.state.oldFlight;
     
+  
     return (
       <Grid container>
         <SideNav />
@@ -91,11 +92,9 @@ class EditCheckOut extends React.Component {
             to={{
               pathname: "/chooseNewSeats",
               state: {
-                departure_id: this.props.data.state.departure_id,
-                arrival_id: this.props.data.state.arrival_id,
-                flight_class: this.props.data.state.flight_class,
-                adults: this.props.data.state.adults,
-                children: this.props.data.state.children,
+                oldFlight:this.state.oldFlight,
+                flightID:this.state.newFlight.flightID,
+                cabin:this.state.newFlight.flight_class
               },
             }}
           >

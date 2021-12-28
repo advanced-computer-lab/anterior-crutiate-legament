@@ -120,7 +120,6 @@ class ChooseNewSeats extends React.Component {
                 };
             }
             else if(reserved[i] === 2) {
-                console.log(i)
                 rows[i] = {
                     id: i + 1,
                     number: i,
@@ -243,7 +242,16 @@ class ChooseNewSeats extends React.Component {
                             </Grid>
                             <Grid item md={0.5} style={{marginTop: "1%"}}>
 
-                                <Link to={{pathname: "/home"}}>
+                                <Link to={{
+                                    pathname: "/editFlightsSummary",
+                                    state: {
+                                        departure_id: this.state.flightID,
+                                        flight_class: this.state.cabin,
+                                        adults: "",
+                                        children: "",
+                                        oldFlight: this.state.oldFlight
+                                    }
+                                }}>
                                     <button className="btn btn-secondary">Go Back</button>
                                 </Link>
                             </Grid>

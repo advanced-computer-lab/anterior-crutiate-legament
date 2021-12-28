@@ -73,7 +73,7 @@ class Summary extends React.Component {
                 </Grid>
                 <Grid item md={0.5} style= {{marginTop:"1%"}}>      
                   <Link to={{ pathname: "/editFlightDestination",
-                              state : {oldFlight: this.props.oldFlight}
+                              state : {oldFlight: this.props.data.state.oldFlight}
                              }}>
                   <button className="btn btn-secondary" >Go Back</button>
                   </Link>

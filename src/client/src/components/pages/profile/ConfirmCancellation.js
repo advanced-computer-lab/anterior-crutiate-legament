@@ -19,6 +19,7 @@ export default class CancelRservation extends React.Component {
       cabin: props.cabin,
       seats: props.seats,
       personPassword: props.personPass,
+      price: props.price,
       confirmPassword: "",
       open: false,
     }
@@ -31,11 +32,15 @@ export default class CancelRservation extends React.Component {
     return (
       <div>
         <Button variant="outlined" onClick={(e) => this.setState({ open: true })} color="error">
-           Delete
+           Delete Ticket
         </Button>
         <Dialog open={this.state.open} onClose={(e) => this.setState({ open: false })}>
           <DialogTitle>Reservation Cancellation</DialogTitle>
           <DialogContent>
+          <DialogContentText>
+            You will be refunded with amount {this.state.price}
+          </DialogContentText>
+          <br/>
             <DialogContentText>
               To confirm reservation cancellation. Please, Enter your password:
             </DialogContentText>
