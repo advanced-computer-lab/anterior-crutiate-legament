@@ -41,7 +41,7 @@ import SearchIcon from "@material-ui/icons/Search";
 
 export default function SearchResults (props) {
     
-    
+   console.log(props) ; 
   const [searchFilters , setSearchFilters] = useState(
     {
       from : "",
@@ -158,7 +158,7 @@ export default function SearchResults (props) {
             <hr style = {{marginTop:"20px"}}/>
  
           
-              <CollapsibleTable searched = {searched} loading = {loading} return_time={searchFilters.return_time} flight_class = {searchFilters.flight_class} adults={searchFilters.adults} childs = {searchFilters.childs} searchResults = {searchResults}/>
+              <CollapsibleTable oldFlight = {props.oldFlight} searched = {searched} loading = {loading} return_time={searchFilters.return_time} flight_class = {searchFilters.flight_class} adults={searchFilters.adults} childs = {searchFilters.childs} searchResults = {searchResults}/>
 
             </Grid>
     ) ;
@@ -177,7 +177,7 @@ function Row(props) {
       setOpen(!open) ;
   };
   
-  useEffect(() => {
+  useEffect(async () => {
     if(open){
       setLoading(true);
       let encodedSearchTerms = encodeURIComponent(JSON.stringify(
@@ -191,11 +191,10 @@ function Row(props) {
         }       
       ));
 
-      axios.get(`http://localhost:8000/api/user/SearchFlights?searchFilters=${encodedSearchTerms}`)
-      .then((r) => {
-          setLoading(false);
-          setReturnFlights(r.data);
-      }) ;
+      const r =  await axios.get(`http://localhost:8000/api/user/SearchFlights?searchFilters=${encodedSearchTerms}`)
+    setLoading(false);
+    setReturnFlights(r.data);
+      
     }
     else{
       setReturnFlights([]);
@@ -203,7 +202,7 @@ function Row(props) {
 
   },[open]);
 
-
+    console.log(props) ;
   return (
     <React.Fragment>
       <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
@@ -372,6 +371,7 @@ function CollapsibleTable(props) {
                     <TableBody>
                       {props.searchResults.map((row) => (
                         <Row id={row._id}
+                        oldFlight = {props.oldFlight}
                         return_time = {props.return_time} flight_class = {props.flight_class} adults={props.adults} childs = {props.childs}
                         row={row} />
                       ))}
