@@ -1,10 +1,11 @@
-import React, { useState,useRef } from 'react';
+import React, { useEffect,useRef } from 'react';
 
-
+import { useHistory, useLocation } from "react-router-dom";
 import SideNav from '../../templates/SideNav';
 import SearchFilters from './SearchFilters';
 import Footer from "../../templates/Footer";
 import PageHeaderSvg from '../../basic components/PageHeaderSvg';
+import { getUserToken } from "../../../handleToken.js";
 
 import 
 {
@@ -13,10 +14,19 @@ import
 from '@material-ui/core';
 import { Stack } from '@mui/material';
 
-
 export default function EditFlightDestination (props) {
 
-console.log(props)
+
+  const history = useHistory();
+  useEffect(() => {
+    if (!getUserToken()) history.push("/");
+  }, []);
+
+  
+
+  console.log(props)
+  if (!getUserToken())
+    return null;
   return (
       <Grid container >
            <SideNav/>

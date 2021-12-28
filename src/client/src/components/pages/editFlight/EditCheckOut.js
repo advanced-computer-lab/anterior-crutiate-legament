@@ -29,7 +29,6 @@ export default function RootFunction(props) {
 class EditCheckOut extends React.Component {
  
   constructor(props) {
-   
     super(props);
     if(!props.data.state)
       return;

@@ -35,9 +35,9 @@ export default function RootFunction(props) {
 
 class ChooseNewSeats extends React.Component {
     constructor(props) {
+        super(props);
         if(!props.data.state)
             return;
-        super(props);
         console.log(props)
         this.state = {
             oldFlight:props.data.state.oldFlight,

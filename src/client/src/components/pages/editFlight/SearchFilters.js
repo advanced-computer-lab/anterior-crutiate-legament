@@ -2,7 +2,7 @@ import React , {useState,useEffect} from 'react';
 import PropTypes from 'prop-types';
 import Box from '@material-ui/core/Box';
 import { Link } from "react-router-dom";
-
+import { useHistory, useLocation } from "react-router-dom";
 import Collapse from '@material-ui/core/Collapse';
 import IconButton from '@material-ui/core/IconButton';
 import Table from '@material-ui/core/Table';
@@ -19,6 +19,7 @@ import Loading from '../../basic components/Loading' ;
 import ErrorSvg from '../../basic components/ErrorSvg' ;
 import { format} from 'date-fns'
 import axios from 'axios';
+import { getUserToken } from "../../../handleToken.js";
 
 import {
   DateTimePicker,
@@ -40,7 +41,11 @@ import SearchIcon from "@material-ui/icons/Search";
 
 
 export default function SearchResults (props) {
-    
+  const history = useHistory();
+  useEffect(() => {
+    if (!getUserToken()) history.push("/");
+  }, []);
+
     console.log(props)
   const [searchFilters , setSearchFilters] = useState(
     {

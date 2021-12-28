@@ -29,9 +29,9 @@ export default function RootFunction(props) {
 class CheckOut extends React.Component {
  
   constructor(props) {
+    super(props);
     if(!props.data.state)
       return;
-    super(props);
     this.state = {
       departure_id: this.props.data.state.departure_id,
       arrival_id: this.props.data.state.arrival_id,
