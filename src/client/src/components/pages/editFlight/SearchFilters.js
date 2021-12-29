@@ -2,7 +2,7 @@ import React , {useState,useEffect} from 'react';
 import PropTypes from 'prop-types';
 import Box from '@material-ui/core/Box';
 import { Link } from "react-router-dom";
-
+import { useHistory, useLocation } from "react-router-dom";
 import Collapse from '@material-ui/core/Collapse';
 import IconButton from '@material-ui/core/IconButton';
 import Table from '@material-ui/core/Table';
@@ -19,6 +19,7 @@ import Loading from '../../basic components/Loading' ;
 import ErrorSvg from '../../basic components/ErrorSvg' ;
 import { format} from 'date-fns'
 import axios from 'axios';
+import { getUserToken } from "../../../handleToken.js";
 
 import {
   DateTimePicker,
@@ -40,8 +41,12 @@ import SearchIcon from "@material-ui/icons/Search";
 
 
 export default function SearchResults (props) {
-    
-   console.log(props) ; 
+  const history = useHistory();
+  useEffect(() => {
+    if (!getUserToken()) history.push("/");
+  }, []);
+
+    console.log(props)
   const [searchFilters , setSearchFilters] = useState(
     {
       from : "",
@@ -124,10 +129,6 @@ export default function SearchResults (props) {
                 <MenuItem value={"Economy"}>Economy</MenuItem>
               </Select>
             </FormControl>
-
-
-
-
             <TextField 
             id="filled-basic" 
             value={searchFilters.adults} 
@@ -156,9 +157,8 @@ export default function SearchResults (props) {
             </Paper> 
 
             <hr style = {{marginTop:"20px"}}/>
- 
-          
-              <CollapsibleTable oldFlight = {props.oldFlight} searched = {searched} loading = {loading} return_time={searchFilters.return_time} flight_class = {searchFilters.flight_class} adults={searchFilters.adults} childs = {searchFilters.childs} searchResults = {searchResults}/>
+                {console.log(props)}
+              <CollapsibleTable oldFlight = {props.props.location.state.oldFlight} searched = {searched} loading = {loading} return_time={searchFilters.return_time} flight_class = {searchFilters.flight_class} adults={searchFilters.adults} childs = {searchFilters.childs} searchResults = {searchResults}/>
 
             </Grid>
     ) ;
@@ -202,7 +202,7 @@ function Row(props) {
 
   },[open]);
 
-    console.log(props) ;
+    console.log(props)
   return (
     <React.Fragment>
       <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
@@ -215,6 +215,7 @@ function Row(props) {
         <TableCell align="right">{format(Date.parse(row.departure_time),"PPPPp")}</TableCell>
         <TableCell align="right">{format(Date.parse(row.arrival_time),"PPPPp")}</TableCell>
         <TableCell align="right">
+            {console.log(props)}
         <Link
             to={{
             pathname: "/editFlightsSummary",
@@ -329,7 +330,7 @@ Row.propTypes = {
 
 
 function CollapsibleTable(props) {
-
+console.log(props)
   return (
    
           <>
@@ -373,6 +374,7 @@ function CollapsibleTable(props) {
                         <Row id={row._id}
                         oldFlight = {props.oldFlight}
                         return_time = {props.return_time} flight_class = {props.flight_class} adults={props.adults} childs = {props.childs}
+                             oldFlight = {props.oldFlight}
                         row={row} />
                       ))}
                     </TableBody>

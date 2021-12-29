@@ -14,6 +14,7 @@ import { format } from "date-fns";
 
 
 export default function FlightSummary(props) {
+  console.log(props);
   const [flight, setFlight] = React.useState({
     from: "",
     to: "",

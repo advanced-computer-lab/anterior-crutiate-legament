@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import axios from "axios";
 import { getAdminToken } from "../../../handleToken.js";
 import { useHistory, useLocation } from "react-router-dom";
@@ -31,6 +31,9 @@ class DeletePopup extends React.Component {
 export default function RootFunction(props) {
   const history = useHistory();
   const data = useLocation();
+  useEffect(() => {
+    if (!getAdminToken()) history.push("/adminLogin");
+  }, []);
   return <EditFlight history={history} data={data} getToken={props.getToken} />;
 }
 
@@ -91,12 +94,8 @@ class EditFlight extends React.Component {
     this.setState({ message: "" });
   };
 
-  componentWillMount() {
-    if (!getAdminToken()) this.props.history.push("/adminLogin");
-  }
-
   componentDidMount() {
-    let flightId = this.props.data.state.flight_id;
+    let flightId = this.props.data.state ? this.props.data.state.flight_id : undefined;
     let encodedSearchTerms = encodeURIComponent(
       JSON.stringify({ _id: flightId, token: getAdminToken() })
     );

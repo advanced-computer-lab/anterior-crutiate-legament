@@ -24,6 +24,7 @@ class Ticket extends React.Component {
 
     constructor(props) {
         super(props);
+        console.log(props)
         this.state = {
             personID: props.data.personID,
             _id: props.data.info.flight_id,
@@ -31,6 +32,7 @@ class Ticket extends React.Component {
             seats: props.data.info.seats,
             name: props.data.name,
             personPass: props.data.personPass,
+            price:props.data.info.price,
             date: "",
             from: "",
             to: "",
@@ -139,13 +141,14 @@ class Ticket extends React.Component {
 
                             }}
                         >
-                            
+                            <Stack spacing={1.7}>
                             <ConfirmCancellation personID={this.state.personID}
                                 flight_id={this.state._id}
                                 cabin={this.state.cabin}
                                 seats={this.state.seats}
-                                personPass={this.state.personPass} />
-                            <br/>
+                                personPass={this.state.personPass} 
+                                price={this.state.price}
+                                />
                             {/* <UpdateTicket  flightID={this.state._id} cabin={this.state.cabin} seats={this.state.seats} price={this.state.price} /> */}
                             <Button variant="outlined" 
                                 onClick={
@@ -162,9 +165,30 @@ class Ticket extends React.Component {
                                          });
                                     }} 
                                     color="error">
-                                Update
+                                Change Flight
                             </Button>
-                            <br/>
+                            <Button variant="outlined" 
+                                onClick={
+                                    (e) => {
+                                        let oldFlight={
+                                            flightID:this.state._id, 
+                                            cabin:this.state.cabin,
+                                            seats:this.state.seats,
+                                            price:this.state.price
+                                        }
+                                        
+                                        console.log(oldFlight);
+                                         this.state.history.push("/chooseNewSeats",{
+                                            flightID:this.state._id, 
+                                            flight_class: this.state.cabin,
+                                            adults: "",
+                                            children: "",
+                                            oldFlight: oldFlight
+                                         });
+                                    }} 
+                                    color="error">
+                                Change Seats
+                            </Button>
                             <Button
                              variant="outlined" onClick={(e) => this.setState({ open: true })} color="success"
                              onClick={()=>{
@@ -185,6 +209,7 @@ class Ticket extends React.Component {
                              >
                                 Email Me
                             </Button>
+                            </Stack>
                         </div>
 
                     </Stack>

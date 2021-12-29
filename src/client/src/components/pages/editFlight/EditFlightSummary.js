@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { getUserToken } from "../../../handleToken.js";
@@ -16,15 +16,21 @@ import SubmitButton from "../../basic components/SubmitButton" ;
 export default function RootFunction(props) {
   const history = useHistory();
   const data = useLocation();
+  useEffect(() => {
+    if (!getUserToken()) history.push("/");
+  }, []);
   return <Summary history={history} data={data} />;
 }
 
 class Summary extends React.Component {
   constructor(props) {
     super(props);
+    console.log(props)
   }
 
   render() {
+    if(!this.props.data.state) 
+      return null;
  //   console.log(this.props.data.state);
 
     console.log(this.props) ;
@@ -52,12 +58,11 @@ class Summary extends React.Component {
                       state: {
                         redirect: "/chooseNewSeats",
                         redirectProps: {
-                          departure_id: this.props.data.state.departure_id,
-                          arrival_id: this.props.data.state.arrival_id,
+                            flightID: this.props.data.state.departure_id,
                           flight_class: this.props.data.state.flight_class,
                           adults: this.props.data.state.adults,
                           children: this.props.data.state.children,
-                          oldFlight: this.props.oldFlight,
+                          oldFlight: this.props.data.state.oldFlight,
                         },
                       },
                     }}
@@ -70,7 +75,7 @@ class Summary extends React.Component {
                 </Grid>
                 <Grid item md={0.5} style= {{marginTop:"1%"}}>      
                   <Link to={{ pathname: "/editFlightDestination",
-                              state : {oldFlight: this.props.oldFlight}
+                              state : {oldFlight: this.props.data.state.oldFlight}
                              }}>
                   <button className="btn btn-secondary" >Go Back</button>
                   </Link>
